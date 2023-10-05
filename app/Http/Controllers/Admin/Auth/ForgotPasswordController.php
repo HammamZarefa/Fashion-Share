@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Nette\Utils\Random;
 
 class ForgotPasswordController extends Controller
 {
@@ -68,7 +69,7 @@ class ForgotPasswordController extends Controller
             return back()->withErrors(['Email Not Available']);
         }
 
-        $code = verificationCode(6);
+        $code = Random::generate(6,'0-9');
         $adminPasswordReset = new AdminPasswordReset();
         $adminPasswordReset->email = $user->email;
         $adminPasswordReset->token = $code;
@@ -78,13 +79,13 @@ class ForgotPasswordController extends Controller
 
         $userIpInfo = getIpInfo();
         $userBrowser = osBrowser();
-        sendEmail($user, 'PASS_RESET_CODE', [
-            'code' => $code,
-            'operating_system' => $userBrowser['os_platform'],
-            'browser' => $userBrowser['browser'],
-            'ip' => $userIpInfo['ip'],
-            'time' => $userIpInfo['time']
-        ]);
+        // sendEmail($user, 'PASS_RESET_CODE', [
+        //     'code' => $code,
+        //     'operating_system' => $userBrowser['os_platform'],
+        //     'browser' => $userBrowser['browser'],
+        //     'ip' => $userIpInfo['ip'],
+        //     'time' => $userIpInfo['time']
+        // ]);
 
         $page_title = 'Account Recovery';
         $notify[] = ['success', 'Password reset email sent successfully'];
