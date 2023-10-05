@@ -90,12 +90,12 @@ class ResetPasswordController extends Controller
 
         $userIpInfo = getIpInfo();
         $userBrowser = osBrowser();
-        sendEmail($user, 'PASS_RESET_DONE', [
-            'operating_system' => $userBrowser['os_platform'],
-            'browser' => $userBrowser['browser'],
-            'ip' => $userIpInfo['ip'],
-            'time' => $userIpInfo['time']
-        ]);
+        // sendEmail($user, 'PASS_RESET_DONE', [
+        //     'operating_system' => $userBrowser['os_platform'],
+        //     'browser' => $userBrowser['browser'],
+        //     'ip' => $userIpInfo['ip'],
+        //     'time' => $userIpInfo['time']
+        // ]);
 
         $notify[] = ['success', 'Password Changed'];
         return redirect()->route('admin.login')->withNotify($notify);

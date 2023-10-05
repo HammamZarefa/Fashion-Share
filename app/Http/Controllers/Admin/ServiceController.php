@@ -2,81 +2,177 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreServiceRequest;
+use App\Models\Admin;
 use App\Models\ApiProvider;
+use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Color;
+use App\Models\Condition;
 use App\Models\GeneralSetting;
+use App\Models\Image;
+use App\Models\Material;
 use App\Models\Product;
+use App\Models\Section;
 use App\Models\Service;
+use App\Models\Size;
+use App\Trait\NotificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\Types\Null_;
 
 class ServiceController extends Controller
 {
+    use NotificationTrait;
+
     public function index()
     {
+        $branch = Auth::guard('admin')->user()->branch_id;
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $categories = Category::orderBy('name')->get();
-        $services = Product::
-        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
-            ->latest()->paginate(getPaginate());
+        if(is_null($branch)){
+           
+            $services = Product::
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+           ->latest()->paginate(getPaginate());
+        }
+        else{ 
+            $services = Product::
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+           ->where('branch_id',$branch)->latest()->paginate(getPaginate());
+           }
         return view('admin.products.list', compact('page_title', 'services', 'empty_message', 'categories'));
     }
 
-    public function store(StoreServiceRequest $request)
+    public function store(Request $request)
     {
-        $service = new Product();
-        $this->serviceAction($service, $request);
-
-        $image = $request->file('image');
-        $path = imagePath()['service']['path'];
-        $size = imagePath()['service']['size'];
-        $filename = $request->image;
-        if ($request->hasFile('image')) {
-            try {
-                $filename = uploadImage($image, $path, $size, $filename);
-//                    dd($filename);
-            } catch (\Exception $exp) {
-                $notify[] = ['errors', 'Image could not be uploaded.'];
-                return back()->withNotify($notify);
-            }
-            $service->image = $filename;
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'string',
+            'price' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'color_id' => 'required|exists:colors,id',
+            'material_id' => 'required|exists:materials,id',
+            'section_id' => 'required|exists:sections,id',
+            'size_id' => 'required|exists:sizes,id',
+            'condition_id' => 'required|exists:conditions,id',
+            'branch_id' => 'required|exists:branches,id',
+            'is_for_sale' => 'required',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        if ($validator->fails()) {
+            $notify[] = ['error', 'validation'];
+            return back()->withNotify($notify);   
         }
-        $service->save();
+        $product = Product::create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'price' => $request->input('price'),
+            'category_id' => $request->input('category_id'),
+            'color_id' => $request->input('color_id'),
+            'material_id' => $request->input('material_id'),
+            'section_id' => $request->input('section_id'),
+            'size_id' => $request->input('size_id'),
+            'condition_id' => $request->input('condition_id'),
+            'user_id' => auth()->id(),
+            'branch_id' => $request->input('branch_id'),
+            'status' => 'pending',
+            'is_for_sale' => $request->input('is_for_sale')
+        ]);
+        $product->categories()->attach($request->category_id);
+        if (isset($request['images'])) {
+            foreach ($request->file('images') as $image) {
+                $filename = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('public/images', $filename);
+
+                // Create the image record in the database
+                $product->images()->create([
+                    'path' => $filename,
+                    // Add other image fields as needed
+                ]);
+            }
+        }
+   
 
         $notify[] = ['success', 'Service added!'];
         return back()->withNotify($notify);
     }
 
-    public function update(Request $request, $id)
+    public function update( $product,Request $request)
     {
+        
+        $product = Product::findOrFail($product);
+        $validator = Validator::make($request->all(), [
+            'name' => 'string|max:255',
+            'description' => 'string',
+            'price' => 'numeric',
+            'category_id' => 'exists:categories,id',
+            'color_id' => 'exists:colors,id',
+            'material_id' => 'exists:materials,id',
+            'section_id' => 'exists:sections,id',
+            'size_id' => 'exists:sizes,id',
+            'condition_id' => 'exists:conditions,id',
+            'branch_id' => 'exists:branches,id',
+            'is_for_sale' => 'boolean',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
 
-        $service = Service::findOrFail($id);
-        $this->serviceAction($service, $request);
-        $image = $request->file('image');
-        $path = imagePath()['service']['path'];
-        $size = imagePath()['service']['size'];
-        $filename = $request->image;
-        if ($request->hasFile('image')) {
-            try {
-                $filename = uploadImage($image, $path, $size, $filename);
-//                    dd($filename);
-            } catch (\Exception $exp) {
-                $notify[] = ['errors', 'Image could not be uploaded.'];
-                return back()->withNotify($notify);
-            }
-            $service->image = $filename;
+        if ($validator->fails()) {
+            // return back()->withNotify(['error' => $validator->messages()]);
         }
-        $service->save();
 
-        $notify[] = ['success', 'Service updated!'];
+        $product->update($request->only([
+            'name',
+            'description',
+            'price',
+            'category_id',
+            'color_id',
+            'material_id',
+            'section_id',
+            'size_id',
+            'condition_id',
+            'branch_id',
+            'is_for_sale'
+        ]));
+
+        if ($request->category_id)
+            $product->categories()->sync($request->category_id);
+        if (isset($request['images'])) {
+            foreach ($request['images'] as $image) {
+                $filename = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('public/images', $filename);
+                // Create or update the image record in the database
+                $product->images()->create([
+                    'path' => $filename,
+                    'imagable_id'=>$product->id
+
+                ]);
+            }
+        }
+        if(isset($request['status'])){
+            if($request['status'] = "available"){
+                $this->send_event_notification($product->user , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
+            if($request['status'] = "not_available"){
+               $this->send_event_notification( $product->users,'', ' تم الغاء تفعيل منتجك ' , 'Your product has been deactivated'  );}
+            if($request['status'] = "sale"){ 
+                $this->send_event_notification( $product->user,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );}
+            if($request['status'] = "rent"){
+                 $this->send_event_notification( $product->user, '',' تم تغيير حالة منتجك الى أجار ' , 'Your product status has been changed to Rent'  );}
+            if($request['status'] = "rejected"){ 
+                $this->send_event_notification( $product->user,'', ' تم رفض منتجك' , 'Your product has been rejected' );}
+
+        }
+        $notify[] = ['success', 'product updated!'];
         return back()->withNotify($notify);
     }
 
@@ -169,5 +265,50 @@ class ServiceController extends Controller
         }
         $empty_message = 'No Result Found';
         return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'search', 'categories'));
+    }
+
+    public function edite($service){
+        $page_title = 'Services';
+        $empty_message = 'No Result Found';
+        $categories = Category::find($service);
+        $Colors = Color::all();
+        $Sizes = Size::all();
+        $Conditions = Condition::all();
+        $Materials = Material::all();
+        $Sections = Section::all();
+        $branchs = Branch::all();
+        $Categories= Category::all();
+
+        $services = Product::findOrFail($service);
+
+        return view('admin.products.edit', 
+        compact('page_title', 'services', 'Categories','empty_message', 'categories' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
+
+    }
+
+    public function create(){
+        $page_title = 'Services';
+        $empty_message = 'No Result Found';
+        $Colors = Color::all();
+        $Sizes = Size::all();
+        $Categories= Category::all();
+        $Conditions = Condition::all();
+        $Materials = Material::all();
+        $Sections = Section::all();
+        $branchs = Branch::all();
+
+        $services = Product::
+        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            ->latest()->paginate(getPaginate());
+        return view('admin.products.create', 
+        compact('page_title', 'empty_message' ,'Colors','Categories','Sizes','Conditions','Materials','Sections','branchs'));
+    }
+
+    public function deleteImage($id){
+      $image =  Image::findOrFail($id);
+      if(File::exists(public_path($image))){
+        File::delete(public_path('upload/bio.png'));
+        }
+        $image->delete();
     }
 }
