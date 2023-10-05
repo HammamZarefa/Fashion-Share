@@ -1,196 +1,200 @@
 @extends('admin.layouts.app')
+
 @section('panel')
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
             <div class="card">
-                <form action="{{ route('admin.gateway.manual.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="card-body">
-                        <div class="payment-method-item">
-                            <div class="payment-method-header d-flex flex-wrap">
-                                <div class="thumb">
-                                    <div class="avatar-preview">
-                                        <div class="profilePicPreview" style="background-image: url('{{getImage(imagePath()['gateway']['path'],imagePath()['gateway']['size'])}}')"></div>
-                                    </div>
-                                    <div class="avatar-edit">
-                                        <input type="file" name="image" class="profilePicUpload" id="image" accept=".png, .jpg, .jpeg"/>
-                                        <label for="image" class="bg-primary"><i class="la la-pencil"></i></label>
-                                    </div>
-                                </div>
+               
+             
 
-                                <div class="content">
-                                    <div class="row mt-4 mb-none-15">
-                                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-15">
-                                            <div class="input-group">
-                                                <label class="w-100 font-weight-bold">@lang('Gateway Name') <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control " placeholder="@lang('Method Name')" name="name" value="{{ old('name') }}"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-15">
 
-                                            <div class="input-group">
-                                                <label class="w-100 font-weight-bold">@lang('Currency') <span class="text-danger">*</span></label>
-                                                <input type="text" name="currency" placeholder="@lang('Currency')" class="form-control border-radius-5" value="{{ old('currency') }}"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-15">
-                                            <label class="w-100 font-weight-bold">@lang('Rate') <span class="text-danger">*</span></label>
+               <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{ route('admin.services.store') }}" style="margin: 20px">
+                  @csrf  
+                  <div class="form-row">
+                 
 
-                                            <div class="input-group has_append">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text">1 {{ __($general->cur_text )}} =</div>
-                                                </div>
-                                                <input type="text" class="form-control" placeholder="0" name="rate" value="{{ old('rate') }}"/>
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text"><span class="currency_symbol"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="payment-method-body">
-                                <div class="row">
+                        <div class="col mb-2">
+                        <label for="validationCustom01">@lang('Name')</label>
+                        <input type="text" id="name" name="name" class="form-control" id="validationCustom01" placeholder="First name" value="" required>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
+                      </div>
 
-                                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                        <div class="card border--primary mt-3">
-                                            <h5 class="card-header bg--primary">@lang('Range')</h5>
-                                            <div class="card-body">
-                                                <div class="input-group mb-3">
-                                                    <label class="w-100 font-weight-bold">@lang('Minimum Amount') <span class="text-danger">*</span></label>
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">{{ __($general->cur_text) }}</div>
-                                                    </div>
-                                                    <input type="text" class="form-control" name="min_limit" placeholder="0" value="{{ old('min_limit') }}"/>
-                                                </div>
-                                                <div class="input-group">
-                                                    <label class="w-100 font-weight-bold">@lang('Maximum Amount') <span class="text-danger">*</span></label>
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">{{ __($general->cur_text) }}</div>
-                                                    </div>
-                                                    <input type="text" class="form-control" placeholder="0" name="max_limit" value="{{ old('max_limit') }}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                        <div class="card border--primary mt-3">
-                                            <h5 class="card-header bg--primary">@lang('Charge')</h5>
-                                            <div class="card-body">
-                                                <div class="input-group mb-3">
-                                                    <label class="w-100 font-weight-bold">@lang('Fixed Charge') <span class="text-danger">*</span></label>
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">{{ __($general->cur_text) }}</div>
-                                                    </div>
-                                                    <input type="text" class="form-control" placeholder="0" name="fixed_charge" value="{{ old('fixed_charge') }}"/>
-                                                </div>
-                                                <div class="input-group">
-                                                    <label class="w-100 font-weight-bold">@lang('Percent Charge') <span class="text-danger">*</span></label>
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">%</div>
-                                                    </div>
-                                                    <input type="text" class="form-control" placeholder="0" name="percent_charge" value="{{ old('percent_charge') }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                        <div class="card border--dark mt-3">
-
-                                            <h5 class="card-header bg--dark">@lang('Deposit Instruction')</h5>
-                                            <div class="card-body">
-                                                <div class="form-group">
-                                                    <textarea rows="8" class="form-control border-radius-5 nicEdit" name="instruction">{{ old('instruction') }}</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <div class="card border--dark mt-3">
-                                            <h5 class="card-header bg--dark  text-white">@lang('User data')
-                                                <button type="button" class="btn btn-sm btn-outline-light float-right addUserData"><i class="la la-fw la-plus"></i>@lang('Add New')
-                                                </button>
-                                            </h5>
-
-                                            <div class="card-body">
-                                                <div class="row addedField">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                      <div class="col mb-3">
+                        <label for="validationCustom05">@lang('Branch')</label>
+                        <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true">
+                          @foreach($branchs as $branch)
+                             <option value="{{$branch->id}}" >{{ $branch->name }}</option>
+                          @endforeach
+                       </select>
+                        {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                        <div class="invalid-feedback">
+                          Please provide a valid zip.
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn--primary btn-block">@lang('Save Method')</button>
+
+                          <div class="w-100"></div>
+
+
+                      <div class="col mb-3">
+                        <label for="validationCustomUsername">@lang('Price')</label>
+                        <div class="input-group">
+                          <input type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value=""  required>
+                          <div class="invalid-feedback">
+                            Please choose a username.
+                          </div>
+                        </div>
+                      </div>
+
+                      
+                        <div class="col mb-3">
+                          <label for="validationCustom03">@lang('Color')</label>
+                          
+                          <select name="color_id" id="color" value="" class="form-control selectpicker"  data-live-search="true">
+                            @foreach($Colors as $color)
+                            {{-- <p>{{ old('color') }}</p>; --}}
+                               <option value="{{ $color->id }}" >{{ $color->name }}</option>
+                            @endforeach
+                         </select>
+                          {{-- <input type="text" class="form-control" id="validationCustom03" placeholder="City" value="" required> --}}
+                          
+                          <div class="invalid-feedback">
+                            Please provide a valid city.
+                          </div>
+                        </div>
+
+                            <div class="w-100"></div>
+
+
+                        <div class="col mb-3">
+                          <label for="validationCustom04">@lang('Size')</label>
+                          <select name="size_id" value="" class="form-control selectpicker"  data-live-search="true">
+                            @foreach($Sizes as $size)
+                               <option value="{{$size->id}}"  >{{ $size->name }}</option>
+                            @endforeach
+                         </select>
+
+                          {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
+                          <div class="invalid-feedback">
+                            Please provide a valid state.
+                          </div>
+                        </div>
+                        <div class="col mb-3">
+                          <label for="validationCustom05">@lang('Condition')</label>
+                          
+                          <select name="condition_id" value="" class="form-control selectpicker"  data-live-search="true">
+                            @foreach($Conditions as $Condition)
+                               <option value="{{$Condition->id}}" >{{ $Condition->name }}</option>
+                            @endforeach
+                         </select>
+                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                          <div class="invalid-feedback">
+                            Please provide a valid zip.
+                          </div>
+                      </div>
+  
+                          <div class="w-100"></div>
+
+                      <div class="col mb-3">
+                          <label for="validationCustom05">@lang('Material')</label>
+                          <select name="material_id" value="" class="form-control selectpicker"  data-live-search="true">
+                            @foreach($Materials as $Material)
+                               <option value="{{$Material->id}}"  >{{ $Material->name }}</option>
+                            @endforeach
+                         </select>
+                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                          <div class="invalid-feedback">
+                            Please provide a valid zip.
+                          </div>
+                        </div>
+  
+                      <div class="col mb-3">
+                          <label for="validationCustom05">@lang('Section')</label>
+                          <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
+                            @foreach($Sections as $Section)
+                               <option value="{{$Section->id}}" >{{ $Section->name }}</option>
+                            @endforeach
+                         </select>
+                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                          <div class="invalid-feedback">
+                            Please provide a valid zip.
+                          </div>
+                        </div>
+  
+                            <div class="w-100"></div>
+                     
+  
+                      <div class="col mb-3">
+                        <label for="validationCustom02">@lang('Description')</label>
+                        <input type="text"   class="form-control" id="validationCustom02" placeholder="Last name" value=""  aria-describedby="inputGroupPrepend" required>
+                        <div class="valid-feedback">
+                          Looks good!
+                        </div>
+                      </div>
+
+                      <div class="col mb-3">
+                          <label for="validationCustom05">@lang('Location')</label>
+                          <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required>
+                          <div class="invalid-feedback">
+                            Please provide a valid zip.
+                          </div>
+                      </div>
+  
+                  <div class="w-100"></div>
+                      <div class="col mb-3 ">
+                          <label for="validationCustom05">@lang('Sale?')</label>
+                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                          <select class="custom-select"  name="is_for_sale" required>
+                            <option  class="text--small badge font-weight-normal badge--success"  value="Sale">@lang('Sale')</option>
+                            <option  class="text--small badge font-weight-normal badge--warning"  value="Rent">@lang('Rent')</option>
+                          </select>
+                          <div class="invalid-feedback">
+                            Please provide a valid zip.
+                          </div>
+                      </div>
+
+                      <div class="col mb-3">
+                        <label for="validationCustom05">@lang('Categories')</label>
+                        <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
+                          @foreach($Categories as $Categorie)
+                             <option value="{{$Categorie->id}}" >{{ $Categorie->name }}</option>
+                          @endforeach
+                       </select>
+                        {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
+                        <div class="invalid-feedback">
+                          Please provide a valid zip.
+                        </div>
+                      </div>
+
+                      <div class="w-100"></div>
+              
+
+
+
+                    <div class="col mb-3 ">
+                      <label for="validationCustom05">@lang('Status')</label>
+
+                      <select class="custom-select"  required>
+                        <option {{ old('status') == 'available' ? "@lang('Not available')" : "" }}  class="text--small badge font-weight-normal badge--success"  value="@lang('Not available')">@lang('Not available')</option>
+                        <option {{ old('name') == 'available1' ? "@lang('Available')" : "" }}  class="text--small badge font-weight-normal badge--warning"  value="@lang('Available')">@lang('Available')</option>
+                     </select>
+                      <div class="invalid-feedback">Example invalid custom select feedback</div>
+
                     </div>
-                </form>
+
+                    </div>
+
+                   
+                    <button class="btn btn-primary" type="submit">Submit form</button>
+                  </form>
+             
+
             </div>
         </div>
     </div>
-
 @endsection
 
 
-@push('breadcrumb-plugins')
-    <a href="{{ route('admin.gateway.manual.index') }}" class="btn btn-sm btn--primary box--shadow1 text--small"><i class="la la-fw la-backward"></i> @lang('Go Back') </a>
-@endpush
-
-@push('script')
-    <script>
-
-        $(function () {
-            "use strict";
-        $('input[name=currency]').on('input', function () {
-            $('.currency_symbol').text($(this).val());
-        });
-        $('.addUserData').on('click', function () {
-            var html = `
-                <div class="col-md-12 user-data">
-                    <div class="form-group">
-                        <div class="input-group mb-md-0 mb-4">
-                            <div class="col-md-4">
-                                <input name="field_name[]" class="form-control" type="text" value="" required placeholder="@lang('Field Name')">
-                            </div>
-                            <div class="col-md-3 mt-md-0 mt-2">
-                                <select name="type[]" class="form-control">
-                                    <option value="text" > @lang('Input Text') </option>
-                                    <option value="textarea" > @lang('Textarea') </option>
-                                    <option value="file"> @lang('File upload') </option>
-                                </select>
-                            </div>
-                            <div class="col-md-3 mt-md-0 mt-2">
-                                <select name="validation[]"
-                                        class="form-control">
-                                    <option value="required"> @lang('Required') </option>
-                                    <option value="nullable">  @lang('Optional') </option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mt-md-0 mt-2 text-right">
-                                <span class="input-group-btn">
-                                    <button class="btn btn--danger btn-lg removeBtn w-100" type="button">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            $('.addedField').append(html)
-        });
-
-        $(document).on('click', '.removeBtn', function () {
-            $(this).closest('.user-data').remove();
-        });
-
-        @if(old('currency'))
-        $('input[name=currency]').trigger('input');
-        @endif
-
-        });
-    </script>
-@endpush

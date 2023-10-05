@@ -39,6 +39,12 @@
                         <span class="menu-title">@lang('Size')</span>
                     </a>
                 </li>
+                <li class="sidebar-menu-item {{menuActive('admin.branchs*')}}">
+                    <a href="{{route('admin.branch','Branch')}}" class="nav-link ">
+                        <i class="menu-icon las la-briefcase"></i>
+                        <span class="menu-title">@lang('Branch')</span>
+                    </a>
+                </li>
                 <li class="sidebar-menu-item {{menuActive('admin.color*')}}">
                     <a href="{{route('admin.model.index','color')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>

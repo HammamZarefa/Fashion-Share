@@ -68,8 +68,11 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('services/update/{id}', 'ServiceController@update')->name('services.update');
         Route::post('services/status/{id}', 'ServiceController@status')->name('services.status');
         Route::get('services/search', 'ServiceController@search')->name('services.search');
+        Route::get('services/edite/{id}', 'ServiceController@edite')->name('services.edite');
+        Route::get('services/create', 'ServiceController@create')->name('services.create');
+        Route::get('services/deleteImage', 'ServiceController@deleteImage')->name('services.deleteImage');
 
-// Manage Banner
+        // Manage Banner
         Route::get('banner',  'BannerController@index')->name('banner');
         Route::get('banner/create', 'BannerController@create')->name('banner.create');
         Route::post('banner/create', 'BannerController@store')->name('banner.store');
@@ -92,7 +95,11 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('language/delete/key/{id}', 'LanguageController@deleteLanguageJson')->name('language.delete.key');
         Route::post('language/update/key/{id}', 'LanguageController@updateLanguageJson')->name('language.update.key');
 
-
+        //Brancg Manager
+        Route::get('branch',  'BranchController@index')->name('branch');
+        Route::post('branch/update/{id}', 'BranchController@update')->name('branch.update');
+        Route::post('branch/store', 'BranchController@store')->name('branch.store');
+        Route::delete('branch/delete/{id}', 'BranchController@delete')->name('branch.delete');
 
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');

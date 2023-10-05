@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
+            $table->string('location')->nullable();
             $table->string('working_hours')->nullable();
             $table->string('phone')->nullable();
             $table->string('whatsapp')->nullable();
