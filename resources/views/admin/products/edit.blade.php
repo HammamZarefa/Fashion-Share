@@ -32,7 +32,7 @@
                        </select>
                         {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->branch->name)}}" required> --}}
                         <div class="invalid-feedback">
-                          Please provide a valid zip.
+                          Please provide a valid Branch.
                         </div>
                     </div>
 
@@ -42,9 +42,9 @@
                       <div class="col mb-3">
                         <label for="validationCustomUsername">@lang('Price')</label>
                         <div class="input-group">
-                          <input type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value="{{__($services->price)}}"  required>
+                          <input type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Price" value="{{__($services->price)}}"  required>
                           <div class="invalid-feedback">
-                            Please choose a username.
+                            Please choose a Price.
                           </div>
                         </div>
                       </div>
@@ -62,7 +62,7 @@
                           {{-- <input type="text" class="form-control" id="validationCustom03" placeholder="City" value="{{__($services[0]->color->name)}}" required> --}}
                           
                           <div class="invalid-feedback">
-                            Please provide a valid city.
+                            Please provide a valid Color.
                           </div>
                         </div>
 
@@ -79,7 +79,7 @@
 
                           {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="{{__($services[0]->size->name)}}" required> --}}
                           <div class="invalid-feedback">
-                            Please provide a valid state.
+                            Please provide a valid Size.
                           </div>
                         </div>
                         <div class="col mb-3">
@@ -92,7 +92,7 @@
                          </select>
                           {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->condition->name)}}" required> --}}
                           <div class="invalid-feedback">
-                            Please provide a valid zip.
+                            Please provide a valid Condition.
                           </div>
                       </div>
   
@@ -107,7 +107,7 @@
                          </select>
                           {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->material->name)}}" required> --}}
                           <div class="invalid-feedback">
-                            Please provide a valid zip.
+                            Please provide a valid Material.
                           </div>
                         </div>
   
@@ -120,7 +120,7 @@
                          </select>
                           {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
                           <div class="invalid-feedback">
-                            Please provide a valid zip.
+                            Please provide a valid Section.
                           </div>
                         </div>
   
@@ -129,7 +129,7 @@
   
                       <div class="col mb-3">
                         <label for="validationCustom02">@lang('Description')</label>
-                        <input type="text"  name="description" class="form-control" id="validationCustom02" placeholder="Last name" value="{{__($services->description)}}"  aria-describedby="inputGroupPrepend" required>
+                        <input type="text"  name="description" class="form-control" id="validationCustom02" placeholder="Description" value="{{__($services->description)}}"  aria-describedby="inputGroupPrepend" required>
                         <div class="valid-feedback">
                           Looks good!
                         </div>
@@ -137,9 +137,9 @@
 
                       <div class="col mb-3">
                           <label for="validationCustom05">@lang('Location')</label>
-                          <input type="text" name="location" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services->location)}}" required>
+                          <input type="text" name="location" class="form-control" id="validationCustom05" placeholder="Location" value="{{__($services->location)}}" required>
                           <div class="invalid-feedback">
-                            Please provide a valid zip.
+                            Please provide a valid Location.
                           </div>
                       </div>
   
@@ -152,7 +152,7 @@
                             <option  class="text--small badge font-weight-normal badge--warning"  value="Rent">@lang('Rent')</option>
                           </select>
                           <div class="invalid-feedback">
-                            Please provide a valid zip.
+                            Please provide a valid Sale.
                           </div>
                       </div>
 
@@ -167,7 +167,7 @@
                        </select>
                         {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
                         <div class="invalid-feedback">
-                          Please provide a valid zip.
+                          Please provide a valid Categories.
                         </div>
                       </div>
 
@@ -183,7 +183,7 @@
                         <option {{ old('status') == 'sale' ? "selected" : "" }}    value="sale">@lang('Sale')</option>
                         <option {{ old('status') == 'rent' ? "selected" : "" }}       value="rent">@lang('Rent')</option>
                       </select>
-                      <div class="invalid-feedback">Example invalid custom select feedback</div>
+                      <div class="invalid-feedback">Please provide a valid Status</div>
 
 
                     </div>

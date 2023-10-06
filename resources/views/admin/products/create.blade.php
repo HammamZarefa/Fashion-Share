@@ -179,7 +179,7 @@
                           <option   value="@lang('rent')">@lang('Rent')</option>
                           <option   value="@lang('rejected')">@lang('rejected')</option>
                         </select>
-                        <div class="invalid-feedback">Example invalid custom select feedback</div>
+                        <div class="invalid-feedback">Please provide a valid select Status</div>
                         <div class="w-100"></div>
 
 
