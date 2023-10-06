@@ -24,16 +24,11 @@
                                 <th scope="col">@lang('Category')</th>
                                 <th scope="col">@lang('Price')</th>
                                 <th scope="col">@lang('Branch')</th>
-                                {{-- <th scope="col">@lang('Color')</th>
-                                <th scope="col">@lang('Size')</th>
-                                <th scope="col">@lang('Material')</th>
-                                <th scope="col">@lang('Condition')</th>
-                                <th scope="col">@lang('Section')</th> --}}
                                 <th scope="col">@lang('Sale?')</th>
                                 <th scope="col">@lang('Status')</th>
                                 <th scope="col">@lang('Action')</th>
-                                <th scope="col">@lang('Change Status')</th>
-                                <th scope="col">@lang('Show Details')</th>
+                                <th></th>
+
 
                             </tr>
                             </thead>
@@ -50,11 +45,6 @@
                                     <td>{{@$item->categories[0]->name}}</td>
                                     <td>{{$item->price}}</td>
                                     <td>{{$item->branch->name}}</td>
-                                    {{-- <td>{{$item->color->name}}</td>
-                                    <td>{{$item->size->name}}</td>
-                                    <td>{{$item->material->name}}</td>
-                                    <td>{{$item->condition->name}}</td>
-                                    <td>{{$item->section->name}}</td> --}}
                                     <td>{{$item->is_for_sale ? 'Sale' : 'Rent'}}</td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status=='available' )
@@ -94,14 +84,12 @@
                                                 <i class="la la-eye-slash"></i>
                                             </a>
                                         @endif --}}
-                                    </td>
-                                    <td >
-                                        
+                                     
 
                                    
 
-                                        <a href="javascript:void(0)" class="btn btn-primary editBtn"
-                                        data-original-title="@lang('Edit')" data-toggle="tooltip"
+                                        <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"
+                                        data-original-title="@lang('Status')" data-toggle="tooltip"
                                         data-url="{{ route('admin.services.update',$item->id)}}"
                                         data-name="{{ $item->name }}"
                                         data-field="{{$item->field_name}}">
@@ -110,10 +98,8 @@
                                      </a>
                                            
                                         
-                                    </td>
-
-                                    <td>
-                                        <a href="javascript:void(0)" class="btn btn-info showDetails"
+                                 
+                                        <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
                                         data-original-title="@lang('Show')" data-toggle="tooltip"
                                         data-url="{{ route('admin.services.update',$item->id)}}"
                                         data-name="{{ $item->name }}"
@@ -209,7 +195,7 @@
                 <form action="" method="POST">
                     @csrf
                     <input type="hidden" name="code">
-                    <div class="modal-body">
+                    <div class="modal-body" style="text-align: center">
                         <p>@lang('Are you sure to change status?') <span
                                 class="font-weight-bold method-name"></span> @lang('method')?</p>
                             <select name="status">
@@ -228,7 +214,7 @@
                                         <span    >@lang('sale')</span>
                                     </option>
                                     <option  style="background: #ffffff">
-                                        <span    >@lang('rejected0  ')</span>
+                                        <span    >@lang('rejected')</span>
                                     </option>
                                 </select>
                         

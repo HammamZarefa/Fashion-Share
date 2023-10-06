@@ -25,7 +25,7 @@
 
                       <div class="col mb-3">
                         <label for="validationCustom05">@lang('Branch')</label>
-                        <select name="branchs" value="" class="form-control selectpicker"  data-live-search="true">
+                        <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true">
                           @foreach($branchs as $branch)
                              <option value="{{$branch->id}}" {{ $services->branch_id == $branch->id ? "selected" :""}}>{{ $branch->name }}</option>
                           @endforeach
@@ -53,7 +53,7 @@
                         <div class="col mb-3">
                           <label for="validationCustom03">@lang('Color')</label>
                           
-                          <select name="color" id="color" value="" class="form-control selectpicker"  data-live-search="true">
+                          <select name="color_id" id="color" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Colors as $color)
                             {{-- <p>{{ old('color') }}</p>; --}}
                                <option value="{{ $color->id }}"  {{ $services->color_id == $color->id ? "selected" :""}}>{{ $color->name }}</option>
@@ -71,7 +71,7 @@
 
                         <div class="col mb-3">
                           <label for="validationCustom04">@lang('Size')</label>
-                          <select name="size" value="" class="form-control selectpicker"  data-live-search="true">
+                          <select name="size_id" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Sizes as $size)
                                <option value="{{$size->id}}"  {{ $services->size_id == $size->id ? "selected" :""}}>{{ $size->name }}</option>
                             @endforeach
@@ -85,7 +85,7 @@
                         <div class="col mb-3">
                           <label for="validationCustom05">@lang('Condition')</label>
                           
-                          <select name="condition" value="" class="form-control selectpicker"  data-live-search="true">
+                          <select name="condition_id" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Conditions as $Condition)
                                <option value="{{$Condition->id}}" {{ $services->condition_id == $Condition->id ? "selected" :""}}>{{ $Condition->name }}</option>
                             @endforeach
@@ -100,7 +100,7 @@
 
                       <div class="col mb-3">
                           <label for="validationCustom05">@lang('Material')</label>
-                          <select name="Materials" value="" class="form-control selectpicker"  data-live-search="true">
+                          <select name="material_id" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Materials as $Material)
                                <option value="{{$Material->id}}"  {{ $services->material_id == $Material->id ? "selected" :""}}>{{ $Material->name }}</option>
                             @endforeach
@@ -113,7 +113,7 @@
   
                       <div class="col mb-3">
                           <label for="validationCustom05">@lang('Section')</label>
-                          <select name="Sections" value="" class="form-control selectpicker"  data-live-search="true">
+                          <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Sections as $Section)
                                <option value="{{$Section->id}}" {{ $services->section_id == $Section->id ? "selected" :""}}>{{ $Section->name }}</option>
                             @endforeach
@@ -129,7 +129,7 @@
   
                       <div class="col mb-3">
                         <label for="validationCustom02">@lang('Description')</label>
-                        <input type="text"   class="form-control" id="validationCustom02" placeholder="Last name" value="{{__($services->description)}}"  aria-describedby="inputGroupPrepend" required>
+                        <input type="text"  name="description" class="form-control" id="validationCustom02" placeholder="Last name" value="{{__($services->description)}}"  aria-describedby="inputGroupPrepend" required>
                         <div class="valid-feedback">
                           Looks good!
                         </div>
@@ -137,7 +137,7 @@
 
                       <div class="col mb-3">
                           <label for="validationCustom05">@lang('Location')</label>
-                          <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services->location)}}" required>
+                          <input type="text" name="location" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services->location)}}" required>
                           <div class="invalid-feedback">
                             Please provide a valid zip.
                           </div>
@@ -177,17 +177,19 @@
                     <div class="col mb-3 ">
                       <label for="validationCustom05">@lang('Status')</label>
 
-                      <select class="custom-select"  required>
-                        <option {{ old('status') == 'available' ? "@lang('Not available')" : "" }}  class="text--small badge font-weight-normal badge--success"  value="@lang('Not available')">@lang('Not available')</option>
-                        <option {{ old('name') == 'available1' ? "@lang('Available')" : "" }}  class="text--small badge font-weight-normal badge--warning"  value="@lang('Available')">@lang('Available')</option>
-                        <option {{ old('name') == 'available3' ? "selected" : "" }}  class="text--small badge font-weight-normal badge--primary"  value="2">{{$services->status}}</option>
-                        <option {{ old('name') == 'available44' ? "selected" : "" }}  class="text--small badge font-weight-normal badge--dark"     value="3">{{$services->status}}</option>
+                      <select class="custom-select" name="status"  required>
+                        <option {{ old('status') == 'available' ? "@lang('Not available')" : "" }}   value="'not_available">@lang('Not available')</option>
+                        <option {{ old('status') == 'not_available' ? "@lang('Available')" : "" }}    value="available">@lang('Available')</option>
+                        <option {{ old('status') == 'sale' ? "selected" : "" }}    value="sale">@lang('Sale')</option>
+                        <option {{ old('status') == 'rent' ? "selected" : "" }}       value="rent">@lang('Rent')</option>
                       </select>
                       <div class="invalid-feedback">Example invalid custom select feedback</div>
 
 
                     </div>
 
+                 
+                    </div>
                     <div class="mb-3">
                       <input 
                           type="file" 
@@ -200,7 +202,6 @@
                           <span class="text-danger">{{ $message }}</span>
                       @enderror
                   </div>
-                    </div>
                     <button class="btn btn-primary" type="submit">Submit form</button>
                   </form>
              
@@ -324,7 +325,7 @@ data-mdb-ride="carousel"
               class="card-img-top"
               alt="Waterfall" />
             <div class="card-body">             
-              <a href="#!" class="btn btn-primary" style="margin: 0px">Button</a>
+              <a href="#!" class="btn btn-danger" style="margin: 0px">Delete</a>
             </div>
           </div>
         </div>

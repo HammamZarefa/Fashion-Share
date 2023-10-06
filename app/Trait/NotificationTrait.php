@@ -35,7 +35,7 @@ trait NotificationTrait
                     'to' => $token->token,
                     'notification' => [
                         'title' => $title,
-                        'body' => ($token->lang == 'ar')?$message_ar : $message_en,
+                        'body' => (app()->getLocale() == 'ar')?$message_ar : $message_en,
                     ],
                 ],
             ]);

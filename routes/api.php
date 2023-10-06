@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\FcmTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -47,6 +48,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('user/forget', [AuthController::class, 'sendResetLinkEmail']);
     Route::post('products', [ProductController::class,'create']);
     Route::put('products/{product}', [ProductController::class,'update']);
+
+    Route::post('store_FcmToken',[FcmTokenController::class,'store_FcmToken']);
 });
 
 Route::post('login', LoginController::class);
