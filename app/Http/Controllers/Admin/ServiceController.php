@@ -13,6 +13,7 @@ use App\Models\Color;
 use App\Models\Condition;
 use App\Models\GeneralSetting;
 use App\Models\Image;
+use App\Models\InvoicesProdect;
 use App\Models\Material;
 use App\Models\Product;
 use App\Models\Section;
@@ -29,6 +30,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\Types\Null_;
+
+use function PHPUnit\Framework\isNull;
 
 class ServiceController extends Controller
 {
@@ -68,7 +71,9 @@ class ServiceController extends Controller
             'condition_id' => 'required|exists:conditions,id',
             'branch_id' => 'required|exists:branches,id',
             'is_for_sale' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'images'=>'array',
+            'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
+            'location'  => 'string',
         ]);
         if ($validator->fails()) {
             $notify[] = ['error', 'validation'];
@@ -84,6 +89,7 @@ class ServiceController extends Controller
             'section_id' => $request->input('section_id'),
             'size_id' => $request->input('size_id'),
             'condition_id' => $request->input('condition_id'),
+            'location'=>$request->input('location'),
             'user_id' => auth()->id(),
             'branch_id' => $request->input('branch_id'),
             'status' => 'pending',
@@ -92,9 +98,9 @@ class ServiceController extends Controller
         $product->categories()->attach($request->category_id);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
+
                 $filename = time() . '_' . $image->getClientOriginalName();
                 $image->storeAs('public/images', $filename);
-
                 // Create the image record in the database
                 $product->images()->create([
                     'path' => $filename,
@@ -103,7 +109,11 @@ class ServiceController extends Controller
             }
         }
    
-
+        if(isset($request['status'])){
+            if(($request['status'] == 'sale') || $request['status']=='rent'){
+                $this->insertInInvoices($product);
+            }
+        }
         $notify[] = ['success', 'Service added!'];
         return back()->withNotify($notify);
     }
@@ -130,7 +140,6 @@ class ServiceController extends Controller
         if ($validator->fails()) {
             // return back()->withNotify(['error' => $validator->messages()]);
         }
-
         $product->update($request->only([
             'name',
             'description',
@@ -142,6 +151,7 @@ class ServiceController extends Controller
             'size_id',
             'condition_id',
             'branch_id',
+            'status',
             'is_for_sale'
         ]));
 
@@ -160,6 +170,7 @@ class ServiceController extends Controller
             }
         }
         if(isset($request['status'])){
+            if(!isNull($product->user)){
             if($request['status'] = "available"){
                 $this->send_event_notification($product->user , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
             if($request['status'] = "not_available"){
@@ -170,7 +181,13 @@ class ServiceController extends Controller
                  $this->send_event_notification( $product->user, '',' تم تغيير حالة منتجك الى أجار ' , 'Your product status has been changed to Rent'  );}
             if($request['status'] = "rejected"){ 
                 $this->send_event_notification( $product->user,'', ' تم رفض منتجك' , 'Your product has been rejected' );}
-
+            }
+        }
+        
+        if(isset($request['status'])){
+            if(($request['status'] == 'sale') || $request['status']=='rent'){
+                $this->insertInInvoices($product);
+            }
         }
         $notify[] = ['success', 'product updated!'];
         return back()->withNotify($notify);
@@ -280,7 +297,6 @@ class ServiceController extends Controller
         $Categories= Category::all();
 
         $services = Product::findOrFail($service);
-
         return view('admin.products.edit', 
         compact('page_title', 'services', 'Categories','empty_message', 'categories' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
 
@@ -310,5 +326,14 @@ class ServiceController extends Controller
         File::delete(public_path('upload/bio.png'));
         }
         $image->delete();
+    }
+
+    public function insertInInvoices($product){
+        InvoicesProdect::create([
+            'product_id'=>$product->id,
+            'price'=>$product->price,
+            'status'=>$product->status,
+            'date_of_process'=>now(),
+        ]);
     }
 }
