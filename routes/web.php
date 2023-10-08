@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\InvoicesController;
 use App\Http\Controllers\Admin\NewsController;
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +101,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('branch/update/{id}', 'BranchController@update')->name('branch.update');
         Route::post('branch/store', 'BranchController@store')->name('branch.store');
         Route::delete('branch/delete/{id}', 'BranchController@delete')->name('branch.delete');
+
+        //Invoices
+        Route::get('Invoices/{id?}',InvoicesController::class)->name('invoices');
 
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');
