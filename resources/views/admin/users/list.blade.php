@@ -8,17 +8,24 @@
                         <table class="table table--light style--two">
                             <thead>
                             <tr>
-                                <th scope="col">@lang('User')</th>
-                                <th scope="col">@lang('Username')</th>
-                                <th scope="col">@lang('Email')</th>
-                                <th scope="col">@lang('Phone')</th>
+                                <th scope="col">@lang('ID')</th>
+                                <th scope="col">@lang('email')</th>
+                                <th scope="col">@lang('phone')</th>
+                                <th scope="col">@lang('image')</th>
+
+                                {{-- <th scope="col">@lang('Phone')</th>
                                 <th scope="col">@lang('Joined At')</th>
-                                <th scope="col">@lang('Action')</th>
+                                <th scope="col">@lang('Action')</th> --}}
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($users as $user)
                             <tr>
+                              
+                                {{-- <td data-label="@lang('Username')"><a href="{{ route('admin.users.detail', $user->id) }}">{{ $user->username }}</a></td> --}}
+                                <td data-label="@lang('ID')">{{ $user->id }}</td>
+                                <td data-label="@lang('Email')">{{ $user->email }}</td>
+                                <td data-label="@lang('Phone')">{{ $user->phone }}</td>
                                 <td data-label="@lang('User')">
                                     <div class="user">
                                         <div class="thumb">
@@ -27,15 +34,12 @@
                                         <span class="name">{{$user->fullname}}</span>
                                     </div>
                                 </td>
-                                <td data-label="@lang('Username')"><a href="{{ route('admin.users.detail', $user->id) }}">{{ $user->username }}</a></td>
-                                <td data-label="@lang('Email')">{{ $user->email }}</td>
-                                <td data-label="@lang('Phone')">{{ $user->mobile }}</td>
-                                <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td>
-                                <td data-label="@lang('Action')">
-                                    <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">
-                                        <i class="las la-desktop text--shadow"></i>
-                                    </a>
-                                </td>
+                                {{-- <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td> --}}
+                                {{-- <td data-label="@lang('Action')"> --}}
+                                    {{-- <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')"> --}}
+                                        {{-- <i class="las la-desktop text--shadow"></i> --}}
+                                    {{-- </a> --}}
+                                {{-- </td> --}}
                             </tr>
                             @empty
                                 <tr>
@@ -59,7 +63,7 @@
 
 
 
-@push('breadcrumb-plugins')
+{{-- @push('breadcrumb-plugins')
     <form action="{{ route('admin.users.search', $scope ?? str_replace('admin.users.', '', request()->route()->getName())) }}" method="GET" class="form-inline float-sm-right bg--white">
         <div class="input-group has_append">
             <input type="text" name="search" class="form-control" placeholder="@lang('Username or email')" value="{{ $search ?? '' }}">
@@ -68,4 +72,4 @@
             </div>
         </div>
     </form>
-@endpush
+@endpush --}}
