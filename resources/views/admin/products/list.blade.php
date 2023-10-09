@@ -35,14 +35,14 @@
                             <tbody>
                             @forelse($services as $item)
                                 <tr>
-                                    <td>{{@$item->id}}</td>
+                                    <td>{{$item->id}}</td>
                                     <td>
                                         <span class="name">{{__($item->name)}}</span>
                                     </td>
                                     <td data-label="@lang('User')">
                                         <span class="name">{{__(@$item->user->email)}}</span>
                                     </td>
-                                    <td>{{@$item->categories[0]->name}}</td>
+                                    <td>{{$item->categories[0]->name}}</td>
                                     <td>{{$item->price}}</td>
                                     <td>{{$item->branch->name}}</td>
                                     <td>{{$item->is_for_sale ? 'Sale' : 'Rent'}}</td>
@@ -105,6 +105,16 @@
                                         data-name="{{ $item->name }}"
                                         data-field="{{$item->field_name}}">
                                         <i class="la la-eye"></i>
+                                    </a>
+
+                                    <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
+                                        data-original-title="$" data-toggle="tooltip"
+                                        data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
+                                        data-is_for_sale="{{ $item->is_for_sale }}">
+                                        <i class="la la-usd"></i>
+                                     </a>
+
+
                                     </td>
                                 </tr>
                             @empty
@@ -124,23 +134,26 @@
 
 
     {{-- ACTIVATE METHOD MODAL --}}
-    <div id="activateModal" class="modal fade" tabindex="-1" role="dialog">
+    <div id="SaleOrRent" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">@lang('Payment Method Activation Confirmation')</h5>
+                    <h5 class="modal-title">
+                            @lang('Payment Method Activation Confirmation')
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="" method="POST">
+                <form action="" method="GET">
                     @csrf
                     <input type="hidden" name="code">
                     <div class="modal-body">
-                        <p>@lang('Are you sure to activate') <span
-                                class="font-weight-bold method-name"></span> @lang('method')?</p>
+                        <p>@lang('Are you sure to Sale/Rent') <span
+                                class="font-weight-bold method-name"></span> @lang('Product')?
+                        </p>
                         
-                                
+                       
 
                     </div>
                     <div class="modal-footer">
@@ -398,10 +411,18 @@
         $(function () {
             "use strict";
 
-            $('.activateBtn').on('click', function () {
-                var modal = $('#activateModal');
-                modal.find('.method-name').text($(this).data('name'));
-                modal.find('input[name=code]').val($(this).data('code'));
+            $('.SaleOrRentBtn').on('click', function () {
+                // var modal = $('#SaleOrRent');
+                // var url = $(this).data('url');
+                // modal.find('.method-name').text($(this).data('name'));
+
+                var modal = $('#SaleOrRent');
+                var url = $(this).data('url');
+                var name = $(this).data('name');
+                var is_for_sale = $(this).data('is_for_sale');
+                modal.find('form').attr('action', url);
+                modal.find('input[name=name]').val(name);
+                modal.modal('show');
             });
             $('.deactivateBtn').on('click', function () {
                 var modal = $('#deactivateModal');

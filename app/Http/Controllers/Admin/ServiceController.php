@@ -53,7 +53,7 @@ class ServiceController extends Controller
             $services = Product::
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
            ->where('branch_id',$branch)->latest()->paginate(getPaginate());
-           }
+           }     
         return view('admin.products.list', compact('page_title', 'services', 'empty_message', 'categories'));
     }
 
@@ -336,4 +336,18 @@ class ServiceController extends Controller
             'date_of_process'=>now(),
         ]);
     }
+
+    public function SaleOrRent($id){
+        $is_for_sale = Product::find($id)->is_for_sale;
+        if($is_for_sale){
+            Product::find($id)->update(['status'=>'sale']);
+            $this->insertInInvoices(Product::find($id));
+        }
+        else{
+            Product::find($id)->update(['status'=>'rent']);
+            $this->insertInInvoices(Product::find($id));
+        }
+
+        $notify[] = ['success', 'Status updated!'];
+        return back()->withNotify($notify);    }
 }

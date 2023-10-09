@@ -52,7 +52,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
         // Users Manager
         Route::get('users', 'ManageUsersController@allUsers')->name('users.all');
-
+      
         Route::get('users/send-email', 'ManageUsersController@showEmailAllForm')->name('users.email.all');
         Route::post('users/send-email', 'ManageUsersController@sendEmailAll')->name('users.email.send');
 
@@ -72,6 +72,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('services/edite/{id}', 'ServiceController@edite')->name('services.edite');
         Route::get('services/create', 'ServiceController@create')->name('services.create');
         Route::get('services/deleteImage', 'ServiceController@deleteImage')->name('services.deleteImage');
+        Route::get('services/SaleOrRent/{id}', 'ServiceController@SaleOrRent')->name('services.SaleOrRent');
 
         // Manage Banner
         Route::get('banner',  'BannerController@index')->name('banner');

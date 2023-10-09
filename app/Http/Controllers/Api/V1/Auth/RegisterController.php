@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -25,7 +26,7 @@ class RegisterController extends Controller
             $user = User::create([
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'password' => $request->password
+                'password' => Hash::make($request->password)
             ]);
             $device = substr($request->userAgent() ?? '', 0, 255);
             return response()->json([
