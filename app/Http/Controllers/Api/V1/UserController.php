@@ -38,8 +38,8 @@ class UserController extends Controller
             $image->storeAs('public/images', $filename);
             $user->image = $filename;
         }
-        $user->email = $request->email;
-        $user->phone = $request->phone;
+        $user->email = isset($request->email) ? $request->email: $user->email;
+        $user->phone =  isset($request->phone) ? $request->phone: $user->phone;
         $user->save();
         return UserResource::make($user);
     }
