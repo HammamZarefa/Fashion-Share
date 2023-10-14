@@ -26,7 +26,7 @@ class UserController extends Controller
     public function updateInfo(UpdateUserRequest $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['nullable', 'email'],
             'image' => ['mimes:jpeg,jpg,png,gif|max:10000'],
             'phone' => ['string']
         ]);
