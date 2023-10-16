@@ -28,7 +28,7 @@ trait NotificationTrait
             
             $response = $client->post('https://fcm.googleapis.com/fcm/send', [
                 'headers' => [
-                    'Authorization' => 'Bearer '.$server_key,
+                    'Authorization' => 'Bearer '.'AAAAs338BbU:APA91bGL2i1OOc0OxBnJT5_-0vjDRIqfNsITDs8CEpdSU8vC_Krf0oWYaK7dlGdv5i8_ZFCIY1Ic2hfsqwGUFy7mrs0RDQSXdLkxaYNZFyFCsR_d4pRarXOqF5yR4uhQSkMg-qx3uqRf',
                     'Content-Type' => 'application/json',
                 ],
                 'json' => [

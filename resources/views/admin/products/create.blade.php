@@ -70,18 +70,17 @@
 
 
                         <div class="col mb-3">
-                          <label for="validationCustom04">@lang('Size')</label>
-                          <select name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                            @foreach($Sizes as $size)
-                               <option value="{{$size->id}}"  >{{ $size->name }}</option>
-                            @endforeach
-                         </select>
-
-                          {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
+                          <label for="validationCustom05">@lang('Sale?')</label>
+                          <select class="custom-select"  name="is_for_sale" required>
+                            <option  class="text--small badge font-weight-normal badge--success"  value="Sale">@lang('Sale')</option>
+                            <option  class="text--small badge font-weight-normal badge--warning"  value="Rent">@lang('Rent')</option>
+                          </select>
                           <div class="invalid-feedback">
-                            Please provide a valid Size.
+                            Please provide a valid Sale.
                           </div>
+
                         </div>
+                        
                         <div class="col mb-3">
                           <label for="validationCustom05">@lang('Condition')</label>
                           
@@ -112,16 +111,17 @@
                         </div>
   
                       <div class="col mb-3">
-                          <label for="validationCustom05">@lang('Section')</label>
-                          <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                            @foreach($Sections as $Section)
-                               <option value="{{$Section->id}}" >{{ $Section->name }}</option>
-                            @endforeach
-                         </select>
-                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
-                          <div class="invalid-feedback">
-                            Please provide a valid Section.
-                          </div>
+                        <label for="validationCustom05">@lang('Status')</label>
+  
+                        <select class="custom-select"  required>
+                          <option   value="@lang('not_available')">@lang('Not available')</option>
+                          <option   value="@lang('available')">@lang('Available')</option>
+                          <option   value="@lang('sale')">@lang('Sale')</option>
+                          <option   value="@lang('rent')">@lang('Rent')</option>
+                          <option   value="@lang('rejected')">@lang('rejected')</option>
+                        </select>
+                        <div class="invalid-feedback">Please provide a valid select Status</div>
+                        
                         </div>
   
                             <div class="w-100"></div>
@@ -145,19 +145,25 @@
   
                      <div class="w-100"></div>
                       <div class="col mb-3 ">
-                          <label for="validationCustom05">@lang('Sale?')</label>
-                          <select class="custom-select"  name="is_for_sale" required>
-                            <option  class="text--small badge font-weight-normal badge--success"  value="Sale">@lang('Sale')</option>
-                            <option  class="text--small badge font-weight-normal badge--warning"  value="Rent">@lang('Rent')</option>
-                          </select>
+                         
+
+
+                          <label for="validationCustom04">@lang('Size')</label>
+                          <select name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                            @foreach($Sizes as $size)
+                               <option value="{{$size->id}}"  >{{ $size->name }}</option>
+                            @endforeach
+                         </select>
+
+                          {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
                           <div class="invalid-feedback">
-                            Please provide a valid Sale.
+                            Please provide a valid Size.
                           </div>
                       </div>
 
                       <div class="col mb-3">
                         <label for="validationCustom05">@lang('Categories')</label>
-                        <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
+                        <select id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
                           @foreach($Categories as $Categorie)
                              <option value="{{$Categorie->id}}" >{{ $Categorie->name }}</option>
                           @endforeach
@@ -170,16 +176,17 @@
 
                    
                       <div class="col mb-3 ">
-                        <label for="validationCustom05">@lang('Status')</label>
-  
-                        <select class="custom-select"  required>
-                          <option   value="@lang('not_available')">@lang('Not available')</option>
-                          <option   value="@lang('available')">@lang('Available')</option>
-                          <option   value="@lang('sale')">@lang('Sale')</option>
-                          <option   value="@lang('rent')">@lang('Rent')</option>
-                          <option   value="@lang('rejected')">@lang('rejected')</option>
-                        </select>
-                        <div class="invalid-feedback">Please provide a valid select Status</div>
+                      
+                        <label for="validationCustom05">@lang('Section')</label>
+                        <select id="sections" name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                          @foreach($Sections as $Section)
+                             <option value="{{$Section->id}}" >{{ $Section->name }}</option>
+                          @endforeach
+                       </select>
+                        {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                        <div class="invalid-feedback">
+                          Please provide a valid Section.
+                        </div>
                         <div class="w-100"></div>
 
 
@@ -210,6 +217,16 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+
+
+
+  </script>
+
+  
 @endsection
 
 
+  

@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -33,10 +35,16 @@ class UserController extends Controller
 
         $user = auth()->user();
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = time() . '-' . $image->getClientOriginalName();
-            $image->storeAs('public/images', $filename);
-            $user->image = $filename;
+            $file = $request->file('image');
+            $fileName = $file->getClientOriginalName();
+
+            // Store the file in the desired disk
+            Storage::disk('public')->putFileAs('images', $file, $fileName);
+
+            // Retrieve the URL to access the uploaded file
+            $image = Storage::disk('public')->url('images/' . $fileName);
+            Log::debug($image);
+            $user->image = $image;
         }
         $user->email = isset($request->email) ? $request->email: $user->email;
         $user->phone =  isset($request->phone) ? $request->phone: $user->phone;

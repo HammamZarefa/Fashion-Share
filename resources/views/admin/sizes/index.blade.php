@@ -2,44 +2,42 @@
 @section('panel')
     <div class="row">
         <div class="col-lg-12">
-            <div >
-
+            <div>
                 <div class="card-body col-4">
        
 
                     <select class="custom-select" name="branch" onchange="window.location.href=this.options[this.selectedIndex].value;">
                         <option disabled selected>Select Section</option>
-                        @foreach($sections as $section)
-                        <option value=" {{ route('admin.categories.search',$section->id) }}">
+                        @foreach($categories as $category)
+                        <option value=" {{ route('admin.sizes.search',$category->id) }}">
                             
-                            {{ $section->name }}
+                            {{ $category->name }}
                         </option>
                      @endforeach
                     </select>
                 
                 </div>
-
                 <div class="card-body p-0">
                     <div class="table-responsive--sm table-responsive">
                         <table class="table table--light tabstyle--two custom-data-table">
                             <thead>
                             <tr>
                                 <th scope="col">@lang('Name')</th>
-                                <th scope="col">@lang('Section')</th>
+                                <th scope="col">@lang('Category')</th>
                                 <th scope="col">@lang('Image')</th>
                                 <th scope="col">@lang('Actions')</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse ($categories as $item)
+                            @forelse ($sizes as $item)
                                 <tr>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
-                                    <td data-label="@lang('Name')">{{$item->section->name ?? ''}}</td>
+                                    <td data-label="@lang('Name')">{{__($item->category->name ?? '')}}</td>
                                     <td data-label="@lang('Image')"><img src="{{ getImage(imagePath()['category']['path'].'/'. $item->image,imagePath()['category']['size'])}}"></td>
                                     <td data-label="@lang('Action')">
                                         <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
-                                           data-url="{{ route('admin.categories.update', $item->id)}}" data-name="{{ $item->name }}"
+                                           data-url="{{ route('admin.sizes.update', $item->id)}}" data-name="{{ $item->name }}"
                                            data-field="{{$item->field_name}}" >
                                             <i class="la la-edit"></i>
                                         </a>
@@ -70,7 +68,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
                 </div>
-                <form class="form-horizontal" method="post" action="{{ route('admin.categories.store')}}" enctype="multipart/form-data">
+                <form class="form-horizontal" method="post" action="{{ route('admin.sizes.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-row form-group">
@@ -85,19 +83,16 @@
                             <label class="font-weight-bold ">@lang('Section') <span
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
+                                <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
                                     <option selected disabled>Select Section</option>
-                                    @foreach($sections as $section)
-                                       <option value="{{$section->id}}" >{{ $section->name }}</option>
+                                    @foreach($categories as $category)
+                                       <option value="{{$category->id}}" >{{ $category->name }}</option>
                                     @endforeach
                                  </select>                            </div>
                         </div>
 
 
-                        <div class="avatar-edit">
-                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg">
-                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
-                        </div>
+                       
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -134,22 +129,19 @@
                             <label class="font-weight-bold ">@lang('Name') <span
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
+                                <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
                                     <option selected disabled>Select Section</option>
+                                    @if(!$sizes->isEmpty())
 
-                                    @if(!$categories->isEmpty())
-                                    @foreach($sections as $section)
-                                       <option value="{{$section->id}}" {{ $item->section_id == $section->id ? "selected" :""}}>{{ $section->name }}</option>
+                                    @foreach($categories as $category)
+                                       <option value="{{$category->id}}" {{ $item->section_id == $category->id ? "selected" :""}}>{{ $category->name }}</option>
                                     @endforeach
                                     @endif
                                  </select>                            </div>
                         </div>
 
 
-                        <div class="avatar-edit">
-                            <input type="file" class="profilePicUpload" name="image" id="profilePicUpload1" accept=".png, .jpg, .jpeg">
-                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
-                        </div>
+                        
                         <div class="modal-footer">
                             <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
                             <button type="submit" class="btn btn--primary" id="btn-save"
