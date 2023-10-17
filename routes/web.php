@@ -36,6 +36,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('admin')->group(function () {
+
         Route::get('model/{model}','ModelController@index')->name('model.index');
         Route::post('model/{model}','ModelController@store')->name('model.store');
         Route::post('model/{model}/{id}','ModelController@update')->name('model.update');
@@ -53,7 +54,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
         // Users Manager
         Route::get('users', 'ManageUsersController@allUsers')->name('users.all');
-      
+
         Route::get('users/send-email', 'ManageUsersController@showEmailAllForm')->name('users.email.all');
         Route::post('users/send-email', 'ManageUsersController@sendEmailAll')->name('users.email.send');
 
@@ -114,11 +115,15 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         // Logo-Icon
         Route::get('setting/logo-icon', 'GeneralSettingController@logoIcon')->name('setting.logo_icon');
         Route::post('setting/logo-icon', 'GeneralSettingController@logoIconUpdate')->name('setting.logo_icon');
-    
+
         Route::get('sizes',[SizesController::class,'index'])->name('size.index');
         Route::post('sizes',[SizesController::class,'store'])->name('sizes.store');
         Route::post('sizes/{id}',[SizesController::class,'update'])->name('sizes.update');
         Route::get('sizeSearch/{id}',[SizesController::class,'search'])->name('sizes.search');
+        Route::get('/migrate', function(){
+            \Artisan::call('migrate');
+            dd('migrated!');
+        });
 
     });
 });

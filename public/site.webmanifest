@@ -1,0 +1,12 @@
+{
+  "short_name": "الشفيع",
+  "name": "مشروع الشفيع لتحفيظ القرآن الكريم",
+  "icons": [{
+    "src": "icons/icon.png",
+    "type": "image/png",
+    "sizes": "192x192"
+  }],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#646464",
+  "theme_color": "#646464"
+}
