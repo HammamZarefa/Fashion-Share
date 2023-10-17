@@ -17,4 +17,8 @@ class Section extends Model
     {
         $this->hasMany(Product::class);
     }
+
+    public function category(){
+        return $this->hasMany(Category::class,'section_id');
+    }
 }

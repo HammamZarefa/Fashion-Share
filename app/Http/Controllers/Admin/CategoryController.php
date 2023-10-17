@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Image;
 
@@ -13,8 +14,9 @@ class CategoryController extends Controller
     {
         $page_title = 'Categories';
         $empty_message = 'No Result Found';
-        $categories = Category::latest()->get();
-        return view('admin.categories.index', compact('page_title', 'categories', 'empty_message'));
+        $sections = Section::all();
+        $categories = Category::with('section')->latest()->get();
+        return view('admin.categories.index', compact('page_title', 'categories','sections', 'empty_message'));
     }
 
     public function store()
@@ -22,11 +24,14 @@ class CategoryController extends Controller
 
         \request()->validate([
             'name' => 'required|string|max:70|unique:categories,name',
+            'section_id'=>'required|exists:sections,id',
             'image' => '',
         ]);
         $request = \request();
         $category = new Category();
         $category->name = $request->name;
+        $category->section_id = $request->section_id;
+
 
         $image = $request->file('image');
             $path = imagePath()['category']['path'];
@@ -43,6 +48,7 @@ class CategoryController extends Controller
                 $category->image=$filename;
         }
             $category->save();
+
             $notify[] = ['success', 'Category added!'];
             return back()->withNotify($notify);
 
@@ -51,10 +57,14 @@ class CategoryController extends Controller
     public function update($id,Request $request)
     {
         \request()->validate([
-            'name' => 'required|string|max:70|unique:categories,name,' . $id
+            'name' => 'required|string|max:70|unique:categories,name,' . $id,
+            'section_id'=>'nullable|exists:sections,id',
+
         ]);
         $category = Category::findOrFail($id);
         $category->name = \request()->name;
+        $category->section_id = request()->section_id;
+        
         $image = $request->file('image');
         $path = 'assets/images/category/';
         $size = imagePath()['category']['size'];
@@ -83,4 +93,13 @@ class CategoryController extends Controller
         $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);
     }
+
+    public function search($id){
+        $page_title = 'Categories';
+        $empty_message = 'No Result Found';
+        $sections = Section::all();
+        $categories = Category::with('section')->where('section_id',$id)->latest()->get();
+        
+        return view('admin.categories.index', compact('page_title', 'categories','sections', 'empty_message'));
+      }
 }

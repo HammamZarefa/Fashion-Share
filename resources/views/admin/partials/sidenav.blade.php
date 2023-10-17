@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.size*')}}">
-                    <a href="{{route('admin.model.index','size')}}" class="nav-link ">
+                    <a href="{{route('admin.size.index')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>
                         <span class="menu-title">@lang('Size')</span>
                     </a>
