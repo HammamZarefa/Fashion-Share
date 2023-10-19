@@ -73,7 +73,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('services/search', 'ServiceController@search')->name('services.search');
         Route::get('services/edite/{id}', 'ServiceController@edite')->name('services.edite');
         Route::get('services/create', 'ServiceController@create')->name('services.create');
-        Route::get('services/deleteImage', 'ServiceController@deleteImage')->name('services.deleteImage');
+        Route::get('services/deleteImage/{id}', 'ServiceController@deleteImage')->name('services.deleteImage');
         Route::get('services/SaleOrRent/{id}', 'ServiceController@SaleOrRent')->name('services.SaleOrRent');
 
         // Manage Banner

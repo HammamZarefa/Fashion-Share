@@ -133,9 +133,9 @@
                         <div class="valid-feedback">
                           Looks good!
                         </div>
-                      </div>
+                       </div>
 
-                      <div class="col mb-3">
+                        <div class="col mb-3">
                           <label for="validationCustom05">@lang('Location')</label>
                           <textarea rows="2" type="text" name="location" class="form-control" id="validationCustom05" placeholder="@lang('Location')" value="" required></textarea>
                           <div class="invalid-feedback">
@@ -144,30 +144,39 @@
                       </div>
   
                      <div class="w-100"></div>
-                      <div class="col mb-3 ">
-                         
 
 
-                          <label for="validationCustom04">@lang('Size')</label>
-                          <select name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                            @foreach($Sizes as $size)
-                               <option value="{{$size->id}}"  >{{ $size->name }}</option>
-                            @endforeach
-                         </select>
-
-                          {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
-                          <div class="invalid-feedback">
-                            Please provide a valid Size.
-                          </div>
+                    <div class="col mb-3 ">
+                      
+                      <label for="validationCustom05">@lang('Section')</label>
+                      <select   onchange="addRowCategory(this.value)" id="sections"  name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                        <option>select section</option>
+                        @foreach($Sections as $Section)
+                           <option value="{{$Section->id}}" >{{ $Section->name }}</option>
+                        @endforeach
+                      </select>
+                      {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                      <div class="invalid-feedback">
+                        Please provide a valid Section.
                       </div>
+                      <div class="w-100"></div>
 
+
+                  
+                    </div>
+
+        
                       <div class="col mb-3">
                         <label for="validationCustom05">@lang('Categories')</label>
-                        <select id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                          @foreach($Categories as $Categorie)
+                        <select disabled onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
+                          <option>select category</option>
+                          {{-- @foreach($Categories as $Categorie)
                              <option value="{{$Categorie->id}}" >{{ $Categorie->name }}</option>
-                          @endforeach
+                          @endforeach --}}
                        </select>
+                       <div id="sect" style="font-size: 14px;color:red">
+                        Please select section before.
+                        </div>
                         {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
                         <div class="invalid-feedback">
                           Please provide a valid Categories.
@@ -176,23 +185,23 @@
 
                    
                       <div class="col mb-3 ">
-                      
-                        <label for="validationCustom05">@lang('Section')</label>
-                        <select id="sections" name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                          @foreach($Sections as $Section)
-                             <option value="{{$Section->id}}" >{{ $Section->name }}</option>
-                          @endforeach
+                        <label for="validationCustom04">@lang('Size')</label>
+                        <select disabled  id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                          <option>select size</option>
+
+                          {{-- @foreach($Sizes as $size)
+                             <option value="{{$size->id}}"  >{{ $size->name }}</option>
+                          @endforeach --}}
                        </select>
-                        {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                       <div id="categ" style="font-size: 14px;color:red">
+                        Please select category before.
+                       </div>
+                        {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
                         <div class="invalid-feedback">
-                          Please provide a valid Section.
+                          Please provide a valid Size.
                         </div>
-                        <div class="w-100"></div>
-
-
-                    
-                    </div>
-
+                   
+                      </div>
                     
                     </div>
                     <div class=" mb-3">
@@ -221,7 +230,68 @@
 
     <script>
 
+function addRowCategory(ele) 
+{
+      var name= ele;
+      Sections = {!! json_encode($Sections) !!};
+      category =  Sections[name-1].category;
+      var x = document.getElementById("categories");
+      document.getElementById("sect").style.visibility = 'hidden';
+      document.getElementById("categories").disabled=false;
+      
+      removeOptions(x);
+      var option = document.createElement("option");
+      option.innerHTML = "select category";
+      option.disabled=true;
 
+      var y = document.getElementById("sizes");
+            removeOptions(y);
+            var option = document.createElement("option");
+            option.innerHTML = "select size";
+            option.disabled=true;
+            y.add(option);
+            
+      x.add(option);
+
+      category.forEach(function(item, index) {
+      var option = document.createElement("option");
+      option.value = item.id;
+      option.innerHTML = item.name;
+      x.add(option);
+      }
+    );
+  }
+
+  function removeOptions(selectElement) {
+   var i, L = selectElement.options.length - 1;
+   for(i = L; i >= 0; i--) {
+      selectElement.remove(i);
+   }
+}
+
+function addRowSizes(ele){
+      var name= ele;
+      Categories = {!! json_encode($Categories) !!};
+      size =  Categories[name-1].sizes;
+      var x = document.getElementById("sizes");
+      removeOptions(document.getElementById('sizes'));
+      document.getElementById("categ").style.visibility = 'hidden';
+      document.getElementById("sizes").disabled=false;      
+  
+      var option = document.createElement("option");
+      option.innerHTML = "select size";
+      option.disabled=true;
+      x.add(option);
+
+
+      size.forEach(function(item, index) {
+        var option = document.createElement("option");
+        option.value = item.id;
+        option.innerHTML = item.name;
+        x.add(option);
+        }
+      );
+}
 
   </script>
 
