@@ -126,7 +126,7 @@ class ProductController extends Controller
 
                 // Create the image record in the database
                 $product->images()->create([
-                    'path' => $filename,
+                    'path' => 'images/'.$filename,
                     // Add other image fields as needed
                 ]);
             }
@@ -178,7 +178,7 @@ class ProductController extends Controller
 
                 // Create or update the image record in the database
                 $product->images()->create([
-                    'path' => $filename,
+                    'path' => 'images/'.$filename,
                     // Add other image fields as needed
                 ]);
             }

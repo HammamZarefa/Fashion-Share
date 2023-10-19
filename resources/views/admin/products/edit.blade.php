@@ -68,20 +68,19 @@
 
                             <div class="w-100"></div>
 
-
-                        <div class="col mb-3">
-                          <label for="validationCustom04">@lang('Size')</label>
-                          <select name="size_id" value="" class="form-control selectpicker"  data-live-search="true">
-                            @foreach($Sizes as $size)
-                               <option value="{{$size->id}}"  {{ $services->size_id == $size->id ? "selected" :""}}>{{ $size->name }}</option>
-                            @endforeach
-                         </select>
-
-                          {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="{{__($services[0]->size->name)}}" required> --}}
-                          <div class="invalid-feedback">
-                            Please provide a valid Size.
+                            <div class="col mb-3 ">
+                              <label for="validationCustom05">@lang('Sale?')</label>
+                              {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services->is_for_sale ? 'Sale' : 'Rent')}}" required> --}}
+                              <select class="custom-select"  name="is_for_sale" required>
+                                <option  class="text--small badge font-weight-normal badge--success"  value="Sale">@lang('Sale')</option>
+                                <option  class="text--small badge font-weight-normal badge--warning"  value="Rent">@lang('Rent')</option>
+                              </select>
+                              <div class="invalid-feedback">
+                                Please provide a valid Sale.
+                              </div>
                           </div>
-                        </div>
+
+                       
                         <div class="col mb-3">
                           <label for="validationCustom05">@lang('Condition')</label>
                           
@@ -110,19 +109,20 @@
                             Please provide a valid Material.
                           </div>
                         </div>
-  
-                      <div class="col mb-3">
-                          <label for="validationCustom05">@lang('Section')</label>
-                          <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
-                            @foreach($Sections as $Section)
-                               <option value="{{$Section->id}}" {{ $services->section_id == $Section->id ? "selected" :""}}>{{ $Section->name }}</option>
-                            @endforeach
-                         </select>
-                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
-                          <div class="invalid-feedback">
-                            Please provide a valid Section.
-                          </div>
+                        
+                        <div class="col mb-3 ">
+                          <label for="validationCustom05">@lang('Status')</label>
+    
+                          <select class="custom-select" name="status"  required>
+                            <option {{ old('status') == 'available' ? "@lang('Not available')" : "" }}   value="'not_available">@lang('Not available')</option>
+                            <option {{ old('status') == 'not_available' ? "@lang('Available')" : "" }}    value="available">@lang('Available')</option>
+                            <option {{ old('status') == 'sale' ? "selected" : "" }}    value="sale">@lang('Sale')</option>
+                            <option {{ old('status') == 'rent' ? "selected" : "" }}       value="rent">@lang('Rent')</option>
+                          </select>
+                          <div class="invalid-feedback">Please provide a valid Status</div>
                         </div>
+
+                     
   
                             <div class="w-100"></div>
                      
@@ -144,49 +144,65 @@
                       </div>
   
                   <div class="w-100"></div>
-                      <div class="col mb-3 ">
-                          <label for="validationCustom05">@lang('Sale?')</label>
-                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services->is_for_sale ? 'Sale' : 'Rent')}}" required> --}}
-                          <select class="custom-select"  name="is_for_sale" required>
-                            <option  class="text--small badge font-weight-normal badge--success"  value="Sale">@lang('Sale')</option>
-                            <option  class="text--small badge font-weight-normal badge--warning"  value="Rent">@lang('Rent')</option>
-                          </select>
-                          <div class="invalid-feedback">
-                            Please provide a valid Sale.
-                          </div>
-                      </div>
-
-              
-
-                      <div class="col mb-3">
-                        <label for="validationCustom05">@lang('Categories')</label>
-                        <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                          @foreach($Categories as $Categorie)
-                             <option value="{{$Categorie->id}}" {{ $services->category_id == $Categorie->id ? "selected" :""}}>{{ $Categorie->name }}</option>
-                          @endforeach
-                       </select>
-                        {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
-                        <div class="invalid-feedback">
-                          Please provide a valid Categories.
-                        </div>
-                      </div>
-
-                      <div class="w-100"></div>
+                     
+                  <div class="w-100"></div>
 
 
-                    <div class="col mb-3 ">
-                      <label for="validationCustom05">@lang('Status')</label>
-
-                      <select class="custom-select" name="status"  required>
-                        <option {{ old('status') == 'available' ? "@lang('Not available')" : "" }}   value="'not_available">@lang('Not available')</option>
-                        <option {{ old('status') == 'not_available' ? "@lang('Available')" : "" }}    value="available">@lang('Available')</option>
-                        <option {{ old('status') == 'sale' ? "selected" : "" }}    value="sale">@lang('Sale')</option>
-                        <option {{ old('status') == 'rent' ? "selected" : "" }}       value="rent">@lang('Rent')</option>
-                      </select>
-                      <div class="invalid-feedback">Please provide a valid Status</div>
-
-
+                  <div class="col mb-3 ">
+                    
+                    <label for="validationCustom05">@lang('Section')</label>
+                    <select   onchange="addRowCategory(this.value)" id="sections"  name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                      <option>select section</option>
+                      @foreach($Sections as $Section)
+                      <option value="{{$Section->id}}" {{ $services->section_id == $Section->id ? "selected" :""}}>{{ $Section->name }}</option>
+                      @endforeach
+                    </select>
+                    {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                    <div class="invalid-feedback">
+                      Please provide a valid Section.
                     </div>
+                    <div class="w-100"></div>
+
+
+                
+                  </div>
+
+                    <div class="col mb-3">
+                      <label for="validationCustom05">@lang('Categories')</label>
+                      <select  onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
+                        <option>select category</option>
+                        {{-- @foreach($Sections[ {{!! $services->section_id !!}} ]->category as $Categorie)
+                          <option value="{{$Categorie->id}}" {{ $services->category_id == $Categorie->id ? "selected" :""}}>{{ $Categorie->name }}</option>
+                        @endforeach --}}
+                     </select>
+                     <div id="sect" style="font-size: 14px;color:red">
+                      Please select section before.
+                      </div>
+                      {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
+                      <div class="invalid-feedback">
+                        Please provide a valid Categories.
+                      </div>
+                    </div>
+
+                 
+                    <div class="col mb-3 ">
+                      <label for="validationCustom04">@lang('Size')</label>
+                      <select disabled  id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                        <option>select size</option>
+                        {{-- @foreach($Sizes as $size)
+                        <option value="{{$size->id}}"  {{ $services->size_id == $size->id ? "selected" :""}}>{{ $size->name }}</option>
+                        @endforeach --}}
+                     </select>
+                     <div id="categ" style="font-size: 14px;color:red">
+                      Please select category before.
+                     </div>
+                      {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
+                      <div class="invalid-feedback">
+                        Please provide a valid Size.
+                      </div>
+                 
+                    </div>  
+                   
 
                  
                     </div>
@@ -214,126 +230,35 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <div class="container">
-       
-                      <div class="row justify-content-center mt-5">
-                          <div class="col-md-11 mt-3">
-                    
-                         
-                              @if ($message = Session::get('success'))
-                  
-                                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                      <strong>{{ $message }}</strong>
-                                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                  </div>
-                  
-                                  @foreach(Session::get('images') as $image)
-                                      <img src="images/{{ $image['name'] }}" width="250px">
-                                  @endforeach
-                  
-                              @endif
-                            
-                              <form action="" method="POST" enctype="multipart/form-data" class="mt-4">
-                                  @csrf
-                        
-                                  
-                         
-                                  <div class="mb-3">
-                                      {{-- <button type="" class="btn btn-success">Upload</button> --}}
-                                  </div>
-                             
-                              </form>
-                          </div>
-                      </div>
-                  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <!-- Carousel wrapper -->
-<div
-id="carouselMultiItemExample"
-class="carousel slide carousel-dark text-center"
-data-mdb-ride="carousel"
->
-<!-- Controls -->
-{{-- <div class="d-flex justify-content-center mb-4">
-  <button
-    class="carousel-control-prev position-relative"
-    type="button"
-    data-mdb-target="#carouselMultiItemExample"
-    data-mdb-slide="prev"
-  >
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button
-    class="carousel-control-next position-relative"
-    type="button"
-    data-mdb-target="#carouselMultiItemExample"
-    data-mdb-slide="next"
-  >
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div> --}}
-<!-- Inner -->
-<div class="carousel-inner py-4">
-  <!-- Single item -->
-  <div class="carousel-item active">
-    <div class="container">
-      <div class="row">
-        @foreach($services->images as $img)
-        <div class="col-lg-4">
-          <div class="card">
-            <img
-              src="{{$img->path}}"
-              class="card-img-top"
-              alt="Waterfall" />
-            <div class="card-body">             
-              <a href="#!" class="btn btn-danger" style="margin: 0px">Delete</a>
+    <div
+    id="carouselMultiItemExample"
+    class="carousel slide carousel-dark text-center"
+    data-mdb-ride="carousel">
+
+    <!-- Inner -->
+    <div class="carousel-inner py-4">
+      <!-- Single item -->
+      <div class="carousel-item active">
+        <div class="container">
+          <div class="row">
+            @foreach($services->images as $img)
+            <div class="col-lg-4">
+              <div class="card">
+                <img
+                src="{{ asset('storage/'.$img->path) }}"
+                              class="card-img-top"
+                  alt="Waterfall" />
+                <div class="card-body">             
+                  <a href="{{url('admin/services/deleteImage/'.$img->id)}}" class="btn btn-danger" style="margin: 0px">Delete</a>
+                </div>
+              </div>
             </div>
+            @endforeach
+        
           </div>
         </div>
-        @endforeach
-     
       </div>
-    </div>
-  </div>
 
 
 </div>
@@ -381,6 +306,91 @@ data-mdb-ride="carousel"
             </div>
         </div>
     </div>
+
+    <script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      console.log({{ $services->section_id}});
+      // var cat = ({!! json_encode($Sections[($services->section_id-1)]->category) !!});
+      addRowCategory({{ $services->section_id}});
+      addRowSizes({{ $services->category_id}});
+    });
+
+
+      function addRowCategory(ele) 
+      {
+            var name= ele;
+            Sections = {!! json_encode($Sections) !!};
+            category =  Sections[name-1].category;
+            var x = document.getElementById("categories");
+
+            document.getElementById("sect").style.visibility = 'hidden';
+            document.getElementById("categories").disabled=false;
+            
+            removeOptions(x);
+            var option = document.createElement("option");
+            option.innerHTML = "select category";
+            option.disabled=true;
+            x.add(option);
+
+            var y = document.getElementById("sizes");
+            removeOptions(y);
+            var option = document.createElement("option");
+            option.innerHTML = "select size";
+            option.disabled=true;
+            y.add(option);
+      
+            var option = document.createElement("option");
+            option.innerHTML = "select category";
+            option.disabled=true;
+            category.forEach(function(item, index) {
+            var option = document.createElement("option");
+            option.value = item.id;
+            option.innerHTML = item.name;
+            x.add(option);
+            }
+          );
+        }
+      
+        function removeOptions(selectElement) {
+         var i, L = selectElement.options.length - 1;
+         for(i = L; i >= 0; i--) {
+            selectElement.remove(i);
+         }
+      }
+      
+      function addRowSizes(ele){
+        console.log(ele);
+
+            var name= ele;
+            Categories = {!! json_encode($Categories) !!};
+
+            size =  Categories[name-1].sizes;
+            var x = document.getElementById("sizes");
+            removeOptions(document.getElementById('sizes'));
+            document.getElementById("categ").style.visibility = 'hidden';
+            document.getElementById("sizes").disabled=false;      
+        
+            var option = document.createElement("option");
+            option.innerHTML = "select size";
+            option.disabled=true;
+            x.add(option);
+      
+      
+            size.forEach(function(item, index) {
+              var option = document.createElement("option");
+              option.value = item.id;
+              option.innerHTML = item.name;
+              x.add(option);
+              }
+            );
+      }
+      
+        </script>
+
+
+
 @endsection
 
 

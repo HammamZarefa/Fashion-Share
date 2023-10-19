@@ -70,24 +70,6 @@
                                             <i class="la la-pencil"></i>
                                         </a>
 
-                                        {{-- @if($item->status == 0)
-                                            <a data-toggle="modal" href="#activateModal"
-                                               class="icon-btn bg--success ml-1 activateBtn" data-code="{{$item->code}}"
-                                               data-name="{{__($item->name)}}" data-original-title="@lang('Enable')">
-                                                <i class="la la-eye"></i>
-                                            </a>
-                                        @else
-                                            <a data-toggle="modal" href="#deactivateModal"
-                                               class="icon-btn bg--danger ml-1 deactivateBtn"
-                                               data-code="{{$item->code}}" data-name="{{__($item->name)}}"
-                                               data-original-title="@lang('Disable')">
-                                                <i class="la la-eye-slash"></i>
-                                            </a>
-                                        @endif --}}
-                                     
-
-                                   
-
                                         <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"
                                         data-original-title="@lang('Status')" data-toggle="tooltip"
                                         data-url="{{ route('admin.services.update',$item->id)}}"
@@ -101,8 +83,9 @@
                                  
                                         <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
                                         data-original-title="@lang('Show')" data-toggle="tooltip"
-                                        data-url="{{ route('admin.services.update',$item->id)}}"
+                                        {{-- data-ur l="{{ route('admin.services.update',$item->id)}}" --}}
                                         data-name="{{ $item->name }}"
+                                        data-images="{{ $item->images }}"
                                         data-field="{{$item->field_name}}">
                                         <i class="la la-eye"></i>
                                     </a>
@@ -248,151 +231,152 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">@lang('Change Status Product')</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <form action="" method="GET">
-                    @csrf
-                    <input type="hidden" name="code">
+              
                     <div class="modal-body">
-                        <p>@lang('Are you sure to change status?') <span
-                                class="font-weight-bold method-name"></span> @lang('method')?</p>
                         
-                                <div class="form-row">
+                                {{--  name --}}
+                                  <div class="form-row">
                  
-
-                                <div class="col mb-2">
+                                    <div class="col mb-2">
                                     <label for="validationCustom01">@lang('Name')</label>
-                                    <input disabled type="text" id="name" name="name" class="form-control" id="validationCustom01" placeholder="First name" value="{{__($item->name)}}" required>
+                                    <div disabled type="text" id="name" name="name" class="form-control" id="validationCustom01" >{{__($item->name)}} </div>
                                    
                                   </div>
             
-            
+                                  {{-- Branch --}}
                                   <div class="col mb-3">
                                     <label for="validationCustom05">@lang('Branch')</label>
-                                    <input  disabled type="text" id="name" name="name" class="form-control" id="validationCustom01" placeholder="First name" {{ $item->branch->name }}>
+                                    <div  disabled type="text" id="name" name="name" class="form-control" id="validationCustom01">  {{$item->branch->name}}</div>
                                    
-                                </div>
-            
-                                      <div class="w-100"></div>
-            
-            
-                                  <div class="col mb-3">
-                                    <label for="validationCustomUsername">@lang('Price')</label>
-                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value="{{__($item->price)}}"  required>
-                                      
                                   </div>
             
-                                  
-                                    <div class="col mb-3">
+                        <div class="w-100"></div>
+            
+                                  {{-- Price --}}
+                                <div class="col mb-3">
+                                    <label for="validationCustomUsername">@lang('Price')</label>
+                                      <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__($item->price)}}  </div>
+                                      
+                                </div>
+            
+                                  {{-- Color --}}
+                                <div class="col mb-3">
                                       <label for="validationCustom03">@lang('Color')</label>
-                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value="{{__($item->color->name)}}"  required>
+                                      <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__($item->color->name)}} </div>
                                  
-                                    </div>
+                                </div>
             
-                                    <div class="w-100"></div>
-            
-            
-                                    <div class="col mb-3">
-                                      <label for="validationCustom04">@lang('Size')</label>
-                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value="{{__($item->size->name)}}"  required>
-                                     
-                                    </div>
+                        <div class="w-100"></div>
+                                     {{-- status --}}
+                                     <div class="col mb-3 ">
+                                        <label for="validationCustom05">@lang('Status')</label>
+                                        <div disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip">{{__($item->status)}}</div>
+      
+                                        <div class="invalid-feedback">Example invalid custom select feedback</div>
+                  
+                                       
+                                      </div>
+                               
 
+                                    {{-- Condition --}}
                                     <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Condition')</label>
-                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value="{{__( $item->condition->name)}}"  required>
+                                      <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__( $item->condition->name)}}</div>
 
                                   </div>
               
-                                      <div class="w-100"></div>
+                        <div class="w-100"></div>
             
+                                  {{-- Material --}}
                                   <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Material')</label>
-                                     <input disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value="{{__( $item->material->name)}}"  required>
+                                     <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username">{{__( $item->material->name)}}</div>
 
-                                    </div>
+                                  </div>
               
-                                  <div class="col mb-3">
-                                      <label for="validationCustom05">@lang('Section')</label>
-                                       <input disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" value="{{__($item->section->name)}}"  required>
+                                   {{-- Sale --}}
+                                   <div class="col mb-3 ">
+                                     <label for="validationCustom05">@lang('Sale?')</label>
+                                    <div disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" >{{__($item->is_for_sale)}}</div>
 
-                                    </div>
+                                  </div>
               
-                                        <div class="w-100"></div>
+                        <div class="w-100"></div>
                                  
-              
+                                  {{-- Description --}}
                                   <div class="col mb-3">
                                     <label for="validationCustom02">@lang('Description')</label>
-                                    <input disabled type="text"   class="form-control" id="validationCustom02" placeholder="Last name" value="{{__($item->description)}}"  aria-describedby="inputGroupPrepend" required>
+                                    <textarea disabled type="textarea"   class="form-control" id="validationCustom02" placeholder="Last name"  aria-describedby="inputGroupPrepend">>{{__($item->description)}} </textarea>
                                    
                                   </div>
-            
+                                  
+                                  {{-- Location --}}
                                   <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Location')</label>
-                                      <input disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($item->location)}}" required>
+                                      <textarea disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" >{{__($item->location)}}</textarea>
                                      
                                   </div>
               
-                              <div class="w-100"></div>
-                                  <div class="col mb-3 ">
-                                      <label for="validationCustom05">@lang('Sale?')</label>
-                                      <input disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($item->is_for_sale)}}" required>
-
-                                  </div>
+                                
             
                           
+                                 
             
-                                  <div class="col mb-3">
-                                    <label for="validationCustom05">@lang('Categories')</label>
-                                    <input disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($item->categories[0]->name)}}" required>
-
-                                  </div>
-            
-                                  <div class="w-100"></div>
-            
-            
-                                <div class="col mb-3 ">
-                                  <label for="validationCustom05">@lang('Status')</label>
-                                  <input disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($item->status)}}" required>
-
-                                  <div class="invalid-feedback">Example invalid custom select feedback</div>
-            
-                                  <div class="carousel-inner py-4">
-                                    <!-- Single item -->
-                                    <div class="carousel-item active">
-                                      <div class="container">
-                                        <div class="row">
-                                          @foreach($item->images as $img)
-                                          <div class="col-lg-4">
-                                            <div class="card">
-                                              <img
-                                                src="{{$img->path}}"
-                                                class="card-img-top"
-                                                alt="Waterfall" />
-    
-                                            </div>
-                                          </div>
-                                          @endforeach
-                                       
-                                        </div>
-                                      </div>
-                                    </div>
+                        <div class="w-100"></div>
                                   
-                                  
-                                  </div>
-                                </div>
-            
-                                
+                        {{-- Section --}}
+                              <div class="col mb-3">
+                                <label for="validationCustom05">@lang('Section')</label>
+                                <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username">{{__($item->section->name)}}</div>
+
                             </div>
+                                {{-- Categories --}}
+                                <div class="col mb-3">
+                                    <label for="validationCustom05">@lang('Categories')</label>
+                                    <div disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" >{{__($item->categories[0]->name)}}</div>
+
+                                </div>
+
+                                   {{-- Size --}}
+                                   <div class="col mb-3">
+                                    <label for="validationCustom04">@lang('Size')</label>
+                                    <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__($item->size->name)}} </div>
+                                   
+                                  </div>
+                                  
+                                
+                     </div>
+                     <div class="carousel-inner py-4">
+                        <!-- Single item -->
+                        <div class="carousel-item active">
+                          <div class="container">
+                            <div class="row" id="imageContainer">
+
+                               
+                              {{-- @foreach($item->images as $img)
+
+                              <div class="col-lg-4">
+                              
+                                <div class="card">
+                                  <img src="{{ asset('storage/images/'.$img->path) }}" class="card-img-top" alt="Waterfall" />
+                                </div>
+
+                              </div>
+                              @endforeach --}}
+                           
+                            </div>
+                          </div>
+                        </div>
+                      
+                      
+                      </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
-                    </div>
-                </form>
+                   
             </div>
         </div>
     </div>
@@ -422,6 +406,7 @@
                 var is_for_sale = $(this).data('is_for_sale');
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
+
                 modal.modal('show');
             });
             $('.deactivateBtn').on('click', function () {
@@ -440,16 +425,47 @@
                 var modal = $('#changeStatusProduct');
                 var url = $(this).data('url');
                 var name = $(this).data('name');
+                
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
                 modal.modal('show');
             });
             $('.showDetails').on('click', function () {
                 var modal = $('#showDetailsProducts');
-                var url = $(this).data('url');
                 var name = $(this).data('name');
-                modal.find('form').attr('action', url);
+                var images = $(this).data('images');
                 modal.find('input[name=name]').val(name);
+
+                var container = document.getElementById('imageContainer');
+                var keys = [];
+                for (var i = 0, j = images.length; i < j; i++) {
+                    
+                    var col_lg_4 = document.createElement('div');
+                    col_lg_4.className ='col-lg-4';
+
+                    var card = document.createElement('div');
+                    card.className ='card';
+                    
+                    container.appendChild(col_lg_4);    
+                    col_lg_4.appendChild(card);
+
+                    var img = document.createElement('img');
+                    img.className="card-img-top"; 
+                    img.alt="Waterfall";
+                    
+                    for (var key in images[i]) {
+                        if (images[0].hasOwnProperty(key)) 
+                        {
+                            if(key == "path")
+                            {
+                            var path= "{{asset('storage/')}}";
+                            img.src = path +'/'+ images[i][key];                                                    
+                            card.appendChild(img);
+
+                        }   
+                        }
+                    }
+                };                
                 modal.modal('show');
             });
         });

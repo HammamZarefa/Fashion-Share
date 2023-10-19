@@ -50,6 +50,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('products/{product}', [ProductController::class,'update']);
 
     Route::post('store_FcmToken',[FcmTokenController::class,'store_FcmToken']);
+
+    Route::post('getCategoryBySection',[HomeController::class,'getCategoryBySection']);
+    Route::post('getSizeByCategory',[HomeController::class,'getSizeByCategory']);
+
 });
 
 Route::post('login', LoginController::class);

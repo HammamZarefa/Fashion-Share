@@ -19,6 +19,7 @@ use App\Models\Product;
 use App\Models\Section;
 use App\Models\Service;
 use App\Models\Size;
+use App\Models\User;
 use App\Trait\NotificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -103,7 +104,7 @@ class ServiceController extends Controller
                 $image->storeAs('public/images', $filename);
                 // Create the image record in the database
                 $product->images()->create([
-                    'path' => $filename,
+                    'path' => 'images/'.$filename,
                     // Add other image fields as needed
                 ]);
             }
@@ -163,22 +164,22 @@ class ServiceController extends Controller
                 $image->storeAs('public/images', $filename);
                 // Create or update the image record in the database
                 $product->images()->create([
-                    'path' => $filename,
+                    'path' => 'images/'.$filename,
                     'imagable_id'=>$product->id
 
                 ]);
             }
         }
         if(isset($request['status'])){
-            if(!isNull($product->user)){
+            if($product->user){
             if($request['status'] = "available"){
-                $this->send_event_notification($product->user , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
+                $this->send_event_notification(User::find($product->user->id) , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
             if($request['status'] = "not_available"){
-               $this->send_event_notification( $product->users,'', ' تم الغاء تفعيل منتجك ' , 'Your product has been deactivated'  );}
+               $this->send_event_notification( User::find($product->user->id),'', ' تم الغاء تفعيل منتجك ' , 'Your product has been deactivated'  );}
             if($request['status'] = "sale"){ 
-                $this->send_event_notification( $product->user,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );}
+                $this->send_event_notification( User::find($product->user->id),'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );}
             if($request['status'] = "rent"){
-                 $this->send_event_notification( $product->user, '',' تم تغيير حالة منتجك الى أجار ' , 'Your product status has been changed to Rent'  );}
+                 $this->send_event_notification( User::find($product->user->id), '',' تم تغيير حالة منتجك الى أجار ' , 'Your product status has been changed to Rent'  );}
             if($request['status'] = "rejected"){ 
                 $this->send_event_notification( $product->user,'', ' تم رفض منتجك' , 'Your product has been rejected' );}
             }
@@ -287,18 +288,17 @@ class ServiceController extends Controller
     public function edite($service){
         $page_title = 'Services';
         $empty_message = 'No Result Found';
-        $categories = Category::find($service);
         $Colors = Color::all();
-        $Sizes = Size::all();
+        $Sizes = Size::with('category')->get();
         $Conditions = Condition::all();
         $Materials = Material::all();
-        $Sections = Section::all();
+        $Sections = Section::with('category')->get();
         $branchs = Branch::all();
-        $Categories= Category::all();
+        $Categories= Category::with(['section','sizes'])->get();
 
         $services = Product::findOrFail($service);
         return view('admin.products.edit', 
-        compact('page_title', 'services', 'Categories','empty_message', 'categories' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
+        compact('page_title', 'services', 'Categories','empty_message' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
 
     }
 
@@ -306,13 +306,12 @@ class ServiceController extends Controller
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $Colors = Color::all();
-        $Sizes = Size::all();
-        $Categories= Category::all();
+        $Sizes = Size::with('category')->get();
+        $Categories= Category::with('sizes')->get();
         $Conditions = Condition::all();
         $Materials = Material::all();
-        $Sections = Section::all();
+        $Sections = Section::with('category')->get();
         $branchs = Branch::all();
-
         $services = Product::
         with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
             ->latest()->paginate(getPaginate());
@@ -326,7 +325,8 @@ class ServiceController extends Controller
         File::delete(public_path('upload/bio.png'));
         }
         $image->delete();
-    }
+        $notify[] = ['success', 'Status updated!'];
+        return back()->withNotify($notify);    }
 
     public function insertInInvoices($product){
         InvoicesProdect::create([

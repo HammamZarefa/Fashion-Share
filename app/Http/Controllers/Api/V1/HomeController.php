@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomFieldResource;
+use App\Models\Category;
 use App\Models\Color;
+use App\Models\Size;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -42,5 +44,17 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
+    }
+
+    public function getCategoryBySection(Request $request){
+        $request->validate([ 'section_id'=>'required|exists:sections,id']);
+        $category= Category::where('section_id',$request['section_id'])->get();
+        return response()->json($category);
+    }
+
+    public function getSizeByCategory(Request $request){
+        $request->validate([ 'category_id'=>'required|exists:categories,id']);
+        $size= Size::where('category_id',$request['category_id'])->get();
+        return response()->json($size);
     }
 }

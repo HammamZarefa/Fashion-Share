@@ -49,7 +49,8 @@ class ProductResource extends JsonResource
             ],
             'location' => $this->location,
             'is_for_sale' => $this->is_for_sale,
-            'user' => $this->user->name,
+            'user' => isset($this->user->email)? $this->user->email :null,
+            // 'user' => $this->user->email ,
             'categories' => ['id' => $this->categories->first()->id, 'name' => $this->categories->first()->name],
             'images' => $this->images->map(function ($image) {
                 return [
