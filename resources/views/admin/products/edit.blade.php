@@ -2,28 +2,19 @@
 
 @section('panel')
     <div class="row justify-content-center">
-
         <div class="col-lg-8">
             <div class="card">
-               
-             
-
-
                <form enctype="multipart/form-data" name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{ route('admin.services.update', $services->id ) }}" style="margin: 20px">
-                  @csrf  
+                  @csrf
                   <div class="form-row">
-                 
-
-                        <div class="col mb-2">
+                   <div class="col mb-2">
                         <label for="validationCustom01">@lang('Name')</label>
                         <input type="text" id="name" name="name" class="form-control" id="validationCustom01" placeholder="First name" value="{{__($services->name)}}" required>
                         <div class="valid-feedback">
                           Looks good!
                         </div>
                       </div>
-
-
-                      <div class="col mb-3">
+                          <div class="col mb-3">
                         <label for="validationCustom05">@lang('Branch')</label>
                         <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true">
                           @foreach($branchs as $branch)
@@ -49,10 +40,10 @@
                         </div>
                       </div>
 
-                      
+
                         <div class="col mb-3">
                           <label for="validationCustom03">@lang('Color')</label>
-                          
+
                           <select name="color_id" id="color" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Colors as $color)
                             {{-- <p>{{ old('color') }}</p>; --}}
@@ -60,14 +51,12 @@
                             @endforeach
                          </select>
                           {{-- <input type="text" class="form-control" id="validationCustom03" placeholder="City" value="{{__($services[0]->color->name)}}" required> --}}
-                          
+
                           <div class="invalid-feedback">
                             Please provide a valid Color.
                           </div>
                         </div>
-
                             <div class="w-100"></div>
-
                             <div class="col mb-3 ">
                               <label for="validationCustom05">@lang('Sale?')</label>
                               {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services->is_for_sale ? 'Sale' : 'Rent')}}" required> --}}
@@ -80,10 +69,10 @@
                               </div>
                           </div>
 
-                       
+
                         <div class="col mb-3">
                           <label for="validationCustom05">@lang('Condition')</label>
-                          
+
                           <select name="condition_id" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Conditions as $Condition)
                                <option value="{{$Condition->id}}" {{ $services->condition_id == $Condition->id ? "selected" :""}}>{{ $Condition->name }}</option>
@@ -94,7 +83,7 @@
                             Please provide a valid Condition.
                           </div>
                       </div>
-  
+
                           <div class="w-100"></div>
 
                       <div class="col mb-3">
@@ -109,10 +98,10 @@
                             Please provide a valid Material.
                           </div>
                         </div>
-                        
+
                         <div class="col mb-3 ">
                           <label for="validationCustom05">@lang('Status')</label>
-    
+
                           <select class="custom-select" name="status"  required>
                             <option {{ old('status') == 'available' ? "@lang('Not available')" : "" }}   value="'not_available">@lang('Not available')</option>
                             <option {{ old('status') == 'not_available' ? "@lang('Available')" : "" }}    value="available">@lang('Available')</option>
@@ -122,11 +111,11 @@
                           <div class="invalid-feedback">Please provide a valid Status</div>
                         </div>
 
-                     
-  
+
+
                             <div class="w-100"></div>
-                     
-  
+
+
                       <div class="col mb-3">
                         <label for="validationCustom02">@lang('Description')</label>
                         <input type="text"  name="description" class="form-control" id="validationCustom02" placeholder="Description" value="{{__($services->description)}}"  aria-describedby="inputGroupPrepend" required>
@@ -142,14 +131,14 @@
                             Please provide a valid Location.
                           </div>
                       </div>
-  
+
                   <div class="w-100"></div>
-                     
+
                   <div class="w-100"></div>
 
 
                   <div class="col mb-3 ">
-                    
+
                     <label for="validationCustom05">@lang('Section')</label>
                     <select   onchange="addRowCategory(this.value)" id="sections"  name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
                       <option>select section</option>
@@ -164,7 +153,7 @@
                     <div class="w-100"></div>
 
 
-                
+
                   </div>
 
                     <div class="col mb-3">
@@ -184,7 +173,7 @@
                       </div>
                     </div>
 
-                 
+
                     <div class="col mb-3 ">
                       <label for="validationCustom04">@lang('Size')</label>
                       <select disabled  id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
@@ -200,28 +189,28 @@
                       <div class="invalid-feedback">
                         Please provide a valid Size.
                       </div>
-                 
-                    </div>  
-                   
 
-                 
+                    </div>
+
+
+
                     </div>
                     <div class="mb-3">
-                      <input 
-                          type="file" 
-                          name="images[]" 
+                      <input
+                          type="file"
+                          name="images[]"
                           id="inputImage"
-                          multiple="multiple" 
+                          multiple="multiple"
                           class="form-control @error('images') is-invalid @enderror">
-        
+
                       @error('images')
                           <span class="text-danger">{{ $message }}</span>
                       @enderror
                   </div>
                     <button class="btn btn-primary" type="submit">Submit form</button>
                   </form>
-             
-                    
+
+
 
 
 
@@ -249,13 +238,13 @@
                 src="{{ asset('storage/'.$img->path) }}"
                               class="card-img-top"
                   alt="Waterfall" />
-                <div class="card-body">             
+                <div class="card-body">
                   <a href="{{url('admin/services/deleteImage/'.$img->id)}}" class="btn btn-danger" style="margin: 0px">Delete</a>
                 </div>
               </div>
             </div>
             @endforeach
-        
+
           </div>
         </div>
       </div>
@@ -300,8 +289,8 @@
 
 
 
-                   
-                  
+
+
 
             </div>
         </div>
@@ -310,7 +299,7 @@
     <script>
 
     document.addEventListener("DOMContentLoaded", function() {
-      
+
       console.log({{ $services->section_id}});
       // var cat = ({!! json_encode($Sections[($services->section_id-1)]->category) !!});
       addRowCategory({{ $services->section_id}});
@@ -318,7 +307,7 @@
     });
 
 
-      function addRowCategory(ele) 
+      function addRowCategory(ele)
       {
             var name= ele;
             Sections = {!! json_encode($Sections) !!};
@@ -327,7 +316,7 @@
 
             document.getElementById("sect").style.visibility = 'hidden';
             document.getElementById("categories").disabled=false;
-            
+
             removeOptions(x);
             var option = document.createElement("option");
             option.innerHTML = "select category";
@@ -340,7 +329,7 @@
             option.innerHTML = "select size";
             option.disabled=true;
             y.add(option);
-      
+
             var option = document.createElement("option");
             option.innerHTML = "select category";
             option.disabled=true;
@@ -352,14 +341,14 @@
             }
           );
         }
-      
+
         function removeOptions(selectElement) {
          var i, L = selectElement.options.length - 1;
          for(i = L; i >= 0; i--) {
             selectElement.remove(i);
          }
       }
-      
+
       function addRowSizes(ele){
         console.log(ele);
 
@@ -370,14 +359,14 @@
             var x = document.getElementById("sizes");
             removeOptions(document.getElementById('sizes'));
             document.getElementById("categ").style.visibility = 'hidden';
-            document.getElementById("sizes").disabled=false;      
-        
+            document.getElementById("sizes").disabled=false;
+
             var option = document.createElement("option");
             option.innerHTML = "select size";
             option.disabled=true;
             x.add(option);
-      
-      
+
+
             size.forEach(function(item, index) {
               var option = document.createElement("option");
               option.value = item.id;
@@ -386,7 +375,7 @@
               }
             );
       }
-      
+
         </script>
 
 

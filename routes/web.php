@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\InvoicesController;
-use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\SizesController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +66,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('categoriesSearch/{id}','CategoryController@search')->name('categories.search');
         //Services
         Route::get('services', 'ServiceController@index')->name('services.index');
+        Route::get('services/{product}', 'ServiceController@show')->name('services.show');
         Route::post('services/store', 'ServiceController@store')->name('services.store');
         Route::post('services/update/{id}', 'ServiceController@update')->name('services.update');
         Route::post('services/status/{id}', 'ServiceController@status')->name('services.status');

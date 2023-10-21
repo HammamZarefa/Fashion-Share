@@ -484,35 +484,39 @@ function imagePath()
         'default' => 'assets/images/default.png',
     ];
     $data['language'] = [
-        'path' => 'assets/images/lang',
+        'path' => 'assets/images',
         'size' => '64x64'
     ];
     $data['logoIcon'] = [
-        'path' => 'assets/images/logoIcon',
+        'path' => 'assets/images',
     ];
     $data['favicon'] = [
         'size' => '128x128',
     ];
     $data['profile'] = [
         'user' => [
-            'path' => 'assets/images/user/profile',
+            'path' => 'assets/images',
             'size' => '350x300'
         ],
         'admin' => [
-            'path' => 'assets/admin/images/profile',
+            'path' => 'assets/images',
             'size' => '400x400'
         ]
     ];
     $data['category'] = [
-        'path' => 'assets/images/category',
+        'path' => 'assets/images',
         'size' => '350x300'
     ];
     $data['service'] = [
-        'path' => 'assets/images/service',
+        'path' => 'assets/images',
+        'size' => '350x300'
+    ];
+    $data['product'] = [
+        'path' => 'assets/images',
         'size' => '350x300'
     ];
     $data['banner'] = [
-        'path' => 'assets/images/banner',
+        'path' => 'assets/images',
         'size' => '1530x640'
     ];
     return $data;
