@@ -83,13 +83,25 @@
                                  
                                         <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
                                         data-original-title="@lang('Show')" data-toggle="tooltip"
-                                        {{-- data-ur l="{{ route('admin.services.update',$item->id)}}" --}}
                                         data-name="{{ $item->name }}"
+                                        data-user="{{$item->user}}"
+                                        data-branch="{{ $item->branch->name}}"
+                                        data-category="{{$item->categories[0]->name}}"
+                                        data-price="{{$item->price}}"
+                                        data-is_for_sale="{{$item->is_for_sale ? 'Sale' : 'Rent'}}"
+                                        data-status="{{$item->status}}"
+                                        data-color="{{$item->color->name}}"
                                         data-images="{{ $item->images }}"
+                                        data-condition="{{$item->condition->name}}"
+                                        data-material="{{$item->material->name}}"
+                                        data-size="{{$item->size->name}}"
+                                        data-description="{{$item->description}}"
+                                        data-location = "{{$item->locaton}}"
+                                        data-sections = "{{$item->section->name}}"
+
                                         data-field="{{$item->field_name}}">
                                         <i class="la la-eye"></i>
                                     </a>
-
                                     <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
                                         data-original-title="$" data-toggle="tooltip"
                                         data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
@@ -244,14 +256,14 @@
                  
                                     <div class="col mb-2">
                                     <label for="validationCustom01">@lang('Name')</label>
-                                    <div disabled type="text" id="name" name="name" class="form-control" id="validationCustom01" >{{__($item->name)}} </div>
+                                    <input disabled type="text" id="name" name="name" class="form-control" id="validationCustom01" >
                                    
                                   </div>
             
                                   {{-- Branch --}}
                                   <div class="col mb-3">
                                     <label for="validationCustom05">@lang('Branch')</label>
-                                    <div  disabled type="text" id="name" name="name" class="form-control" id="validationCustom01">  {{$item->branch->name}}</div>
+                                    <input  disabled type="text" id="user" name="branch" class="form-control" id="validationCustom01">
                                    
                                   </div>
             
@@ -260,14 +272,14 @@
                                   {{-- Price --}}
                                 <div class="col mb-3">
                                     <label for="validationCustomUsername">@lang('Price')</label>
-                                      <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__($item->price)}}  </div>
+                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername">
                                       
                                 </div>
             
                                   {{-- Color --}}
                                 <div class="col mb-3">
                                       <label for="validationCustom03">@lang('Color')</label>
-                                      <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__($item->color->name)}} </div>
+                                      <input disabled type="text" name="color" class="form-control" id="validationCustomUsername"  >
                                  
                                 </div>
             
@@ -275,7 +287,7 @@
                                      {{-- status --}}
                                      <div class="col mb-3 ">
                                         <label for="validationCustom05">@lang('Status')</label>
-                                        <div disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip">{{__($item->status)}}</div>
+                                        <input disabled type="text" name="status" class="form-control" id="validationCustom05" >
       
                                         <div class="invalid-feedback">Example invalid custom select feedback</div>
                   
@@ -286,7 +298,7 @@
                                     {{-- Condition --}}
                                     <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Condition')</label>
-                                      <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__( $item->condition->name)}}</div>
+                                      <input disabled type="text" name="condition" class="form-control" id="validationCustomUsername"  >
 
                                   </div>
               
@@ -295,14 +307,14 @@
                                   {{-- Material --}}
                                   <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Material')</label>
-                                     <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username">{{__( $item->material->name)}}</div>
+                                     <input disabled type="text" name="material" class="form-control" id="validationCustomUsername" >
 
                                   </div>
               
                                    {{-- Sale --}}
                                    <div class="col mb-3 ">
                                      <label for="validationCustom05">@lang('Sale?')</label>
-                                    <div disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" >{{__($item->is_for_sale)}}</div>
+                                    <input name="is_for_sale" disabled type="text" class="form-control" id="validationCustom05"  >
 
                                   </div>
               
@@ -311,14 +323,14 @@
                                   {{-- Description --}}
                                   <div class="col mb-3">
                                     <label for="validationCustom02">@lang('Description')</label>
-                                    <textarea disabled type="textarea"   class="form-control" id="validationCustom02" placeholder="Last name"  aria-describedby="inputGroupPrepend">>{{__($item->description)}} </textarea>
+                                    <textarea disabled type="textarea"  name="description" class="form-control" id="validationCustom02"   aria-describedby="inputGroupPrepend"></textarea>
                                    
                                   </div>
                                   
                                   {{-- Location --}}
                                   <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Location')</label>
-                                      <textarea disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" >{{__($item->location)}}</textarea>
+                                      <textarea disabled type="text" class="form-control" id="validationCustom05"  ></textarea>
                                      
                                   </div>
               
@@ -332,20 +344,20 @@
                         {{-- Section --}}
                               <div class="col mb-3">
                                 <label for="validationCustom05">@lang('Section')</label>
-                                <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username">{{__($item->section->name)}}</div>
+                                <input disabled type="text" name="section" class="form-control" id="validationCustomUsername">
 
                             </div>
                                 {{-- Categories --}}
                                 <div class="col mb-3">
                                     <label for="validationCustom05">@lang('Categories')</label>
-                                    <div disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" >{{__($item->categories[0]->name)}}</div>
+                                    <input disabled type="text" name="category" class="form-control" id="validationCustom05" >
 
                                 </div>
 
                                    {{-- Size --}}
                                    <div class="col mb-3">
                                     <label for="validationCustom04">@lang('Size')</label>
-                                    <div disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >{{__($item->size->name)}} </div>
+                                    <input disabled type="text" name="size" class="form-control" id="validationCustomUsername" >
                                    
                                   </div>
                                   
@@ -425,16 +437,63 @@
                 var modal = $('#changeStatusProduct');
                 var url = $(this).data('url');
                 var name = $(this).data('name');
-                
+                var price = $(this).data('price');
+                var user = $(this).data('user');
+                var branch = $(this).data('branch');
+
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
                 modal.modal('show');
             });
             $('.showDetails').on('click', function () {
                 var modal = $('#showDetailsProducts');
+
                 var name = $(this).data('name');
-                var images = $(this).data('images');
                 modal.find('input[name=name]').val(name);
+
+                var user = $(this).data('user');
+                modal.find('input[name=user]').val(user);
+                
+                var price = $(this).data('price');
+                modal.find('input[name=price]').val(price);
+                
+                var branch = $(this).data('branch');
+                modal.find('input[name=branch]').val(branch);
+
+                var color = $(this).data('color');
+                modal.find('input[name=color]').val(color);
+
+                var category = $(this).data('category');
+                modal.find('input[name=category]').val(category);
+
+                var is_for_sale = $(this).data('is_for_sale');
+                modal.find('input[name=is_for_sale]').val(is_for_sale);
+
+                var condition = $(this).data('condition');
+                modal.find('input[name=condition]').val(condition);
+
+                var material  = $(this).data('material');
+                modal.find('input[name=material]').val(material);
+
+                var size  = $(this).data('size');
+                modal.find('input[name=size]').val(size);
+
+                var description = $(this).data('description');
+                modal.find('input[name=description]').val(description);
+
+                var location = $(this).data('location');
+                modal.find('input[name=location]').val(location);
+
+                var sections = $(this).data('sections');
+                console.log(sections);
+
+                modal.find('input[name=section]').val(sections);
+
+                var status = $(this).data('status');
+                modal.find('input[name=status]').val(status);
+
+                var images = $(this).data('images');
+                modal.find('input[name=images]').val(images);
 
                 var container = document.getElementById('imageContainer');
                 var keys = [];

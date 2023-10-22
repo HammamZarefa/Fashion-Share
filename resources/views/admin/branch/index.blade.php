@@ -11,7 +11,10 @@
                                 <th scope="col">@lang('ID')</th>
                                 <th scope="col">@lang('Name')</th>
                                 <th scope="col">@lang('Address')</th>
-                                <th scope="col">@lang('location')</th>
+                                {{-- <th scope="col">@lang('location')</th> --}}
+                                <th scope="col">@lang('longitude')</th>
+                                <th scope="col">@lang('latitude')</th>
+
                                 <th scope="col">@lang('working_hours')</th>
                                 <th scope="col">@lang('phone')</th>
                                 <th scope="col">@lang('whatsapp')</th>
@@ -20,10 +23,13 @@
                             <tbody>
                             @forelse ($branch as $item)
                                 <tr>
-                                    <td data-label="@lang('Name')">{{__($item->id)}}</td>
+                                    <td data-label="@lang('ID')">{{__($item->id)}}</td>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
                                     <td data-label="@lang('Adress')">{{__($item->address)}}</td>
-                                    <td data-label="@lang('Name')">{{__($item->location)}}</td>
+                                    {{-- <td data-label="@lang('Name')">{{__($item->location)}}</td> --}}
+                                    <td data-label="@lang('longitude')">{{__($item->longitude)}}</td>
+                                    <td data-label="@lang('latitude')">{{__($item->latitude)}}</td>
+
                                     <td data-label="@lang('Name')">{{__($item->working_hours)}}</td>
                                     <td data-label="@lang('Adress')">{{__($item->phone)}}</td>
                                     <td data-label="@lang('Adress')">{{__($item->whatsapp)}}</td>
@@ -34,6 +40,9 @@
                                            data-url="{{ route('admin.branch.update',$item->id)}}"
                                            data-name="{{ $item->name }}"
                                            data-address="{{$item->address}}"
+                                           data-latitude="{{$item->latitude}}"
+                                           data-longitude="{{$item->longitude}}"
+
                                            >
                                             <i class="la la-edit"></i>
                                         </a>
@@ -92,13 +101,7 @@
                             </div>
                         </div>
 
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('location') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="location" >
-                            </div>
-                        </div>
+                       
 
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('working_hours') <span
@@ -124,7 +127,23 @@
                             </div>
                         </div>
 
+                        
 
+                        <div class="form-row form-group">
+                            <label class="font-weight-bold ">@lang('longitude') <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control has-error bold " id="code" name="longitude" >
+                            </div>
+                        </div>
+
+                        <div class="form-row form-group">
+                            <label class="font-weight-bold ">@lang('latitude') <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control has-error bold " id="code" name="latitude" >
+                            </div>
+                        </div>
                     </div>
 
                    
@@ -171,14 +190,7 @@
                                     </div>
                         </div>
 
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('location') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="location" 
-                                value="{{$item->location ?? ''}}" >
-                            </div>
-                        </div>
+                       
 
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('working_hours') <span
@@ -207,6 +219,45 @@
                             </div>
                         </div>
 
+                        <div class="form-row form-group">
+                    
+
+                            <label class="font-weight-bold ">@lang('longitude') <span
+                                class="text-danger">*</span></label>
+
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control has-error bold " id="code" name="longitude" 
+                                value="{{$item->longitude ?? ''}}" >
+                            </div>
+
+                            <label class="font-weight-bold ">@lang('latitude') <span
+                                class="text-danger">*</span></label>
+
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control has-error bold " id="code" name="latitude" 
+                            value="{{$item->latitude ?? ''}}" >
+                        </div>
+                        
+                            <br>
+                            <div class="col-sm-12">
+                                <p>{{$item->location}}</p>
+                                <br>
+                                <div class="mapouter"><div id="gmap_canvas" class="gmap_canvas">
+                                    <iframe id="maps_google" name="map"
+                                    class="gmap_iframe" 
+                                    width="100%" 
+                                    frameborder="0" 
+                                    scrolling="no" 
+                                    marginheight="0" 
+                                    marginwidth="0" 
+                                    {{-- src="https://maps.google.com/maps?width=500&amp;height=500&amp;hl=en&amp;q=35.53802606238954, 35.77994740061135&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" --}}
+                                    >
+                                </iframe>
+                                   </div>
+                                    <style>.mapouter{position:relative;text-align:right;width:100%;height:300px;}.gmap_canvas {overflow:hidden;background:none!important;width:100%;height:300px;}.gmap_iframe {height:300px!important;}</style></div>
+
+                            </div>
+                        </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -262,10 +313,17 @@
                 var url = $(this).data('url');
                 var name = $(this).data('name');
                 var address = $(this).data('address');
+                var longitude = $(this).data('longitude');
+                var latitude = $(this).data('latitude');
 
+                console.log(longitude);
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
-                modal.find('input[name=address]').val(address);
+                modal.find('input[name=location]').val(location);
+
+                document.getElementById('maps_google').src="https://maps.google.com/maps?width=500&height=500&hl=en&q="+longitude+", "+latitude+"&t=&z=14&ie=UTF8&iwloc=B&output=embed";
+                
+
                 modal.modal('show');
             });
 

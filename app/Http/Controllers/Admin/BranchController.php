@@ -19,7 +19,12 @@ class BranchController extends Controller
         \request()->validate([
             'name' => 'required|string',
             'address' => 'required|string',
+            
             'location' => 'nullable|string',
+            
+            'latitude'=> 'nullable|string',
+            'longitude'=> 'nullable|string',
+
             'working_hours'=>'nullable|string',
             'phone'=>'nullable|string',
             'whatsapp'=>'nullable|string',
@@ -32,6 +37,8 @@ class BranchController extends Controller
             'working_hours'=> \request()->working_hours,
             'phone'=> \request()->phone,
             'whatsapp'=> \request()->whatsapp,
+            'latitude' => \request()->latitude,
+            'longitude' => \request()->longitude,
         ]);
         
         $notify[] = ['success', 'Branch created!'];
@@ -42,7 +49,12 @@ class BranchController extends Controller
         \request()->validate([
             'name' => 'nullable|string',
             'address' => 'nullable|string',
+            
             'location' => 'nullable|string',
+            
+            'latitude'=> 'nullable|string',
+            'longitude'=> 'nullable|string',
+
             'working_hours'=>'nullable|string',
             'phone'=>'nullable|string',
             'whatsapp'=>'nullable|string',
@@ -54,9 +66,10 @@ class BranchController extends Controller
         $branch->working_hours = \request()->working_hours;
         $branch->phone =  \request()->phone;
         $branch->whatsapp = \request()->whatsapp;
-        
-        $branch->save();
+        $branch->latitude = \request()->latitude;
+        $branch->longitude = \request()->longitude;
 
+        $branch->save();
         $notify[] = ['success', 'Branch updated!'];
         return back()->withNotify($notify);
     }    

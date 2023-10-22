@@ -170,7 +170,6 @@
                     <div class="col mb-3">
                       <label for="validationCustom05">@lang('Categories')</label>
                       <select  onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                        <option>select category</option>
                         {{-- @foreach($Sections[ {{!! $services->section_id !!}} ]->category as $Categorie)
                           <option value="{{$Categorie->id}}" {{ $services->category_id == $Categorie->id ? "selected" :""}}>{{ $Categorie->name }}</option>
                         @endforeach --}}
@@ -188,7 +187,6 @@
                     <div class="col mb-3 ">
                       <label for="validationCustom04">@lang('Size')</label>
                       <select disabled  id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                        <option>select size</option>
                         {{-- @foreach($Sizes as $size)
                         <option value="{{$size->id}}"  {{ $services->size_id == $size->id ? "selected" :""}}>{{ $size->name }}</option>
                         @endforeach --}}
@@ -329,17 +327,11 @@
             document.getElementById("categories").disabled=false;
             
             removeOptions(x);
-            var option = document.createElement("option");
-            option.innerHTML = "select category";
-            option.disabled=true;
-            x.add(option);
+            
 
             var y = document.getElementById("sizes");
             removeOptions(y);
-            var option = document.createElement("option");
-            option.innerHTML = "select size";
-            option.disabled=true;
-            y.add(option);
+            
       
             var option = document.createElement("option");
             option.innerHTML = "select category";
@@ -372,10 +364,7 @@
             document.getElementById("categ").style.visibility = 'hidden';
             document.getElementById("sizes").disabled=false;      
         
-            var option = document.createElement("option");
-            option.innerHTML = "select size";
-            option.disabled=true;
-            x.add(option);
+           
       
       
             size.forEach(function(item, index) {

@@ -116,7 +116,8 @@ class ServiceController extends Controller
             }
         }
         $notify[] = ['success', 'Service added!'];
-        return back()->withNotify($notify);
+
+        return redirect()->route('admin.services.index')->withNotify($notify);
     }
 
     public function update( $product,Request $request)
@@ -171,7 +172,7 @@ class ServiceController extends Controller
             }
         }
         if(isset($request['status'])){
-            if($product->user){
+            if(isset($product->user)){
             if($request['status'] = "available"){
                 $this->send_event_notification(User::find($product->user->id) , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
             if($request['status'] = "not_available"){
@@ -191,7 +192,7 @@ class ServiceController extends Controller
             }
         }
         $notify[] = ['success', 'product updated!'];
-        return back()->withNotify($notify);
+        return redirect()->route('admin.services.index')->withNotify($notify);
     }
 
     private function serviceAction($service, $request)
@@ -342,10 +343,12 @@ class ServiceController extends Controller
         if($is_for_sale){
             Product::find($id)->update(['status'=>'sale']);
             $this->insertInInvoices(Product::find($id));
+            $this->send_event_notification( User::find(Product::find($id)->user->id),'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
         }
         else{
             Product::find($id)->update(['status'=>'rent']);
             $this->insertInInvoices(Product::find($id));
+            $this->send_event_notification( User::find(Product::find($id)->user->id),'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
         }
 
         $notify[] = ['success', 'Status updated!'];
