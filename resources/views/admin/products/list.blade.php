@@ -119,11 +119,22 @@
                             @endforelse
 
                             </tbody>
+                            
                         </table><!-- table end -->
+
+                    
+    <!-- a Tag for previous page -->
                     </div>
+                    
                 </div>
+                
+                <div class="" style="margin:auto; margin-bottom: 20px">
+                    {!! $services->links("pagination::bootstrap-4") !!}
+                </div> 
             </div><!-- card end -->
+            
         </div>
+        
     </div>
 
 
@@ -517,7 +528,8 @@
                         {
                             if(key == "path")
                             {
-                            var path= "{{asset('storage/')}}";
+                            var path="{{ getImage(imagePath()['service']['path'].'/',imagePath()['service']['size'])}}";
+                            // var path= "{{asset('storage/')}}";
                             img.src = path +'/'+ images[i][key];                                                    
                             card.appendChild(img);
 
