@@ -72,8 +72,8 @@
                               <label for="validationCustom05">@lang('Sale?')</label>
                               {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services->is_for_sale ? 'Sale' : 'Rent')}}" required> --}}
                               <select class="custom-select"  name="is_for_sale" required>
-                                <option  class="text--small badge font-weight-normal badge--success"  value="Sale">@lang('Sale')</option>
-                                <option  class="text--small badge font-weight-normal badge--warning"  value="Rent">@lang('Rent')</option>
+                                <option  class="text--small badge font-weight-normal badge--success" {{ old('is_for_sale') == 1 ? "selected" : "" }}    value="sale">@lang('Sale')</option>
+                                <option  class="text--small badge font-weight-normal badge--warning"  {{ old('is_for_sale') == 0 ? "selected" : "" }} value="rent">@lang('Rent')</option>
                               </select>
                               <div class="invalid-feedback">
                                 Please provide a valid Sale.
@@ -112,12 +112,11 @@
                         
                         <div class="col mb-3 ">
                           <label for="validationCustom05">@lang('Status')</label>
-    
-                          <select class="custom-select" name="status"  required>
-                            <option {{ old('status') == 'available' ? "@lang('Not available')" : "" }}   value="'not_available">@lang('Not available')</option>
-                            <option {{ old('status') == 'not_available' ? "@lang('Available')" : "" }}    value="available">@lang('Available')</option>
-                            <option {{ old('status') == 'sale' ? "selected" : "" }}    value="sale">@lang('Sale')</option>
-                            <option {{ old('status') == 'rent' ? "selected" : "" }}       value="rent">@lang('Rent')</option>
+                          <select class="custom-select" name="status"  >
+                            <option {{ $services->status == "not_available" ? "selected" : "" }}   value="not_available">@lang('Not available')</option>
+                            <option {{ $services->status== "available"     ? "selected" : "" }}    value="available">@lang('Available')</option>
+                            <option {{ $services->status == "sale"          ? "selected" : "" }}    value="sale">@lang('Sale')</option>
+                            <option {{ $services->status == "rent"          ? "selected" : "" }}       value="rent" >@lang('Rent')</option>
                           </select>
                           <div class="invalid-feedback">Please provide a valid Status</div>
                         </div>
@@ -174,9 +173,7 @@
                           <option value="{{$Categorie->id}}" {{ $services->category_id == $Categorie->id ? "selected" :""}}>{{ $Categorie->name }}</option>
                         @endforeach --}}
                      </select>
-                     <div id="sect" style="font-size: 14px;color:red">
-                      Please select section before.
-                      </div>
+                     
                       {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
                       <div class="invalid-feedback">
                         Please provide a valid Categories.
@@ -186,14 +183,12 @@
                  
                     <div class="col mb-3 ">
                       <label for="validationCustom04">@lang('Size')</label>
-                      <select disabled  id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                      <select   id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
                         {{-- @foreach($Sizes as $size)
                         <option value="{{$size->id}}"  {{ $services->size_id == $size->id ? "selected" :""}}>{{ $size->name }}</option>
                         @endforeach --}}
                      </select>
-                     <div id="categ" style="font-size: 14px;color:red">
-                      Please select category before.
-                     </div>
+                    
                       {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
                       <div class="invalid-feedback">
                         Please provide a valid Size.
@@ -244,7 +239,7 @@
             <div class="col-lg-4">
               <div class="card">
                 <img
-                src="{{ asset('storage/'.$img->path) }}"
+                src="{{ getImage(imagePath()['service']['path'].'/'. $img->path,imagePath()['service']['size'])}}"
                               class="card-img-top"
                   alt="Waterfall" />
                 <div class="card-body">             
@@ -307,75 +302,67 @@
 
     <script>
 
-    document.addEventListener("DOMContentLoaded", function() {
-      
-      console.log({{ $services->section_id}});
-      // var cat = ({!! json_encode($Sections[($services->section_id-1)]->category) !!});
-      addRowCategory({{ $services->section_id}});
-      addRowSizes({{ $services->category_id}});
-    });
+function addRowCategory(ele) 
+{
+      var ID= ele;
+      Sections = {!! json_encode($Sections) !!};
+      category =  Sections[ID-1].category;
+      var categoryOptions = document.getElementById("categories"); 
+      removeOptions(categoryOptions);
+     
+      var i=0;
+      category.forEach(function(item, index) {
+        var option = document.createElement("option");
+        option.value = item.id;
+        option.innerHTML = item.name;
+        if(i == 0){option.selected =true};
+        i++;
+        categoryOptions.add(option);
+      });
+
+     
+      removeOptions(document.getElementById('sizes'));
+    
+      addRowSizes(categoryOptions.value);
 
 
-      function addRowCategory(ele) 
-      {
-            var name= ele;
-            Sections = {!! json_encode($Sections) !!};
-            category =  Sections[name-1].category;
-            var x = document.getElementById("categories");
+  }
 
-            document.getElementById("sect").style.visibility = 'hidden';
-            document.getElementById("categories").disabled=false;
-            
-            removeOptions(x);
-            
+  function removeOptions(selectElement) {
+   var i, L = selectElement.options.length - 1;
+   for(i = L; i >= 0; i--) {
+      selectElement.remove(i);
+   }
 
-            var y = document.getElementById("sizes");
-            removeOptions(y);
-            
-      
-            var option = document.createElement("option");
-            option.innerHTML = "select category";
-            option.disabled=true;
-            category.forEach(function(item, index) {
-            var option = document.createElement("option");
-            option.value = item.id;
-            option.innerHTML = item.name;
-            x.add(option);
-            }
-          );
+
+}
+
+function addRowSizes(ele){
+      var name= ele;
+      Categories = {!! json_encode($Categories) !!};
+      if(Categories!= null){
+      size =  Categories[name-1].sizes;
+      }
+      var x = document.getElementById("sizes");
+
+
+
+      size.forEach(function(item, index) {
+        var option = document.createElement("option");
+        option.value = item.id;
+        option.innerHTML = item.name;
+        x.add(option);
         }
-      
-        function removeOptions(selectElement) {
-         var i, L = selectElement.options.length - 1;
-         for(i = L; i >= 0; i--) {
-            selectElement.remove(i);
-         }
-      }
-      
-      function addRowSizes(ele){
-        console.log(ele);
+      );
+}
 
-            var name= ele;
-            Categories = {!! json_encode($Categories) !!};
 
-            size =  Categories[name-1].sizes;
-            var x = document.getElementById("sizes");
-            removeOptions(document.getElementById('sizes'));
-            document.getElementById("categ").style.visibility = 'hidden';
-            document.getElementById("sizes").disabled=false;      
-        
-           
-      
-      
-            size.forEach(function(item, index) {
-              var option = document.createElement("option");
-              option.value = item.id;
-              option.innerHTML = item.name;
-              x.add(option);
-              }
-            );
-      }
-      
+      window.onload = selectSection();
+      function selectSection (){
+
+        var firstselectsection = document.getElementById("sections");
+        addRowCategory(firstselectsection.value);
+      };
         </script>
 
 

@@ -75,6 +75,7 @@ class ServiceController extends Controller
             'images'=>'array',
             'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
             'location'  => 'string',
+            'status'=>'required',
         ]);
         if ($validator->fails()) {
             $notify[] = ['error', 'validation'];
@@ -93,18 +94,21 @@ class ServiceController extends Controller
             'location'=>$request->input('location'),
             'user_id' => auth()->id(),
             'branch_id' => $request->input('branch_id'),
-            'status' => 'pending',
+            'status' =>  $request->input('status'),
             'is_for_sale' => $request->input('is_for_sale')
         ]);
         $product->categories()->attach($request->category_id);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
+                $path = imagePath()['service']['path'];
+                $size = imagePath()['service']['size'];
+                $filename = $image;
 
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('public/images', $filename);
+                $filename = uploadImage($image, $path, $size, $filename);
+                // $product->image=$filename;
                 // Create the image record in the database
                 $product->images()->create([
-                    'path' => 'images/'.$filename,
+                    'path' => $filename,
                     // Add other image fields as needed
                 ]);
             }
@@ -136,7 +140,9 @@ class ServiceController extends Controller
             'condition_id' => 'exists:conditions,id',
             'branch_id' => 'exists:branches,id',
             'is_for_sale' => 'boolean',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status'=>'nullable',
+
         ]);
 
         if ($validator->fails()) {
@@ -154,25 +160,28 @@ class ServiceController extends Controller
             'condition_id',
             'branch_id',
             'status',
-            'is_for_sale'
+            'is_for_sale',
         ]));
 
         if ($request->category_id)
             $product->categories()->sync($request->category_id);
-        if (isset($request['images'])) {
-            foreach ($request['images'] as $image) {
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('public/images', $filename);
-                // Create or update the image record in the database
-                $product->images()->create([
-                    'path' => 'images/'.$filename,
-                    'imagable_id'=>$product->id
-
-                ]);
+            if (isset($request['images'])) {
+                foreach ($request->file('images') as $image) {
+                    $path = imagePath()['service']['path'];
+                    $size = imagePath()['service']['size'];
+                    $filename = $image;
+    
+                    $filename = uploadImage($image, $path, $size, $filename);
+                    // $product->image=$filename;
+                    // Create the image record in the database
+                    $product->images()->create([
+                        'path' => 'images/'.$filename,
+                        // Add other image fields as needed
+                    ]);
+                }
             }
-        }
         if(isset($request['status'])){
-            if(isset($product->user)){
+            if($product->user){
             if($request['status'] = "available"){
                 $this->send_event_notification(User::find($product->user->id) , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
             if($request['status'] = "not_available"){
@@ -297,7 +306,7 @@ class ServiceController extends Controller
         $branchs = Branch::all();
         $Categories= Category::with(['section','sizes'])->get();
 
-        $services = Product::findOrFail($service);
+        $services = Product::with('images')->findOrFail($service);
         return view('admin.products.edit', 
         compact('page_title', 'services', 'Categories','empty_message' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
 
