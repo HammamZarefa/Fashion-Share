@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductsListRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\AdminNotification;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -126,11 +127,16 @@ class ProductController extends Controller
 
                 // Create the image record in the database
                 $product->images()->create([
-                    'path' => 'images/'.$filename,
+                    'path' => 'images/' . $filename,
                     // Add other image fields as needed
                 ]);
             }
         }
+        $adminNotification = new AdminNotification();
+        $adminNotification->user_id = auth()->id();
+        $adminNotification->title = 'New product request ';
+        $adminNotification->click_url = urlPath('admin.services.edit', $product->id);
+        $adminNotification->save();
         return response()->json(['message' => 'Product created successfully', 'data' => $product, 'status' => 201]);
     }
 
@@ -178,11 +184,17 @@ class ProductController extends Controller
 
                 // Create or update the image record in the database
                 $product->images()->create([
-                    'path' => 'images/'.$filename,
+                    'path' => 'images/' . $filename,
                     // Add other image fields as needed
                 ]);
             }
         }
+
+        $adminNotification = new AdminNotification();
+        $adminNotification->user_id = auth()->id();
+        $adminNotification->title = 'Product updated ';
+        $adminNotification->click_url = urlPath('admin.services.edit', $product->id);
+        $adminNotification->save();
         return response()->json(['message' => 'Product updated successfully', 'data' => $product, 'status' => 200]);
     }
 }

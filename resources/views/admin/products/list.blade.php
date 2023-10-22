@@ -2,18 +2,8 @@
 @section('panel')
     <div class="row">
         <div class="col-lg-12">
-            {{-- <div>   <span    class="text--medium badge font-weight-normal badge--success">@lang('Available')</span>            </div> --}}
-
-            {{-- <div>   <span    class="text--medium badge font-weight-normal badge--success">@lang('Available')</span>            </div> --}}
-                
-           
-
             <div class="card">
-                
                 <div class="card-body">
-                    <form action="{{route('admin.services.create')}}" method=" enctype="multipart/form-data">
-                        <button type="submit" class="btn btn-success btn-lg">add new product</button>
-                    </form>   
                     <div class="table-responsive--sm table-responsive">
                         <table class="table table--light style--two custom-data-table">
                             <thead>
@@ -28,8 +18,6 @@
                                 <th scope="col">@lang('Status')</th>
                                 <th scope="col">@lang('Action')</th>
                                 <th></th>
-
-
                             </tr>
                             </thead>
                             <tbody>
@@ -48,7 +36,8 @@
                                     <td>{{$item->is_for_sale ? 'Sale' : 'Rent'}}</td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status=='available' )
-                                            <span    class="text--small badge font-weight-normal badge--success">@lang('Available')</span>
+                                            <span
+                                                class="text--small badge font-weight-normal badge--success">@lang('Available')</span>
                                         @elseif($item->status=='not_available')
                                             <span
                                                 class="text--small badge font-weight-normal badge--warning">@lang('Not available')</span>
@@ -58,9 +47,10 @@
                                         @elseif($item->status=='rejected')
                                             <span
                                                 class="text--small badge font-weight-normal badge--danger">{{$item->status}}</span>
-                                          
+
                                         @else
-                                            <span    class="text--small badge font-weight-normal badge--dark">{{$item->status}}</span>
+                                            <span
+                                                class="text--small badge font-weight-normal badge--dark">{{$item->status}}</span>
                                         @endif
                                     </td>
                                     <td data-label="@lang('Action')">
@@ -71,45 +61,39 @@
                                         </a>
 
                                         <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"
-                                        data-original-title="@lang('Status')" data-toggle="tooltip"
-                                        data-url="{{ route('admin.services.update',$item->id)}}"
-                                        data-name="{{ $item->name }}"
-                                        data-field="{{$item->field_name}}">
-                                        <i class="la la-edit"></i>
+                                           data-original-title="@lang('Status')" data-toggle="tooltip"
+                                           data-url="{{ route('admin.services.update',$item->id)}}"
+                                           data-name="{{ $item->name }}"
+                                           data-field="{{$item->field_name}}">
+                                            <i class="la la-edit"></i>
+                                        </a>
 
-                                     </a>
-                                           
-                                        
-                                 
                                         <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
-                                        data-original-title="@lang('Show')" data-toggle="tooltip"
-                                        data-name="{{ $item->name }}"
-                                        data-user="{{$item->user}}"
-                                        data-branch="{{ $item->branch->name}}"
-                                        data-category="{{$item->categories[0]->name}}"
-                                        data-price="{{$item->price}}"
-                                        data-is_for_sale="{{$item->is_for_sale ? 'Sale' : 'Rent'}}"
-                                        data-status="{{$item->status}}"
-                                        data-color="{{$item->color->name}}"
-                                        data-images="{{ $item->images }}"
-                                        data-condition="{{$item->condition->name}}"
-                                        data-material="{{$item->material->name}}"
-                                        data-size="{{$item->size->name}}"
-                                        data-description="{{$item->description}}"
-                                        data-location = "{{$item->locaton}}"
-                                        data-sections = "{{$item->section->name}}"
-
-                                        data-field="{{$item->field_name}}">
-                                        <i class="la la-eye"></i>
-                                    </a>
-                                    <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
-                                        data-original-title="$" data-toggle="tooltip"
-                                        data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
-                                        data-is_for_sale="{{ $item->is_for_sale }}">
-                                        <i class="la la-usd"></i>
-                                     </a>
-
-
+                                           data-original-title="@lang('Show')" data-toggle="tooltip"
+                                           data-name="{{ $item->name }}"
+                                           data-user="{{$item->user}}"
+                                           data-branch="{{ $item->branch->name}}"
+                                           data-category="{{$item->categories[0]->name}}"
+                                           data-price="{{$item->price}}"
+                                           data-is_for_sale="{{$item->is_for_sale ? 'Sale' : 'Rent'}}"
+                                           data-status="{{$item->status}}"
+                                           data-color="{{$item->color->name}}"
+                                           data-images="{{ $item->images }}"
+                                           data-condition="{{$item->condition->name}}"
+                                           data-material="{{$item->material->name}}"
+                                           data-size="{{$item->size->name}}"
+                                           data-description="{{$item->description}}"
+                                           data-location="{{$item->locaton}}"
+                                           data-sections="{{$item->section->name}}"
+                                           data-field="{{$item->field_name}}">
+                                            <i class="la la-eye"></i>
+                                        </a>
+                                        <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
+                                           data-original-title="$" data-toggle="tooltip"
+                                           data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
+                                           data-is_for_sale="{{ $item->is_for_sale }}">
+                                            <i class="la la-usd"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -117,24 +101,16 @@
                                     <td class="text-muted text-center" colspan="100%">{{ __($empty_message) }}</td>
                                 </tr>
                             @endforelse
-
                             </tbody>
-                            
                         </table><!-- table end -->
-
-                    
-    <!-- a Tag for previous page -->
+                        <!-- a Tag for previous page -->
                     </div>
-                    
                 </div>
-                
                 <div class="" style="margin:auto; margin-bottom: 20px">
                     {!! $services->links("pagination::bootstrap-4") !!}
-                </div> 
+                </div>
             </div><!-- card end -->
-            
         </div>
-        
     </div>
 
 
@@ -145,7 +121,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                            @lang('Payment Method Activation Confirmation')
+                        @lang('Payment Method Activation Confirmation')
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -158,8 +134,7 @@
                         <p>@lang('Are you sure to Sale/Rent') <span
                                 class="font-weight-bold method-name"></span> @lang('Product')?
                         </p>
-                        
-                       
+
 
                     </div>
                     <div class="modal-footer">
@@ -200,8 +175,8 @@
 
 
 
-     {{-- DEACTIVATE METHOD MODAL --}}
-     <div id="changeStatusProduct" class="modal fade" tabindex="-1" role="dialog">
+    {{-- DEACTIVATE METHOD MODAL --}}
+    <div id="changeStatusProduct" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -217,26 +192,26 @@
                     <div class="modal-body" style="text-align: center">
                         <p>@lang('Are you sure to change status?') <span
                                 class="font-weight-bold method-name"></span> @lang('method')?</p>
-                            <select name="status">
+                        <select name="status">
 
-                                    <option style="background: #ffffff">    
-                                        <span    >@lang('Available')</span>
-                                    </option>
+                            <option style="background: #ffffff">
+                                <span>@lang('Available')</span>
+                            </option>
 
-                                    <option  style="background: #ffffff">    
-                                        <span    >@lang('Not available')</span>
-                                    </option>
-                                    <option  style="background: #ffffff">
-                                        <span    >@lang('rent')</span>
-                                    </option>
-                                    <option  style="background: #ffffff">
-                                        <span    >@lang('sale')</span>
-                                    </option>
-                                    <option  style="background: #ffffff">
-                                        <span    >@lang('rejected')</span>
-                                    </option>
-                                </select>
-                        
+                            <option style="background: #ffffff">
+                                <span>@lang('Not available')</span>
+                            </option>
+                            <option style="background: #ffffff">
+                                <span>@lang('rent')</span>
+                            </option>
+                            <option style="background: #ffffff">
+                                <span>@lang('sale')</span>
+                            </option>
+                            <option style="background: #ffffff">
+                                <span>@lang('rejected')</span>
+                            </option>
+                        </select>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -249,8 +224,8 @@
 
 
 
-     {{-- DEACTIVATE METHOD MODAL --}}
-     <div id="showDetailsProducts" class="modal fade" tabindex="-1" role="dialog">
+    {{-- DEACTIVATE METHOD MODAL --}}
+    <div id="showDetailsProducts" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -259,158 +234,159 @@
                     </button>
                 </div>
 
-              
-                    <div class="modal-body">
-                        
-                                {{--  name --}}
-                                  <div class="form-row">
-                 
-                                    <div class="col mb-2">
-                                    <label for="validationCustom01">@lang('Name')</label>
-                                    <input disabled type="text" id="name" name="name" class="form-control" id="validationCustom01" >
-                                   
-                                  </div>
-            
-                                  {{-- Branch --}}
-                                  <div class="col mb-3">
-                                    <label for="validationCustom05">@lang('Branch')</label>
-                                    <input  disabled type="text" id="user" name="branch" class="form-control" id="validationCustom01">
-                                   
-                                  </div>
-            
-                        <div class="w-100"></div>
-            
-                                  {{-- Price --}}
-                                <div class="col mb-3">
-                                    <label for="validationCustomUsername">@lang('Price')</label>
-                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername">
-                                      
-                                </div>
-            
-                                  {{-- Color --}}
-                                <div class="col mb-3">
-                                      <label for="validationCustom03">@lang('Color')</label>
-                                      <input disabled type="text" name="color" class="form-control" id="validationCustomUsername"  >
-                                 
-                                </div>
-            
-                        <div class="w-100"></div>
-                                     {{-- status --}}
-                                     <div class="col mb-3 ">
-                                        <label for="validationCustom05">@lang('Status')</label>
-                                        <input disabled type="text" name="status" class="form-control" id="validationCustom05" >
-      
-                                        <div class="invalid-feedback">Example invalid custom select feedback</div>
-                  
-                                       
-                                      </div>
-                               
 
-                                    {{-- Condition --}}
-                                    <div class="col mb-3">
-                                      <label for="validationCustom05">@lang('Condition')</label>
-                                      <input disabled type="text" name="condition" class="form-control" id="validationCustomUsername"  >
+                <div class="modal-body">
 
-                                  </div>
-              
-                        <div class="w-100"></div>
-            
-                                  {{-- Material --}}
-                                  <div class="col mb-3">
-                                      <label for="validationCustom05">@lang('Material')</label>
-                                     <input disabled type="text" name="material" class="form-control" id="validationCustomUsername" >
+                    {{--  name --}}
+                    <div class="form-row">
 
-                                  </div>
-              
-                                   {{-- Sale --}}
-                                   <div class="col mb-3 ">
-                                     <label for="validationCustom05">@lang('Sale?')</label>
-                                    <input name="is_for_sale" disabled type="text" class="form-control" id="validationCustom05"  >
+                        <div class="col mb-2">
+                            <label for="validationCustom01">@lang('Name')</label>
+                            <input disabled type="text" id="name" name="name" class="form-control"
+                                   id="validationCustom01">
 
-                                  </div>
-              
+                        </div>
+
+                        {{-- Branch --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Branch')</label>
+                            <input disabled type="text" id="user" name="branch" class="form-control"
+                                   id="validationCustom01">
+
+                        </div>
+
                         <div class="w-100"></div>
-                                 
-                                  {{-- Description --}}
-                                  <div class="col mb-3">
-                                    <label for="validationCustom02">@lang('Description')</label>
-                                    <textarea disabled type="textarea"  name="description" class="form-control" id="validationCustom02"   aria-describedby="inputGroupPrepend"></textarea>
-                                   
-                                  </div>
-                                  
-                                  {{-- Location --}}
-                                  <div class="col mb-3">
-                                      <label for="validationCustom05">@lang('Location')</label>
-                                      <textarea disabled type="text" class="form-control" id="validationCustom05"  ></textarea>
-                                     
-                                  </div>
-              
-                                
-            
-                          
-                                 
-            
+
+                        {{-- Price --}}
+                        <div class="col mb-3">
+                            <label for="validationCustomUsername">@lang('Price')</label>
+                            <input disabled type="text" name="price" class="form-control" id="validationCustomUsername">
+
+                        </div>
+
+                        {{-- Color --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom03">@lang('Color')</label>
+                            <input disabled type="text" name="color" class="form-control" id="validationCustomUsername">
+
+                        </div>
+
                         <div class="w-100"></div>
-                                  
+                        {{-- status --}}
+                        <div class="col mb-3 ">
+                            <label for="validationCustom05">@lang('Status')</label>
+                            <input disabled type="text" name="status" class="form-control" id="validationCustom05">
+
+                            <div class="invalid-feedback">Example invalid custom select feedback</div>
+
+
+                        </div>
+
+
+                        {{-- Condition --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Condition')</label>
+                            <input disabled type="text" name="condition" class="form-control"
+                                   id="validationCustomUsername">
+
+                        </div>
+
+                        <div class="w-100"></div>
+
+                        {{-- Material --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Material')</label>
+                            <input disabled type="text" name="material" class="form-control"
+                                   id="validationCustomUsername">
+
+                        </div>
+
+                        {{-- Sale --}}
+                        <div class="col mb-3 ">
+                            <label for="validationCustom05">@lang('Sale?')</label>
+                            <input name="is_for_sale" disabled type="text" class="form-control" id="validationCustom05">
+
+                        </div>
+
+                        <div class="w-100"></div>
+
+                        {{-- Description --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom02">@lang('Description')</label>
+                            <textarea disabled type="textarea" name="description" class="form-control"
+                                      id="validationCustom02" aria-describedby="inputGroupPrepend"></textarea>
+
+                        </div>
+
+                        {{-- Location --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Location')</label>
+                            <textarea disabled type="text" class="form-control" id="validationCustom05"></textarea>
+
+                        </div>
+
+
+                        <div class="w-100"></div>
+
                         {{-- Section --}}
-                              <div class="col mb-3">
-                                <label for="validationCustom05">@lang('Section')</label>
-                                <input disabled type="text" name="section" class="form-control" id="validationCustomUsername">
+                        <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Section')</label>
+                            <input disabled type="text" name="section" class="form-control"
+                                   id="validationCustomUsername">
 
-                            </div>
-                                {{-- Categories --}}
-                                <div class="col mb-3">
-                                    <label for="validationCustom05">@lang('Categories')</label>
-                                    <input disabled type="text" name="category" class="form-control" id="validationCustom05" >
+                        </div>
+                        {{-- Categories --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Categories')</label>
+                            <input disabled type="text" name="category" class="form-control" id="validationCustom05">
 
-                                </div>
+                        </div>
 
-                                   {{-- Size --}}
-                                   <div class="col mb-3">
-                                    <label for="validationCustom04">@lang('Size')</label>
-                                    <input disabled type="text" name="size" class="form-control" id="validationCustomUsername" >
-                                   
-                                  </div>
-                                  
-                                
-                     </div>
-                     <div class="carousel-inner py-4">
+                        {{-- Size --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom04">@lang('Size')</label>
+                            <input disabled type="text" name="size" class="form-control" id="validationCustomUsername">
+
+                        </div>
+
+
+                    </div>
+                    <div class="carousel-inner py-4">
                         <!-- Single item -->
                         <div class="carousel-item active">
-                          <div class="container">
-                            <div class="row" id="imageContainer">
+                            <div class="container">
+                                <div class="row" id="imageContainer">
 
-                               
-                              {{-- @foreach($item->images as $img)
 
-                              <div class="col-lg-4">
-                              
-                                <div class="card">
-                                  <img src="{{ asset('storage/images/'.$img->path) }}" class="card-img-top" alt="Waterfall" />
+                                    {{-- @foreach($item->images as $img)
+
+                                    <div class="col-lg-4">
+
+                                      <div class="card">
+                                        <img src="{{ asset('storage/images/'.$img->path) }}" class="card-img-top" alt="Waterfall" />
+                                      </div>
+
+                                    </div>
+                                    @endforeach --}}
+
                                 </div>
-
-                              </div>
-                              @endforeach --}}
-                           
                             </div>
-                          </div>
                         </div>
-                      
-                      
-                      </div>
+
+
                     </div>
-                   
+                </div>
+
             </div>
         </div>
     </div>
 
-    
 @endsection
 
 
 @push('breadcrumb-plugins')
-    {{-- <a class="btn btn-sm btn--primary box--shadow1 text--small" href="{{ route('admin.gateway.manual.create') }}"><i
-            class="fa fa-fw fa-plus"></i>@lang('Add New')</a> --}}
+    <a class="btn btn-sm btn--primary box--shadow1 text--small" href="{{ route('admin.services.create') }}"><i
+            class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
 @endpush
 @push('script')
     <script>
@@ -464,10 +440,10 @@
 
                 var user = $(this).data('user');
                 modal.find('input[name=user]').val(user);
-                
+
                 var price = $(this).data('price');
                 modal.find('input[name=price]').val(price);
-                
+
                 var branch = $(this).data('branch');
                 modal.find('input[name=branch]').val(branch);
 
@@ -483,10 +459,10 @@
                 var condition = $(this).data('condition');
                 modal.find('input[name=condition]').val(condition);
 
-                var material  = $(this).data('material');
+                var material = $(this).data('material');
                 modal.find('input[name=material]').val(material);
 
-                var size  = $(this).data('size');
+                var size = $(this).data('size');
                 modal.find('input[name=size]').val(size);
 
                 var description = $(this).data('description');
@@ -509,34 +485,33 @@
                 var container = document.getElementById('imageContainer');
                 var keys = [];
                 for (var i = 0, j = images.length; i < j; i++) {
-                    
+
                     var col_lg_4 = document.createElement('div');
-                    col_lg_4.className ='col-lg-4';
+                    col_lg_4.className = 'col-lg-4';
 
                     var card = document.createElement('div');
-                    card.className ='card';
-                    
-                    container.appendChild(col_lg_4);    
+                    card.className = 'card';
+
+                    container.appendChild(col_lg_4);
                     col_lg_4.appendChild(card);
 
                     var img = document.createElement('img');
-                    img.className="card-img-top"; 
-                    img.alt="Waterfall";
-                    
-                    for (var key in images[i]) {
-                        if (images[0].hasOwnProperty(key)) 
-                        {
-                            if(key == "path")
-                            {
-                            var path="{{ getImage(imagePath()['service']['path'].'/',imagePath()['service']['size'])}}";
-                            // var path= "{{asset('storage/')}}";
-                            img.src = path +'/'+ images[i][key];                                                    
-                            card.appendChild(img);
+                    img.className = "card-img-top";
+                    img.alt = "Waterfall";
 
-                        }   
+                    for (var key in images[i]) {
+                        if (images[0].hasOwnProperty(key)) {
+                            if (key == "path") {
+                                var path = "{{ getImage(imagePath()['service']['path'].'/',imagePath()['service']['size'])}}";
+                                // var path= "{{asset('storage/')}}";
+                                img.src = path + '/' + images[i][key];
+                                card.appendChild(img);
+
+                            }
                         }
                     }
-                };                
+                }
+                ;
                 modal.modal('show');
             });
         });

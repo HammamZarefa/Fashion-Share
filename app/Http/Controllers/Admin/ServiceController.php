@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreServiceRequest;
-use App\Models\Admin;
-use App\Models\ApiProvider;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Color;
@@ -17,7 +14,6 @@ use App\Models\InvoicesProdect;
 use App\Models\Material;
 use App\Models\Product;
 use App\Models\Section;
-use App\Models\Service;
 use App\Models\Size;
 use App\Models\User;
 use App\Trait\NotificationTrait;
@@ -45,16 +41,16 @@ class ServiceController extends Controller
         $empty_message = 'No Result Found';
         $categories = Category::orderBy('name')->get();
         if(is_null($branch)){
-           
+
             $services = Product::
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
            ->latest()->paginate(getPaginate());
         }
-        else{ 
+        else{
             $services = Product::
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
            ->where('branch_id',$branch)->latest()->paginate(getPaginate());
-           }     
+           }
         return view('admin.products.list', compact('page_title', 'services', 'empty_message', 'categories'));
     }
 
@@ -79,7 +75,7 @@ class ServiceController extends Controller
         ]);
         if ($validator->fails()) {
             $notify[] = ['error', 'validation'];
-            return back()->withNotify($notify);   
+            return back()->withNotify($notify);
         }
         $product = Product::create([
             'name' => $request->input('name'),
@@ -113,7 +109,7 @@ class ServiceController extends Controller
                 ]);
             }
         }
-   
+
         if(isset($request['status'])){
             if(($request['status'] == 'sale') || $request['status']=='rent'){
                 $this->insertInInvoices($product);
@@ -126,7 +122,7 @@ class ServiceController extends Controller
 
     public function update( $product,Request $request)
     {
-        
+
         $product = Product::findOrFail($product);
         $validator = Validator::make($request->all(), [
             'name' => 'string|max:255',
@@ -170,7 +166,7 @@ class ServiceController extends Controller
                     $path = imagePath()['service']['path'];
                     $size = imagePath()['service']['size'];
                     $filename = $image;
-    
+
                     $filename = uploadImage($image, $path, $size, $filename);
                     // $product->image=$filename;
                     // Create the image record in the database
@@ -186,15 +182,15 @@ class ServiceController extends Controller
                 $this->send_event_notification(User::find($product->user->id) , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
             if($request['status'] = "not_available"){
                $this->send_event_notification( User::find($product->user->id),'', ' تم الغاء تفعيل منتجك ' , 'Your product has been deactivated'  );}
-            if($request['status'] = "sale"){ 
+            if($request['status'] = "sale"){
                 $this->send_event_notification( User::find($product->user->id),'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );}
             if($request['status'] = "rent"){
                  $this->send_event_notification( User::find($product->user->id), '',' تم تغيير حالة منتجك الى أجار ' , 'Your product status has been changed to Rent'  );}
-            if($request['status'] = "rejected"){ 
+            if($request['status'] = "rejected"){
                 $this->send_event_notification( $product->user,'', ' تم رفض منتجك' , 'Your product has been rejected' );}
             }
         }
-        
+
         if(isset($request['status'])){
             if(($request['status'] == 'sale') || $request['status']=='rent'){
                 $this->insertInInvoices($product);
@@ -231,42 +227,6 @@ class ServiceController extends Controller
         return back()->withNotify($notify);
     }
 
-    //Api services
-    public function apiServices($id)
-    {
-        $page_title = 'API Services';
-        $empty_message = 'No Result Found';
-        $categories = Category::active()->orderBy('name')->get();
-        $general = ApiProvider::findOrFail($id);
-        if ($id == 1 || $id == 3) {
-            $url = $general->api_url;
-            $arr = [
-                'key' => $general->api_key,
-                'action' => "services",
-            ];
-        } elseif ($id == 2) {
-            $url = $general->api_url . '/products';
-            $header = array(
-                "Content-Type" => "application/json",
-                "api_key" => $general->api_key
-            );
-            $arr = [
-
-            ];
-        }
-        $response = json_decode(curlPostContent($url, $arr, @$header));
-        if (@$response->error) {
-            $notify[] = ['info', 'Please enter your api credentials from API Setting Option'];
-            $notify[] = ['error', $response->error];
-            return back()->withNotify($notify);
-        }
-        if ($id == 1 || $id == 3)
-            $response = collect($response);
-        elseif ($id == 2)
-            $response = collect($response->products);
-        $services = $this->paginate($response, getPaginate(), null, ['path' => route('admin.services.apiServices', $id)]);
-        return view('admin.services.apiServices', compact('page_title', 'services', 'empty_message', 'categories', 'id'));
-    }
 
     public function paginate($items, $perPage = 15, $page = null, $options = [])
     {
@@ -307,7 +267,7 @@ class ServiceController extends Controller
         $Categories= Category::with(['section','sizes'])->get();
 
         $services = Product::with('images')->findOrFail($service);
-        return view('admin.products.edit', 
+        return view('admin.products.edit',
         compact('page_title', 'services', 'Categories','empty_message' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
 
     }
@@ -325,7 +285,7 @@ class ServiceController extends Controller
         $services = Product::
         with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
             ->latest()->paginate(getPaginate());
-        return view('admin.products.create', 
+        return view('admin.products.create',
         compact('page_title', 'empty_message' ,'Colors','Categories','Sizes','Conditions','Materials','Sections','branchs'));
     }
 
