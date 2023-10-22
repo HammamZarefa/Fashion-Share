@@ -121,14 +121,16 @@
                             </tbody>
                             
                         </table><!-- table end -->
-                        <div class="pagination">
-                            {!! $services->links() !!}
-                            </div>       <!-- a Tag for previous page -->
-                               
+
+                    
+    <!-- a Tag for previous page -->
                     </div>
                     
                 </div>
                 
+                <div class="" style="margin:auto; margin-bottom: 20px">
+                    {!! $services->links("pagination::bootstrap-4") !!}
+                </div> 
             </div><!-- card end -->
             
         </div>
