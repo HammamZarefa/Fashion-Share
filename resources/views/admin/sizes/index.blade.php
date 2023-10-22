@@ -7,7 +7,7 @@
        
 
                     <select class="custom-select" name="branch" onchange="window.location.href=this.options[this.selectedIndex].value;">
-                        <option disabled selected>Select Section</option>
+                        <option disabled selected>Select Categories</option>
                         @foreach($categories as $category)
                         <option value=" {{ route('admin.sizes.search',$category->id) }}">
                             
@@ -23,8 +23,8 @@
                             <thead>
                             <tr>
                                 <th scope="col">@lang('Name')</th>
-                                <th scope="col">@lang('Category')</th>
-                                <th scope="col">@lang('Image')</th>
+                                <th scope="col">@lang('Categories')</th>
+                                {{-- <th scope="col">@lang('Image')</th> --}}
                                 <th scope="col">@lang('Actions')</th>
                             </tr>
                             </thead>
@@ -32,8 +32,7 @@
                             @forelse ($sizes as $item)
                                 <tr>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
-                                    <td data-label="@lang('Name')">{{__($item->category->name ?? '')}}</td>
-                                    <td data-label="@lang('Image')"><img src="{{ getImage(imagePath()['category']['path'].'/'. $item->image,imagePath()['category']['size'])}}"></td>
+                                    <td data-label="@lang('Categories')">{{__($item->category->name ?? '')}}</td>
                                     <td data-label="@lang('Action')">
                                         <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
@@ -84,7 +83,7 @@
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
                                 <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                                    <option selected disabled>Select Section</option>
+                                    <option selected disabled>Select Categories</option>
                                     @foreach($categories as $category)
                                        <option value="{{$category->id}}" >{{ $category->name }}</option>
                                     @endforeach
