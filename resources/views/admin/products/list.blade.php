@@ -272,14 +272,14 @@
                                   {{-- Price --}}
                                 <div class="col mb-3">
                                     <label for="validationCustomUsername">@lang('Price')</label>
-                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername" placeholder="Username" >
+                                      <input disabled type="text" name="price" class="form-control" id="validationCustomUsername">
                                       
                                 </div>
             
                                   {{-- Color --}}
                                 <div class="col mb-3">
                                       <label for="validationCustom03">@lang('Color')</label>
-                                      <input disabled type="text" name="color" class="form-control" id="validationCustomUsername" placeholder="Username" >
+                                      <input disabled type="text" name="color" class="form-control" id="validationCustomUsername"  >
                                  
                                 </div>
             
@@ -287,7 +287,7 @@
                                      {{-- status --}}
                                      <div class="col mb-3 ">
                                         <label for="validationCustom05">@lang('Status')</label>
-                                        <input disabled type="text" name="status" class="form-control" id="validationCustom05" placeholder="Zip">
+                                        <input disabled type="text" name="status" class="form-control" id="validationCustom05" >
       
                                         <div class="invalid-feedback">Example invalid custom select feedback</div>
                   
@@ -298,7 +298,7 @@
                                     {{-- Condition --}}
                                     <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Condition')</label>
-                                      <input disabled type="text" name="condition" class="form-control" id="validationCustomUsername" placeholder="Username" >
+                                      <input disabled type="text" name="condition" class="form-control" id="validationCustomUsername"  >
 
                                   </div>
               
@@ -307,14 +307,14 @@
                                   {{-- Material --}}
                                   <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Material')</label>
-                                     <input disabled type="text" name="material" class="form-control" id="validationCustomUsername" placeholder="Username">
+                                     <input disabled type="text" name="material" class="form-control" id="validationCustomUsername" >
 
                                   </div>
               
                                    {{-- Sale --}}
                                    <div class="col mb-3 ">
                                      <label for="validationCustom05">@lang('Sale?')</label>
-                                    <input name="is_for_sale" disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" >
+                                    <input name="is_for_sale" disabled type="text" class="form-control" id="validationCustom05"  >
 
                                   </div>
               
@@ -323,14 +323,14 @@
                                   {{-- Description --}}
                                   <div class="col mb-3">
                                     <label for="validationCustom02">@lang('Description')</label>
-                                    <textarea disabled type="textarea"  name="description" class="form-control" id="validationCustom02" placeholder="Last name"  aria-describedby="inputGroupPrepend"></textarea>
+                                    <textarea disabled type="textarea"  name="description" class="form-control" id="validationCustom02"   aria-describedby="inputGroupPrepend"></textarea>
                                    
                                   </div>
                                   
                                   {{-- Location --}}
                                   <div class="col mb-3">
                                       <label for="validationCustom05">@lang('Location')</label>
-                                      <textarea disabled type="text" class="form-control" id="validationCustom05" placeholder="Zip" ></textarea>
+                                      <textarea disabled type="text" class="form-control" id="validationCustom05"  ></textarea>
                                      
                                   </div>
               
@@ -357,7 +357,7 @@
                                    {{-- Size --}}
                                    <div class="col mb-3">
                                     <label for="validationCustom04">@lang('Size')</label>
-                                    <input disabled type="text" name="size" class="form-control" id="validationCustomUsername" placeholder="Username" >
+                                    <input disabled type="text" name="size" class="form-control" id="validationCustomUsername" >
                                    
                                   </div>
                                   

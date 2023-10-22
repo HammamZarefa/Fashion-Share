@@ -169,7 +169,7 @@
                       <div class="col mb-3">
                         <label for="validationCustom05">@lang('Categories')</label>
                         <select disabled onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                          <option>select category</option>
+                          {{-- <option>select category</option> --}}
                           {{-- @foreach($Categories as $Categorie)
                              <option value="{{$Categorie->id}}" >{{ $Categorie->name }}</option>
                           @endforeach --}}
@@ -187,7 +187,7 @@
                       <div class="col mb-3 ">
                         <label for="validationCustom04">@lang('Size')</label>
                         <select disabled  id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                          <option>select size</option>
+                          {{-- <option>select size</option> --}}
 
                           {{-- @foreach($Sizes as $size)
                              <option value="{{$size->id}}"  >{{ $size->name }}</option>
@@ -254,12 +254,13 @@ function addRowCategory(ele)
       x.add(option);
 
       category.forEach(function(item, index) {
-      var option = document.createElement("option");
-      option.value = item.id;
-      option.innerHTML = item.name;
-      x.add(option);
+        var option = document.createElement("option");
+        option.value = item.id;
+        option.innerHTML = item.name;
+        x.add(option);
       }
     );
+
   }
 
   function removeOptions(selectElement) {
@@ -267,6 +268,8 @@ function addRowCategory(ele)
    for(i = L; i >= 0; i--) {
       selectElement.remove(i);
    }
+
+
 }
 
 function addRowSizes(ele){
@@ -278,10 +281,7 @@ function addRowSizes(ele){
       document.getElementById("categ").style.visibility = 'hidden';
       document.getElementById("sizes").disabled=false;      
   
-      var option = document.createElement("option");
-      option.innerHTML = "select size";
-      option.disabled=true;
-      x.add(option);
+      
 
 
       size.forEach(function(item, index) {
