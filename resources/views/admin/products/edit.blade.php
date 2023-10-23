@@ -200,6 +200,8 @@
                  
                     </div>
                     <div class="mb-3">
+                      <label for="validationCustom05">@lang('Upload Image')</label>
+
                       <input 
                           type="file" 
                           name="images[]" 

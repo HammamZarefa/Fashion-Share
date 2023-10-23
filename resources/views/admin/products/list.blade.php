@@ -54,7 +54,7 @@
                                         @endif
                                     </td>
                                     <td data-label="@lang('Action')">
-                                        <a href="{{ route('admin.services.edite', $item->id) }}"
+                                        <a href="{{ route('admin.services.edit', $item->id) }}"
                                            class="icon-btn editGatewayBtn" data-toggle="tooltip" title="@lang('Edit')"
                                            data-original-title="@lang('Edit')">
                                             <i class="la la-pencil"></i>
@@ -472,8 +472,6 @@
                 modal.find('input[name=location]').val(location);
 
                 var sections = $(this).data('sections');
-                console.log(sections);
-
                 modal.find('input[name=section]').val(sections);
 
                 var status = $(this).data('status');
@@ -483,6 +481,10 @@
                 modal.find('input[name=images]').val(images);
 
                 var container = document.getElementById('imageContainer');
+                var removeOldImage =  document.getElementsByClassName("col-lg-4");
+                while(removeOldImage.length > 0){
+                    removeOldImage[0].parentNode.removeChild(removeOldImage[0]);
+                }
                 var keys = [];
                 for (var i = 0, j = images.length; i < j; i++) {
 
@@ -500,11 +502,14 @@
                     img.alt = "Waterfall";
 
                     for (var key in images[i]) {
-                        if (images[0].hasOwnProperty(key)) {
+                        if (images[i].hasOwnProperty(key)) {
                             if (key == "path") {
-                                var path = "{{ getImage(imagePath()['service']['path'].'/',imagePath()['service']['size'])}}";
-                                // var path= "{{asset('storage/')}}";
-                                img.src = path + '/' + images[i][key];
+                                // var path = "{{ getImage(imagePath()['service']['path'].'/',imagePath()['service']['size'])}}";
+                                // img.src = path + '/' + images[i][key];
+
+                                 var path = "{{ url('assets/images/service/')}}";
+                                img.src = path + '/' + images[i][key] ;
+
                                 card.appendChild(img);
 
                             }

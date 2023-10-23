@@ -26,11 +26,11 @@
                             <thead>
                             <tr>
                                 <th scope="col">@lang('ID')</th>
-                                <th scope="col">@lang('Prosuct')</th>
+                                <th scope="col">@lang('Service')</th>
                                 <th scope="col">@lang('Price')</th>
                                 <th scope="col">@lang('Status')</th>
-                                <th scope="col">@lang('date_of_process')</th>
-                                <th scope="col">@lang('branch')</th>
+                                <th scope="col">@lang('Date Of Process')</th>
+                                <th scope="col">@lang('Branch')</th>
                             </tr>
                             </thead>
                             <tbody>

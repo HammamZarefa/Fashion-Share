@@ -71,7 +71,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('services/update/{id}', 'ServiceController@update')->name('services.update');
         Route::post('services/status/{id}', 'ServiceController@status')->name('services.status');
         Route::get('services/search', 'ServiceController@search')->name('services.search');
-        Route::get('services/edite/{id}', 'ServiceController@edite')->name('services.edite');
+        Route::get('services/edit/{id}', 'ServiceController@edit')->name('services.edit');
         Route::get('services/create', 'ServiceController@create')->name('services.create');
         Route::get('services/deleteImage/{id}', 'ServiceController@deleteImage')->name('services.deleteImage');
         Route::get('services/SaleOrRent/{id}', 'ServiceController@SaleOrRent')->name('services.SaleOrRent');

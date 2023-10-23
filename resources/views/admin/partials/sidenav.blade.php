@@ -48,7 +48,7 @@
                 <li class="sidebar-menu-item {{menuActive('admin.invoices')}}">
                     <a href="{{route('admin.invoices')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>
-                        <span class="menu-title">@lang('invoices')</span>
+                        <span class="menu-title">@lang('Invoices')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.color*')}}">

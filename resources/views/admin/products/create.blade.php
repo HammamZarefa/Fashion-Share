@@ -196,7 +196,7 @@
                     
                     </div>
                     <div class=" mb-3">
-                      <label for="validationCustom05">@lang('Images')</label>
+                      <label for="validationCustom05">@lang('Upload Image')</label>
 
                       <input 
                           type="file" 
@@ -257,6 +257,9 @@ function addRowCategory(ele)
 }
 
 function addRowSizes(ele){
+   removeOptions(document.getElementById('sizes'));
+    
+1
       var name= ele;
       Categories = {!! json_encode($Categories) !!};
       if(Categories!= null){
