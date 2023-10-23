@@ -137,7 +137,7 @@
 
                         <div class="col mb-3">
                           <label for="validationCustom05">@lang('Location')</label>
-                          <textarea rows="2" type="text" name="location" class="form-control" id="validationCustom05" placeholder="@lang('Location')" value="" required></textarea>
+                          <textarea rows="2" type="text" name="location" class="form-control" id="validationCustom05" placeholder="@lang('Location')" value=""></textarea>
                           <div class="invalid-feedback">
                             Please provide a valid Location.
                           </div>
