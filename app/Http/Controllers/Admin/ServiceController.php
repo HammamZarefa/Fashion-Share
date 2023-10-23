@@ -70,7 +70,7 @@ class ServiceController extends Controller
             'is_for_sale' => 'required',
             'images'=>'array',
             'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
-            'location'  => 'string',
+            'location'  => 'nullable|string',
             'status'=>'required',
         ]);
         if ($validator->fails()) {
