@@ -40,7 +40,6 @@ class CategoryController extends Controller
             if ($request->hasFile('image')) {
                 try {
                     $filename = uploadImage($image, $path, $size, $filename);
-//                    dd($filename);
                 } catch (\Exception $exp) {
                     $notify[] = ['errors', 'Image could not be uploaded.'];
                     return back()->withNotify($notify);
@@ -68,10 +67,10 @@ class CategoryController extends Controller
         $image = $request->file('image');
         $path = 'assets/images/category/';
         $size = imagePath()['category']['size'];
-        $filename = $request->image;
+        $oldImage = $category->image;
         if ($request->hasFile('image')) {
             try {
-                $filename = uploadImage($image, $path, $size, $filename);
+                $filename = uploadImage($image, $path, $size, $oldImage);
             } catch (\Exception $exp) {
                 $notify[] = ['errors', 'Image could not be uploaded.'];
                 return back()->withNotify($notify);

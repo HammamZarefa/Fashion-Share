@@ -138,7 +138,7 @@ class ServiceController extends Controller
             'is_for_sale' => 'boolean',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status'=>'nullable',
-
+            'location'  => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -157,6 +157,7 @@ class ServiceController extends Controller
             'branch_id',
             'status',
             'is_for_sale',
+            'location',
         ]));
 
         if ($request->category_id)
@@ -255,7 +256,7 @@ class ServiceController extends Controller
         return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'search', 'categories'));
     }
 
-    public function edite($service){
+    public function edit($service){
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $Colors = Color::all();

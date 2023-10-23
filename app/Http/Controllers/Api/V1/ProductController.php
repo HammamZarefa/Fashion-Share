@@ -98,7 +98,8 @@ class ProductController extends Controller
             'condition_id' => 'required|exists:conditions,id',
             'branch_id' => 'required|exists:branches,id',
             'is_for_sale' => 'required',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'location'=>'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -117,25 +118,30 @@ class ProductController extends Controller
             'user_id' => auth()->id(),
             'branch_id' => $request->input('branch_id'),
             'status' => 'pending',
-            'is_for_sale' => $request->input('is_for_sale')
+            'is_for_sale' => $request->input('is_for_sale'),
+            'location'=> $request->input('location'),
         ]);
         $product->categories()->attach($request->category_id);
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('public/images', $filename);
+                $path = imagePath()['service']['path'];
+                $size = imagePath()['service']['size'];
+                $filename = $image;
 
+                $filename = uploadImage($image, $path, $size, $filename);
+                // $product->image=$filename;
                 // Create the image record in the database
                 $product->images()->create([
-                    'path' => 'images/' . $filename,
+                    'path' => $filename,
                     // Add other image fields as needed
                 ]);
             }
         }
+
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = auth()->id();
         $adminNotification->title = 'New product request ';
-        $adminNotification->click_url = urlPath('admin.services.edit', $product->id);
+        $adminNotification->click_url = url('admin/services/edit', $product->id);
         $adminNotification->save();
         return response()->json(['message' => 'Product created successfully', 'data' => $product, 'status' => 201]);
     }
@@ -154,7 +160,8 @@ class ProductController extends Controller
             'condition_id' => 'exists:conditions,id',
             'branch_id' => 'exists:branches,id',
             'is_for_sale' => 'boolean',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'location'=>'nullable|string'
         ]);
 
         if ($validator->fails()) {
@@ -172,7 +179,8 @@ class ProductController extends Controller
             'size_id',
             'condition_id',
             'branch_id',
-            'is_for_sale'
+            'is_for_sale',
+            'location'
         ]));
 
         if ($request->category_id)

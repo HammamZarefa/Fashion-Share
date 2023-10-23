@@ -117,9 +117,9 @@ class AdminController extends Controller
     }
 
     public function notifications(){
-        $notifications = AdminNotification::orderBy('id','desc')->paginate(getPaginate());
+        $adminNotifications = AdminNotification::with('user')->orderBy('id','desc')->get();
         $page_title = 'Notifications';
-        return view('admin.notifications',compact('page_title','notifications'));
+        return view('admin.notifications',compact('page_title','adminNotifications'));
     }
 
 

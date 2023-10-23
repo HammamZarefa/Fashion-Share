@@ -39,7 +39,9 @@
                                     <td data-label="@lang('Action')">
                                         <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
-                                           data-url="{{ route('admin.categories.update', $item->id)}}" data-name="{{ $item->name }}"
+                                           data-url="{{ route('admin.categories.update', $item->id)}}"
+                                           data-name="{{ $item->name }}"
+                                           data-section="{{$item->section->id ?? ''}}"
                                            data-field="{{$item->field_name}}" >
                                             <i class="la la-edit"></i>
                                         </a>
@@ -135,7 +137,7 @@
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
                                 <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
-                                    <option selected disabled>Select Section</option>
+                                    {{-- <option selected disabled>Select Section</option> --}}
 
                                     @if(!$categories->isEmpty())
                                     @foreach($sections as $section)
@@ -199,8 +201,11 @@
                 var modal = $('#editModal');
                 var url = $(this).data('url');
                 var name = $(this).data('name');
+                var section =$(this).data('section');
+
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
+                modal.find('select[name=section_id]').val(section);
                 modal.modal('show');
             });
 

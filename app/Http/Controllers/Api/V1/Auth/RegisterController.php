@@ -19,10 +19,11 @@ class RegisterController extends Controller
     {
         try {
             $request->validate([
-                'email' => ['required', 'email'],
+                'email' => ['required', 'email','unique:users,email'],
                 'password' => ['required'],
                 'phone' => ['required']
             ]);
+            
             $user = User::create([
                 'email' => $request->email,
                 'phone' => $request->phone,
