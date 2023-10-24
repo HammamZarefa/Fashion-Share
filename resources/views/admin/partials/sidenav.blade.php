@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.branchs*')}}">
-                    <a href="{{route('admin.branch','Branch')}}" class="nav-link ">
+                    <a href="{{route('admin.branch')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>
                         <span class="menu-title">@lang('Branch')</span>
                     </a>
