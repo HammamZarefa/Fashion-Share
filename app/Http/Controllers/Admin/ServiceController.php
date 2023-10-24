@@ -36,22 +36,24 @@ class ServiceController extends Controller
 
     public function index()
     {
+        $sections = Section::all();
         $branch = Auth::guard('admin')->user()->branch_id;
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $categories = Category::orderBy('name')->get();
         if(is_null($branch)){
-
+            $Branches = Branch::whereHas('products')->get();
             $services = Product::
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
            ->latest()->paginate(getPaginate());
         }
         else{
+            $Branches = Branch::find($branch);
             $services = Product::
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
            ->where('branch_id',$branch)->latest()->paginate(getPaginate());
            }
-        return view('admin.products.list', compact('page_title', 'services', 'empty_message', 'categories'));
+        return view('admin.products.list', compact('page_title','sections', 'services', 'Branches','empty_message', 'categories'));
     }
 
     public function store(Request $request)
@@ -318,19 +320,22 @@ class ServiceController extends Controller
 
     public function SaleOrRent($id){
         $product = Product::find($id);
-        if($product->user)
-        {
+        
         if($product->is_for_sale){
             $product->update(['status'=>'sale']);
             $this->insertInInvoices($product);
+            if($product->user){
             $this->send_event_notification($product->user,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
+            }
         }
         else{
             $product->update(['status'=>'rent']);
             $this->insertInInvoices($product);
+            if($product->user){
             $this->send_event_notification( $product->user ,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
+            }
         }
-        }
+        
         $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);  
     }
@@ -346,5 +351,55 @@ class ServiceController extends Controller
         $product->delete();
         $notify[] = ['success', 'Service Deleted!'];
         return back()->withNotify($notify);  
+    }
+
+    public function Filter(Request $request){
+       $request->validate([
+            'category_id'=>'nullable|exists:categories,id',
+            'section_id'=>'nullable|exists:sections,id',
+            'branch_id'=>'nullable|exists:branches,id',
+        ]);
+        // dd($request);
+        $branch = Auth::guard('admin')->user()->branch_id;
+        $sections = Section::all();
+        $page_title = 'Services';
+        $empty_message = 'No Result Found';
+        $categories = Category::orderBy('name')->get();
+        if(is_null($branch)){
+            $Branches = Branch::whereHas('products')->get();
+            $services = Product::
+            when($request->category_id, function ($query) use ($request) {
+                $query->where('category_id', $request->category_id);
+            })
+            ->when($request->section_id, function ($query) use ($request) {
+                $query->where('section_id', $request->section_id);
+            })
+            ->when($request->branch_id, function ($query) use ($request) {
+                $query->where('branch_id', $request->branch_id);
+            })->
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+           ->latest()->paginate(getPaginate());
+        }
+        else{
+            $Branches = Branch::find($branch);
+            $services = Product::
+            when($request->category_id, function ($query) use ($request) {
+                $query->where('category_id', $request->category_id);
+            })
+            ->when($request->section_id, function ($query) use ($request) {
+                $query->where('section_id', $request->section_id);
+            })
+            ->when($request->branch_id, function ($query) use ($request) {
+                $query->where('branch_id', $request->branch_id);
+            })->
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+           ->where('branch_id',$branch)->latest()->paginate(getPaginate());
+        }
+        return view('admin.products.list', compact('page_title','sections', 'services', 'Branches','empty_message', 'categories'));
+   
+
+       
+        
+        
     }
 }

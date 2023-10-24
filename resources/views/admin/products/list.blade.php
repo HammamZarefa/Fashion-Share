@@ -3,7 +3,50 @@
     <div class="row">
         <div class="col-lg-12">
             
+           
             <div class="card">
+              
+                <div class="card-header">
+                    <form id="myForm"  method="POST" action="{{ route('admin.services.filter') }}">
+                        @csrf  
+
+                        <div class="row mb-none-30">
+
+                        <div class="col-xl-3  col-sm-6 mb-30">
+                            <select  name="category_id" id="categorylist" class="form-control statusfield">
+                                <option value="" selected>@lang('All Branch')</option>
+                                @foreach($Branches as $Branche)
+                                    <option value="{{$Branche->id}}">@lang($Branche->name)</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-xl-3  col-sm-6 mb-30">
+                            <select  name="section_id" id="categorylist" class="form-control statusfield">
+                                <option value="" selected>@lang('All Sections')</option>
+                                @foreach($sections as $section)
+                                    <option value="{{$section->id}}">@lang($section->name)</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-xl-3  col-sm-6 mb-30">
+                            <select  name="branch_id" id="categorylist" class="form-control statusfield">
+                                <option value="" selected>@lang('All Category')</option>
+                                @foreach($categories as $categorie)
+                                    <option value="{{$categorie->id}}">@lang($categorie->name)</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <button class="btn btn-success" type="submit">Search</button>
+                        </div>
+                    </div>
+
+                    </form>
+                </div>
+
                 <div class="card-body">
                     <div class="table-responsive--sm table-responsive">
                         <table class="table table--light style--two custom-data-table">
@@ -89,13 +132,14 @@
                                            data-field="{{$item->field_name}}">
                                         <i class="la la-eye"></i>
                                         </a>
+                                        @if($item->status == "available")
                                         <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
                                            data-original-title="$" data-toggle="tooltip"
                                            data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
                                            data-is_for_sale="{{ $item->is_for_sale }}">
                                             <i class="la la-usd"></i>
                                         </a>
-
+                                        @endif
                                         <a  href="javascript:void(0)"  class="icon-btn bg--danger ml-1 DeleteService" 
                                             data-toggle="tooltip" title="@lang('Delete')"
                                             data-url="{{ route('admin.services.delete', $item->id)}}"
@@ -115,9 +159,11 @@
                         <!-- a Tag for previous page -->
                     </div>
                 </div>
+
                 <div class="" style="margin:auto; margin-bottom: 20px">
                     {!! $services->links("pagination::bootstrap-4") !!}
                 </div>
+                
             </div><!-- card end -->
         </div>
     </div>
@@ -429,10 +475,6 @@
             "use strict";
 
             $('.SaleOrRentBtn').on('click', function () {
-                // var modal = $('#SaleOrRent');
-                // var url = $(this).data('url');
-                // modal.find('.method-name').text($(this).data('name'));
-
                 var modal = $('#SaleOrRent');
                 var url = $(this).data('url');
                 var name = $(this).data('name');
@@ -546,9 +588,6 @@
                     for (var key in images[i]) {
                         if (images[i].hasOwnProperty(key)) {
                             if (key == "path") {
-                                // var path = "{{ getImage(imagePath()['service']['path'].'/',imagePath()['service']['size'])}}";
-                                // img.src = path + '/' + images[i][key];
-
                                  var path = "{{ url('assets/images/service/')}}";
                                 img.src = path + '/' + images[i][key] ;
 
@@ -563,5 +602,9 @@
             });
         });
 
+
+        function myFunction() {
+            document.getElementById("myForm").submit();
+        }
     </script>
 @endpush
