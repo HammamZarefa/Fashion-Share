@@ -50,7 +50,7 @@
                         <span class="menu-title">@lang('Size')</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-menu-item {{menuActive('admin.invoices')}}">
                     <a href="{{route('admin.invoices')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>
@@ -75,7 +75,7 @@
                         <span class="menu-title">@lang('Material')</span>
                     </a>
                 </li>
-                
+
                 <li class="sidebar-menu-item">
                     <a href="{{route('admin.banner')}}" class="nav-link ">
                         <i class="menu-icon la la-list"></i>
@@ -196,13 +196,13 @@
 {{--                        </a>--}}
 {{--                    </li>--}}
 
-{{--                    <li class="sidebar-menu-item  {{menuActive(['admin.language.manage','admin.language.key'])}}">--}}
-{{--                        <a href="{{route('admin.language.manage')}}" class="nav-link"--}}
-{{--                           data-default-url="{{ route('admin.language.manage') }}">--}}
-{{--                            <i class="menu-icon las la-language"></i>--}}
-{{--                            <span class="menu-title">@lang('Language') </span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
+                    <li class="sidebar-menu-item  {{menuActive(['admin.language.manage','admin.language.key'])}}">
+                        <a href="{{route('admin.language.key', (\App\Models\Language::where('code' ,'ar')->first())->id)}}" class="nav-link"
+                           data-default-url="">
+                            <i class="menu-icon las la-language"></i>
+                            <span class="menu-title">@lang('Translation') </span>
+                        </a>
+                    </li>
 
                 @endif
 

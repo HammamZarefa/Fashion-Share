@@ -89,13 +89,13 @@
                                     <td><span class="name">{{__($item->name)}}</span></td>
                                     <td>
                                         @if(@$item->images[0])
-                                        <img
+                                        <img width="40px"
                                         src="{{ getImage(imagePath()['service']['path'].'/'. $item->images[0]->path,imagePath()['service']['size'])}}"
-                                                    class="card-img-top"
+
                                         alt="Waterfall" />
                                         @endif
                                      </td>
-                                    
+
                                     <td data-label="@lang('User')">
                                         <span class="name">{{__(@$item->user->email)}}</span>
                                     </td>

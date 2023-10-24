@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\GenerateSkuAction;
 use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
@@ -48,10 +49,10 @@ class ServiceController extends Controller
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
                 ->latest()->paginate(getPaginate());
         } else {
-            $branches = Branch::find($branch);
+            $branches = $branch;
             $services = Product::
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
-                ->where('branch_id', $branch)->latest()->paginate(getPaginate());
+                ->where('branch_id', $branch->id)->latest()->paginate(getPaginate());
         }
         return view('admin.products.list',
             compact('page_title', 'sections', 'services', 'branches', 'empty_message', 'categories'));
@@ -98,6 +99,9 @@ class ServiceController extends Controller
             'is_for_sale' => $request->input('is_for_sale'),
             'user_id' => $request->input('user_id'),
         ]);
+        $product->update ([
+            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+        ]) ;
         $product->categories()->attach($request->category_id);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
@@ -354,7 +358,7 @@ class ServiceController extends Controller
     public function delete($id)
     {
         $product = Product::findOrFail($id);
-        
+
         categoryProduct::where('product_id',$id)->delete();
 
         $images = Image::where('imagable_type', 'App\Models\Product')->where('imagable_id', $id)->get();
@@ -369,7 +373,7 @@ class ServiceController extends Controller
 
     public function Filter(Request $request)
     {
-        $branch = Auth::guard('admin')->user()->branch;
+        $branch = Auth::guard('admin')->user()->branch_id ?? $request->branch;
         $page_title = 'Products';
         $empty_message = 'No Result Found';
         $services = Product::
@@ -408,6 +412,6 @@ class ServiceController extends Controller
             ->find($id);
         return view('admin.products.details',
         compact('page_title', 'empty_message' ,'item'));
-  
+
     }
 }
