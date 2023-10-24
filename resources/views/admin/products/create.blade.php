@@ -22,24 +22,35 @@
                         </div>
                       </div>
 
-
                       <div class="col mb-3">
-                        <label for="validationCustom05">@lang('Branch')</label>
-                        <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                          @foreach($branchs as $branch)
-                             <option value="{{$branch->id}}"  @if ($loop->first) selected @endif>{{ $branch->name }}</option>
+                        <label for="validationCustom05">@lang('User')</label>   
+                        <select name="condition_id" value="" class="form-control selectpicker"  data-live-search="true" >
+                          <option selected></option>
+                          @foreach($Users as $user)
+                             <option value="{{$user->id}}"   >{{ $user->email }}</option>
                           @endforeach
-
                        </select>
-                        {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
-                        <div class="invalid-feedback">
-                          Please provide a valid Branch.
-                        </div>
-                    </div>
+                      </div>
+
+                     
 
                           <div class="w-100"></div>
 
 
+                          <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Branch')</label>
+                            <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                              @foreach($branchs as $branch)
+                                 <option value="{{$branch->id}}"  @if ($loop->first) selected @endif>{{ $branch->name }}</option>
+                              @endforeach
+    
+                           </select>
+                            {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
+                            <div class="invalid-feedback">
+                              Please provide a valid Branch.
+                            </div>
+                        </div>
+                        
                       <div class="col mb-3">
                         <label for="validationCustomUsername">@lang('Price')</label>
                         <div class="input-group">
@@ -50,6 +61,7 @@
                         </div>
                       </div>
 
+                     
                       
                         <div class="col mb-3">
                           <label for="validationCustom03">@lang('Color')</label>
@@ -89,7 +101,6 @@
                                <option value="{{$Condition->id}}"  @if ($loop->first) selected @endif >{{ $Condition->name }}</option>
                             @endforeach
                          </select>
-                          {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
                           <div class="invalid-feedback">
                             Please provide a valid Condition.
                           </div>
@@ -148,15 +159,13 @@
 
                     <div class="col mb-3 ">
                       
-                      <label for="validationCustom05">@lang('Section')</label>
-                      <select   onchange="addRowCategory(this.value)" id="sections"  name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                        {{-- <option>select section</option> --}}
+                        <label for="validationCustom05">@lang('Section')</label>
+                        <select   onchange="addRowCategory(this.value)" id="sections"  name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
                         @foreach($Sections as $Section)
                            <option value="{{$Section->id}}" @if ($loop->first) selected @endif >{{ $Section->name }}</option>
                         @endforeach
-                      </select>
-                      {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="" required> --}}
-                      <div class="invalid-feedback">
+                       </select>
+                       <div class="invalid-feedback">
                         Please provide a valid Section.
                       </div>
                       <div class="w-100"></div>
@@ -171,9 +180,7 @@
                         <select  onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
         
                        </select>
-                       {{-- <div id="sect" style="font-size: 14px;color:red">
-                        Please select section before.
-                        </div> --}}
+                       
                         <div class="invalid-feedback">
                           Please provide a valid Categories.
                         </div>
@@ -185,9 +192,7 @@
                         <select   id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
                          
                        </select>
-                       {{-- <div id="categ" style="font-size: 14px;color:red">
-                        Please select category before.
-                       </div> --}}
+                      
                         <div class="invalid-feedback">
                           Please provide a valid Size.
                         </div>

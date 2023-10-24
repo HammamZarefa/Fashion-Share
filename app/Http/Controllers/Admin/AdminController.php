@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdminNotification;
+use App\Models\Branch;
+use App\Models\Category;
 use App\Models\Deposit;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Section;
 use App\Models\User;
 use App\Models\UserLogin;
 use Carbon\Carbon;
@@ -47,6 +51,10 @@ class AdminController extends Controller
 
         // User Info
         $widget['total_users'] = User::count();
+        $widget['total_Branch'] = Branch::count();
+        $widget['total_Product'] = Product::count();
+        $widget['total_Section'] = Section::count();
+        $widget['total_Category'] = Category::count();
 
 
 

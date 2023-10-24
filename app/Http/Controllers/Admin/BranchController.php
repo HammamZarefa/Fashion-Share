@@ -11,7 +11,7 @@ class BranchController extends Controller
     public function index(){
         $page_title = 'Branch';
         $empty_message = 'No Result Found';
-        $branch = Branch::all();
+        $branch = Branch::with('Admin')->get();
         return view ('admin.branch.index',compact('branch','page_title','empty_message'));
     }
 
@@ -29,7 +29,7 @@ class BranchController extends Controller
             'phone'=>'nullable|string',
             'whatsapp'=>'nullable|string',
         ]);
-        // dd($request);
+
         $branch = Branch::create([
             'name' => \request()->name,
             'address' => \request()->address,

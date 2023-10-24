@@ -23,7 +23,7 @@ class CategoryController extends Controller
     {
 
         \request()->validate([
-            'name' => 'required|string|max:70|unique:categories,name',
+            'name' => 'required|string|max:70',
             'section_id'=>'required|exists:sections,id',
             'image' => '',
         ]);
@@ -99,6 +99,6 @@ class CategoryController extends Controller
         $sections = Section::all();
         $categories = Category::with('section')->where('section_id',$id)->latest()->get();
         
-        return view('admin.categories.index', compact('page_title', 'categories','sections', 'empty_message'));
+        return view('admin.categories.index', compact('page_title','id', 'categories','sections', 'empty_message'));
       }
 }

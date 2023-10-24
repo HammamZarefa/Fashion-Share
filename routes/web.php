@@ -75,6 +75,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('services/create', 'ServiceController@create')->name('services.create');
         Route::get('services/deleteImage/{id}', 'ServiceController@deleteImage')->name('services.deleteImage');
         Route::get('services/SaleOrRent/{id}', 'ServiceController@SaleOrRent')->name('services.SaleOrRent');
+        Route::delete('services/delete/{id}', 'ServiceController@delete')->name('services.delete');
+        Route::post('services/filter', 'ServiceController@Filter')->name('services.filter');
 
         // Manage Banner
         Route::get('banner',  'BannerController@index')->name('banner');

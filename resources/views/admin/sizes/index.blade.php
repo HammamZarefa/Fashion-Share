@@ -7,9 +7,12 @@
        
 
                     <select class="custom-select" name="branch" onchange="window.location.href=this.options[this.selectedIndex].value;">
-                        <option disabled selected>Select Categories</option>
-                        @foreach($categories as $category)
-                        <option value=" {{ route('admin.sizes.search',$category->id) }}">
+                        <option selected value=" {{ route('admin.size.index') }}">
+                                                            
+                            All
+                        </option>          
+                      @foreach($categories as $category)
+                        <option {{@$id == $category->id ? 'selected' : ''}} value=" {{ route('admin.sizes.search',$category->id) }}">
                             
                             {{ $category->name }}
                         </option>

@@ -24,21 +24,31 @@
 
 
                       <div class="col mb-3">
-                        <label for="validationCustom05">@lang('Branch')</label>
-                        <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true">
-                          @foreach($branchs as $branch)
-                             <option value="{{$branch->id}}" {{ $services->branch_id == $branch->id ? "selected" :""}}>{{ $branch->name }}</option>
+                        <label for="validationCustom03">@lang('User')</label>
+                        
+                        <select name="color_id" id="color" value="" class="form-control selectpicker"  data-live-search="true">
+                          @foreach($Users as $user)
+                             <option value="{{ $user->id }}"  {{ $services->user_id == $user->id ? "selected" :""}}>{{ $user->email }}</option>
                           @endforeach
                        </select>
-                        {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->branch->name)}}" required> --}}
-                        <div class="invalid-feedback">
-                          Please provide a valid Branch.
-                        </div>
-                    </div>
-
+                      </div>
+                      
+                      
                           <div class="w-100"></div>
 
-
+                          <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Branch')</label>
+                            <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true">
+                              @foreach($branchs as $branch)
+                                 <option value="{{$branch->id}}" {{ $services->branch_id == $branch->id ? "selected" :""}}>{{ $branch->name }}</option>
+                              @endforeach
+                           </select>
+                            {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->branch->name)}}" required> --}}
+                            <div class="invalid-feedback">
+                              Please provide a valid Branch.
+                            </div>
+                        </div>
+    
                       <div class="col mb-3">
                         <label for="validationCustomUsername">@lang('Price')</label>
                         <div class="input-group">
@@ -49,13 +59,13 @@
                         </div>
                       </div>
 
-                      
+                   
+
                         <div class="col mb-3">
                           <label for="validationCustom03">@lang('Color')</label>
                           
                           <select name="color_id" id="color" value="" class="form-control selectpicker"  data-live-search="true">
                             @foreach($Colors as $color)
-                            {{-- <p>{{ old('color') }}</p>; --}}
                                <option value="{{ $color->id }}"  {{ $services->color_id == $color->id ? "selected" :""}}>{{ $color->name }}</option>
                             @endforeach
                          </select>

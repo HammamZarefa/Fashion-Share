@@ -30,7 +30,7 @@ trait NotificationTrait
                 $reqData['notification']['body'] = (app()->getLocale() == 'ar')?$message_ar : $message_en;
                 $reqData['notification']['title'] = $title;
                 $reqData['notification']['content_available'] = true;
-                $reqData['notification']['badge'] = 5;
+                $reqData['notification']['badge'] = 0;
                 $reqData['notification']['priority'] = 'high';
         
         

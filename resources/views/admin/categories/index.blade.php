@@ -8,10 +8,13 @@
        
 
                     <select class="custom-select" name="branch" onchange="window.location.href=this.options[this.selectedIndex].value;">
-                        <option disabled selected>Select Section</option>
+                        <option selected value=" {{ route('admin.categories.index') }}">
+                                                            
+                            All
+                        </option>
                         @foreach($sections as $section)
-                        <option value=" {{ route('admin.categories.search',$section->id) }}">
-                            
+                        <option  {{@$id == $section->id ? 'selected' : ''}} value=" {{ route('admin.categories.search',$section->id) }}">
+                           
                             {{ $section->name }}
                         </option>
                      @endforeach

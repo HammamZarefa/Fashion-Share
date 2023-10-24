@@ -23,7 +23,7 @@ class SizesController extends Controller
     {
 
         \request()->validate([
-            'name' => 'required|string|max:70|unique:sizes,name',
+            'name' => 'required|string|max:70',
             'category_id'=>'required|exists:categories,id',
         ]);
         $request = \request();
@@ -69,6 +69,6 @@ class SizesController extends Controller
         $categories = Category::all();
         
         $sizes = Size::where('category_id',$id)->with('category')->latest()->get();
-        return view('admin.sizes.index', compact('page_title', 'sizes','categories', 'empty_message'));
+        return view('admin.sizes.index', compact('page_title', 'id','sizes','categories', 'empty_message'));
       }
 }

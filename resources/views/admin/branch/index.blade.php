@@ -10,8 +10,8 @@
                             <tr>
                                 <th scope="col">@lang('ID')</th>
                                 <th scope="col">@lang('Name')</th>
+                                <th scope="col">@lang('Admin')</th>
                                 <th scope="col">@lang('Address')</th>
-                                {{-- <th scope="col">@lang('location')</th> --}}
                                 <th scope="col">@lang('longitude')</th>
                                 <th scope="col">@lang('latitude')</th>
 
@@ -25,8 +25,8 @@
                                 <tr>
                                     <td data-label="@lang('ID')">{{__($item->id)}}</td>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
+                                    <td data-label="@lang('Admin')">{{__($item->Admin->email ?? '')}}</td>
                                     <td data-label="@lang('Adress')">{{__($item->address)}}</td>
-                                    {{-- <td data-label="@lang('Name')">{{__($item->location)}}</td> --}}
                                     <td data-label="@lang('longitude')">{{__($item->longitude)}}</td>
                                     <td data-label="@lang('latitude')">{{__($item->latitude)}}</td>
 
