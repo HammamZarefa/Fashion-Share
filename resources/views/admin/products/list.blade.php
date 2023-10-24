@@ -105,7 +105,7 @@
                                         </a>
 
                                         <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"
-                                           data-original-title="@lang('Status')" data-toggle="tooltip"
+                                           data-original-title="@lang('Change Status')" data-toggle="tooltip"
                                            data-url="{{ route('admin.services.update',$item->id)}}"
                                            data-name="{{ $item->name }}"
                                            data-field="{{$item->field_name}}">
