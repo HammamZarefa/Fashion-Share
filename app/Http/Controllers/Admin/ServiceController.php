@@ -396,10 +396,17 @@ class ServiceController extends Controller
            ->where('branch_id',$branch)->latest()->paginate(getPaginate());
         }
         return view('admin.products.list', compact('page_title','sections', 'services', 'Branches','empty_message', 'categories'));
-   
+        
+    }
 
-       
-        
-        
+    public function ditails($id){
+        $page_title = 'Services';
+        $empty_message = 'No Result Found';
+        $item = Product::
+        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            ->find($id);
+        return view('admin.products.details',
+        compact('page_title', 'empty_message' ,'item'));
+  
     }
 }

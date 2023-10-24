@@ -112,7 +112,12 @@
                                             <i class="la la-edit"></i>
                                         </a>
 
-                                        <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
+                                        <a href="{{ route('admin.services.ditails', $item->id) }}"
+                                            class="icon-btn bg--info ml-1" data-toggle="tooltip" title="@lang('Edit')"
+                                            data-original-title="@lang('Show')">
+                                            <i class="la la-eye"></i>
+                                         </a>
+                                        {{-- <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
                                            data-original-title="@lang('Show')" data-toggle="tooltip"
                                            data-name="{{ $item->name }}"
                                            data-user="{{$item->user->email ?? ''}}"
@@ -131,7 +136,7 @@
                                            data-sections="{{$item->section->name}}"
                                            data-field="{{$item->field_name}}">
                                         <i class="la la-eye"></i>
-                                        </a>
+                                        </a> --}}
                                         @if($item->status == "available")
                                         <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
                                            data-original-title="$" data-toggle="tooltip"
