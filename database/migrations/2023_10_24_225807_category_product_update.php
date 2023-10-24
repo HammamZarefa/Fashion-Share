@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('admins', function (Blueprint $table) {
-            // $table->unsignedBigInteger('branch_id')->nullable();
-            // $table->foreign('branch_id')->references('id')->on('branches')->onDelete('no action');
+        Schema::table('category_product', function (Blueprint $table) {
+            $table->foreign('product_id')->references('id')->on('sections')->onDelete('cascade');
         });
     }
 
