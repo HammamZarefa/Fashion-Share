@@ -54,6 +54,7 @@
                             <tr>
                                 <th scope="col">@lang('ID')</th>
                                 <th scope="col">@lang('Name')</th>
+                                <th scope="col">@lang('Product Image')</th>
                                 <th scope="col">@lang('User')</th>
                                 <th scope="col">@lang('Category')</th>
                                 <th scope="col">@lang('Price')</th>
@@ -68,9 +69,16 @@
                             @forelse($services as $item)
                                 <tr>
                                     <td>{{$item->id}}</td>
+                                    <td><span class="name">{{__($item->name)}}</span></td>
                                     <td>
-                                        <span class="name">{{__($item->name)}}</span>
-                                    </td>
+                                        @if(@$item->images[0])
+                                        <img
+                                        src="{{ getImage(imagePath()['service']['path'].'/'. $item->images[0]->path,imagePath()['service']['size'])}}"
+                                                    class="card-img-top"
+                                        alt="Waterfall" />
+                                        @endif
+                                     </td>
+                                    
                                     <td data-label="@lang('User')">
                                         <span class="name">{{__(@$item->user->email)}}</span>
                                     </td>
