@@ -23,7 +23,7 @@ class SizesController extends Controller
     {
 
         \request()->validate([
-            'name' => 'required|string|max:70|unique:sizes,name',
+            'name' => 'required|string|max:70',
             'category_id'=>'required|exists:categories,id',
         ]);
         $request = \request();

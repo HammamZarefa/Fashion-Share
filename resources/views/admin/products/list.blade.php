@@ -2,6 +2,7 @@
 @section('panel')
     <div class="row">
         <div class="col-lg-12">
+            
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive--sm table-responsive">
@@ -32,7 +33,7 @@
                                     </td>
                                     <td>{{$item->categories[0]->name}}</td>
                                     <td>{{$item->price}}</td>
-                                    <td>{{$item->branch->name}}</td>
+                                    <td>{{@$item->branch->name}}</td>
                                     <td>{{$item->is_for_sale ? 'Sale' : 'Rent'}}</td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status=='available' )
@@ -55,7 +56,7 @@
                                     </td>
                                     <td data-label="@lang('Action')">
                                         <a href="{{ route('admin.services.edit', $item->id) }}"
-                                           class="icon-btn editGatewayBtn" data-toggle="tooltip" title="@lang('Edit')"
+                                           class="icon-btn editGatewayBtn ml-1" data-toggle="tooltip" title="@lang('Edit')"
                                            data-original-title="@lang('Edit')">
                                             <i class="la la-pencil"></i>
                                         </a>
@@ -71,8 +72,8 @@
                                         <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
                                            data-original-title="@lang('Show')" data-toggle="tooltip"
                                            data-name="{{ $item->name }}"
-                                           data-user="{{$item->user}}"
-                                           data-branch="{{ $item->branch->name}}"
+                                           data-user="{{$item->user->email ?? ''}}"
+                                           data-branch="{{ $item->branch->name ?? ''}}"
                                            data-category="{{$item->categories[0]->name}}"
                                            data-price="{{$item->price}}"
                                            data-is_for_sale="{{$item->is_for_sale ? 'Sale' : 'Rent'}}"
@@ -86,7 +87,7 @@
                                            data-location="{{$item->locaton}}"
                                            data-sections="{{$item->section->name}}"
                                            data-field="{{$item->field_name}}">
-                                            <i class="la la-eye"></i>
+                                        <i class="la la-eye"></i>
                                         </a>
                                         <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
                                            data-original-title="$" data-toggle="tooltip"
@@ -94,6 +95,14 @@
                                            data-is_for_sale="{{ $item->is_for_sale }}">
                                             <i class="la la-usd"></i>
                                         </a>
+
+                                        <a  href="javascript:void(0)"  class="icon-btn bg--danger ml-1 DeleteService" 
+                                            data-toggle="tooltip" title="@lang('Delete')"
+                                            data-url="{{ route('admin.services.delete', $item->id)}}"
+                                            data-original-title="@lang('Delete')">
+                                             <i class="la la-trash"></i>
+                                         </a>
+
                                     </td>
                                 </tr>
                             @empty
@@ -145,6 +154,35 @@
             </div>
         </div>
     </div>
+
+
+    
+{{-- ACTIVATE METHOD MODAL --}}
+<div id="DeleteService" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    @lang('Are you sure to Delete?')
+                </h5>
+                <button type="button" class="close" style="margin: -1rem -1rem -1rem -1rem" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="POST">
+                @csrf
+                @method('DELETE')
+
+              
+                <div class="modal-footer">
+                    <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
+                    <button type="submit" class="btn btn--danger">@lang('Delete')</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
     {{-- DEACTIVATE METHOD MODAL --}}
     <div id="deactivateModal" class="modal fade" tabindex="-1" role="dialog">
@@ -247,15 +285,23 @@
 
                         </div>
 
-                        {{-- Branch --}}
+                        {{-- User --}}
                         <div class="col mb-3">
-                            <label for="validationCustom05">@lang('Branch')</label>
-                            <input disabled type="text" id="user" name="branch" class="form-control"
+                            <label for="validationCustom05">@lang('User')</label>
+                            <input disabled type="text" id="user" name="user" class="form-control"
                                    id="validationCustom01">
 
                         </div>
 
                         <div class="w-100"></div>
+
+                        {{-- Branch --}}
+                        <div class="col mb-3">
+                            <label for="validationCustom05">@lang('Branch')</label>
+                            <input disabled type="text" id="branch" name="branch" class="form-control"
+                                   id="validationCustom01">
+
+                        </div>
 
                         {{-- Price --}}
                         <div class="col mb-3">
@@ -357,18 +403,6 @@
                             <div class="container">
                                 <div class="row" id="imageContainer">
 
-
-                                    {{-- @foreach($item->images as $img)
-
-                                    <div class="col-lg-4">
-
-                                      <div class="card">
-                                        <img src="{{ asset('storage/images/'.$img->path) }}" class="card-img-top" alt="Waterfall" />
-                                      </div>
-
-                                    </div>
-                                    @endforeach --}}
-
                                 </div>
                             </div>
                         </div>
@@ -430,6 +464,14 @@
 
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
+                modal.modal('show');
+            });
+            $('.DeleteService').on('click', function () {
+                var modal = $('#DeleteService');
+                var url = $(this).data('url');
+              
+
+                modal.find('form').attr('action', url);
                 modal.modal('show');
             });
             $('.showDetails').on('click', function () {

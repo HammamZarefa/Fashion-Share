@@ -72,6 +72,7 @@ class ServiceController extends Controller
             'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
             'location'  => 'nullable|string',
             'status'=>'required',
+            'user_id'=>'nullabel|exists:users,id',
         ]);
         if ($validator->fails()) {
             $notify[] = ['error', 'validation'];
@@ -91,7 +92,8 @@ class ServiceController extends Controller
             'user_id' => auth()->id(),
             'branch_id' => $request->input('branch_id'),
             'status' =>  $request->input('status'),
-            'is_for_sale' => $request->input('is_for_sale')
+            'is_for_sale' => $request->input('is_for_sale'),
+            'user_id' => $request->input('user_id'),
         ]);
         $product->categories()->attach($request->category_id);
         if (isset($request['images'])) {
@@ -139,6 +141,8 @@ class ServiceController extends Controller
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status'=>'nullable',
             'location'  => 'nullable|string',
+            'user_id'=>'nullabel|exists:users,id',
+
         ]);
 
         if ($validator->fails()) {
@@ -158,6 +162,7 @@ class ServiceController extends Controller
             'status',
             'is_for_sale',
             'location',
+            'user_id',
         ]));
 
         if ($request->category_id)
@@ -172,7 +177,7 @@ class ServiceController extends Controller
                     // $product->image=$filename;
                     // Create the image record in the database
                     $product->images()->create([
-                        'path' => 'images/'.$filename,
+                        'path' => $filename,
                         // Add other image fields as needed
                     ]);
                 }
@@ -266,10 +271,11 @@ class ServiceController extends Controller
         $Sections = Section::with('category')->get();
         $branchs = Branch::all();
         $Categories= Category::with(['section','sizes'])->get();
+        $Users = User::all();
 
         $services = Product::with('images')->findOrFail($service);
         return view('admin.products.edit',
-        compact('page_title', 'services', 'Categories','empty_message' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
+        compact('page_title', 'services', 'Categories','empty_message','Users' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
 
     }
 
@@ -283,11 +289,13 @@ class ServiceController extends Controller
         $Materials = Material::all();
         $Sections = Section::with('category')->get();
         $branchs = Branch::all();
+        $Users = User::all();
+
         $services = Product::
         with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
             ->latest()->paginate(getPaginate());
         return view('admin.products.create',
-        compact('page_title', 'empty_message' ,'Colors','Categories','Sizes','Conditions','Materials','Sections','branchs'));
+        compact('page_title', 'empty_message' ,'Colors','Categories','Users','Sizes','Conditions','Materials','Sections','branchs'));
     }
 
     public function deleteImage($id){
@@ -322,5 +330,19 @@ class ServiceController extends Controller
         }
 
         $notify[] = ['success', 'Status updated!'];
-        return back()->withNotify($notify);    }
+        return back()->withNotify($notify);  
+    }
+
+    public function delete($id){
+        $product = Product::findOrFail($id);
+
+        $images =  Image::where('imagable_type','App\Models\Product')->where('imagable_id',$id)->get();
+        foreach($images as $image){
+                removeFile('assets/images/service/'  . $image->path);
+        }
+        $product->images()->delete();
+        $product->delete();
+        $notify[] = ['success', 'Service Deleted!'];
+        return back()->withNotify($notify);  
+    }
 }

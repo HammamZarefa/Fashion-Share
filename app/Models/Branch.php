@@ -20,6 +20,11 @@ class Branch extends Model
 
     public function products()
     {
-        $this->hasMany(Product::class);
+       return $this->hasMany(Product::class);
+    }
+
+    public function Admin()
+    {
+       return $this->hasOne(Admin::class);
     }
 }

@@ -19,7 +19,18 @@
                         <span class="menu-title">@lang('Dashboard')</span>
                     </a>
                 </li>
-
+                <li class="sidebar-menu-item {{menuActive('admin.branchs*')}}">
+                    <a href="{{route('admin.branch','Branch')}}" class="nav-link ">
+                        <i class="menu-icon las la-briefcase"></i>
+                        <span class="menu-title">@lang('Branch')</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item {{menuActive('admin.section*')}}">
+                    <a href="{{route('admin.model.index','section')}}" class="nav-link ">
+                        <i class="menu-icon las la-briefcase"></i>
+                        <span class="menu-title">@lang('Section')</span>
+                    </a>
+                </li>
                 <li class="sidebar-menu-item {{menuActive('admin.categories*')}}">
                     <a href="{{route('admin.categories.index')}}" class="nav-link ">
                         <i class="menu-icon las la-bars"></i>
@@ -39,12 +50,7 @@
                         <span class="menu-title">@lang('Size')</span>
                     </a>
                 </li>
-                <li class="sidebar-menu-item {{menuActive('admin.branchs*')}}">
-                    <a href="{{route('admin.branch','Branch')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
-                        <span class="menu-title">@lang('Branch')</span>
-                    </a>
-                </li>
+                
                 <li class="sidebar-menu-item {{menuActive('admin.invoices')}}">
                     <a href="{{route('admin.invoices')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>
@@ -69,12 +75,7 @@
                         <span class="menu-title">@lang('Material')</span>
                     </a>
                 </li>
-                <li class="sidebar-menu-item {{menuActive('admin.section*')}}">
-                    <a href="{{route('admin.model.index','section')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
-                        <span class="menu-title">@lang('Section')</span>
-                    </a>
-                </li>
+                
                 <li class="sidebar-menu-item">
                     <a href="{{route('admin.banner')}}" class="nav-link ">
                         <i class="menu-icon la la-list"></i>

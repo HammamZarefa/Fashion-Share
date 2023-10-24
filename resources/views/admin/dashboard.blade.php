@@ -20,7 +20,84 @@
                 </div>
             </div>
         </div><!-- dashboard-w1 end -->
-    </div><!-- row end-->
+    
+       
+        <div class="col-xl-3  col-sm-6 mb-30">
+            <div class="dashboard-w1 bg--warning b-radius--10 box-shadow">
+                <div class="icon">
+                    <i class="fa fa-store-alt"></i>
+                </div>
+                <div class="details">
+                    <div class="numbers">
+                        <span class="amount">{{$widget['total_Product']}}</span>
+                    </div>
+                    <div class="desciption">
+                        <span class="text--small">@lang('Total Product')</span>
+                    </div>
+                    <a href="{{route('admin.services.index')}}"
+                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3  col-sm-6 mb-30">
+            <div class="dashboard-w1 bg--secondary b-radius--10 box-shadow">
+                <div class="icon">
+                    <i class="fa fa-store-alt"></i>
+                </div>
+                <div class="details">
+                    <div class="numbers">
+                        <span class="amount">{{$widget['total_Branch']}}</span>
+                    </div>
+                    <div class="desciption">
+                        <span class="text--small">@lang('Total Branch')</span>
+                    </div>
+                    <a href="{{route('admin.branch')}}"
+                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-xl-3  col-sm-6 mb-30">
+            <div class="dashboard-w1 bg--success b-radius--10 box-shadow">
+                <div class="icon">
+                    <i class="fa fa-store-alt"></i>
+                </div>
+                <div class="details">
+                    <div class="numbers">
+                        <span class="amount">{{$widget['total_Category']}}</span>
+                    </div>
+                    <div class="desciption">
+                        <span class="text--small">@lang('Total Category')</span>
+                    </div>
+                    <a href="{{route('admin.categories.index')}}"
+                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
+                </div>
+            </div>
+        </div>
+
+            
+        <div class="col-xl-3  col-sm-6 mb-30">
+            <div class="dashboard-w1 bg--info b-radius--10 box-shadow">
+                <div class="icon">
+                    <i class="fa fa-store-alt"></i>
+                </div>
+                <div class="details">
+                    <div class="numbers">
+                        <span class="amount">{{$widget['total_Section']}}</span>
+                    </div>
+                    <div class="desciption">
+                        <span class="text--small">@lang('Total Section')</span>
+                    </div>
+                    <a href="{{route('admin.model.index','section')}}"
+                       class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
+                </div>
+            </div>
+        </div>
+        <!-- dashboard-w1 end -->
+    </div>
+    <!-- row end-->
 
 
 {{--    <div class="row mt-50 mb-none-30">--}}
