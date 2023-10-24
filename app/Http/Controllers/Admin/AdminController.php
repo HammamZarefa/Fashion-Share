@@ -23,7 +23,6 @@ class AdminController extends Controller
 
     public function search()
     {
-
         $extension='.blade.php';
         $path = 'resources/views';
         $names=['dashboard'];
@@ -31,8 +30,6 @@ class AdminController extends Controller
         foreach($files as $f){
             $abs_path = $path.'/'.$f;
             if(is_dir($abs_path)){ //directory, recurse
-
-
 
             } else {  //file, test if the name ends with $extension
                 $ext_length = strlen($extension);
