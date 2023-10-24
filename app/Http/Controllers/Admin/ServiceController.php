@@ -310,8 +310,6 @@ class ServiceController extends Controller
 
     public function SaleOrRent($id){
         $is_for_sale = Product::find($id)->is_for_sale;
-        if( User::find(Product::find($id)->user->id)
-           {
         if($is_for_sale){
             Product::find($id)->update(['status'=>'sale']);
             $this->insertInInvoices(Product::find($id));
@@ -321,8 +319,7 @@ class ServiceController extends Controller
             Product::find($id)->update(['status'=>'rent']);
             $this->insertInInvoices(Product::find($id));
             $this->send_event_notification( User::find(Product::find($id)->user->id) ,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
-        }
-}
+        }}
         $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);    }
 }
