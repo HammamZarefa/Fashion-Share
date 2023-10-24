@@ -41,7 +41,7 @@ class StoreServiceRequest extends FormRequest
     public function messages()
     {
         return [
-            'unique' => 'الباقة موجودة مسبقاً',
+            'unique' => 'المنتج موجودة مسبقاً',
         ];
     }
 }

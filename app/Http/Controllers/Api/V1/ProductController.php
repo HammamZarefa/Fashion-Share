@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Actions\GenerateSkuAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductsListRequest;
 use App\Http\Resources\ProductResource;
@@ -99,7 +100,7 @@ class ProductController extends Controller
             'branch_id' => 'required|exists:branches,id',
             'is_for_sale' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'location'=>'nullable|string',
+            'location' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -119,8 +120,11 @@ class ProductController extends Controller
             'branch_id' => $request->input('branch_id'),
             'status' => 'pending',
             'is_for_sale' => $request->input('is_for_sale'),
-            'location'=> $request->input('location'),
+            'location' => $request->input('location'),
         ]);
+        $product->update ([
+            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+        ]) ;
         $product->categories()->attach($request->category_id);
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -141,7 +145,7 @@ class ProductController extends Controller
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = auth()->id();
         $adminNotification->title = 'New product request ';
-        $adminNotification->click_url = url('admin/services/edit', $product->id);
+        $adminNotification->click_url = url('admin/services/details', $product->id);
         $adminNotification->save();
         return response()->json(['message' => 'Product created successfully', 'data' => $product, 'status' => 201]);
     }
@@ -161,7 +165,7 @@ class ProductController extends Controller
             'branch_id' => 'exists:branches,id',
             'is_for_sale' => 'boolean',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'location'=>'nullable|string'
+            'location' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {

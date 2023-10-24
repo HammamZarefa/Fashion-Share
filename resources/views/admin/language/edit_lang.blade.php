@@ -203,7 +203,7 @@
 
 
 @push('breadcrumb-plugins')
-<button type="button" class="btn btn-sm btn--primary box--shadow1 importBtn"><i class="la la-download"></i>@lang('Import Language')</button>
+{{--<button type="button" class="btn btn-sm btn--primary box--shadow1 importBtn"><i class="la la-download"></i>@lang('Import Language')</button>--}}
 @endpush
 
 @push('script')

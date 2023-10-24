@@ -31,14 +31,14 @@
                                         <a href="{{route('admin.language.key', $item->id)}}" class="icon-btn btn--success" data-toggle="tooltip" data-original-title="@lang('Translate')">
                                             <i class="la la-code"></i>
                                         </a>
-                                        <a href="javascript:void(0)" class="icon-btn ml-1 editBtn" data-original-title="@lang('Edit')" data-toggle="tooltip" data-url="{{ route('admin.language.manage.update', $item->id)}}" data-lang="{{ json_encode($item->only('name', 'text_align', 'is_default')) }}" data-icon="{{ getImage($path .'/'. $item->icon,$size)}}">
-                                            <i class="la la-edit"></i>
-                                        </a>
-                                        @if($item->id != 1)
-                                            <a href="javascript:void(0)" class="icon-btn btn--danger ml-1 deleteBtn" data-original-title="@lang('Delete')" data-toggle="tooltip" data-url="{{ route('admin.language.manage.del', $item->id) }}">
-                                                <i class="la la-trash"></i>
-                                            </a>
-                                        @endif
+{{--                                        <a href="javascript:void(0)" class="icon-btn ml-1 editBtn" data-original-title="@lang('Edit')" data-toggle="tooltip" data-url="{{ route('admin.language.manage.update', $item->id)}}" data-lang="{{ json_encode($item->only('name', 'text_align', 'is_default')) }}" data-icon="{{ getImage($path .'/'. $item->icon,$size)}}">--}}
+{{--                                            <i class="la la-edit"></i>--}}
+{{--                                        </a>--}}
+{{--                                        @if($item->id != 1)--}}
+{{--                                            <a href="javascript:void(0)" class="icon-btn btn--danger ml-1 deleteBtn" data-original-title="@lang('Delete')" data-toggle="tooltip" data-url="{{ route('admin.language.manage.del', $item->id) }}">--}}
+{{--                                                <i class="la la-trash"></i>--}}
+{{--                                            </a>--}}
+{{--                                        @endif--}}
 
                                     </td>
                                 </tr>
@@ -163,9 +163,9 @@
 @endsection
 
 
-@push('breadcrumb-plugins')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i class="fa fa-fw fa-plus"></i>@lang('Add New Language')</a>
-@endpush
+{{--@push('breadcrumb-plugins')--}}
+{{--    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i class="fa fa-fw fa-plus"></i>@lang('Add New Language')</a>--}}
+{{--@endpush--}}
 
 @push('script')
     <script>
