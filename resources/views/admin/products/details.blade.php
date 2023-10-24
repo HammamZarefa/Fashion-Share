@@ -65,6 +65,10 @@
                                     </td>
                                     <td data-label="@lang('location')">{{ $item->location }}</td>
 
+                                    <td  data-label="@lang('Category')"><b>@lang('Category') : </b>
+                                    </td>
+                                    <td data-label="@lang('Category')">{{$item->categories[0]->name}}</td>
+
                                 </tr>
                                 </tbody>
 
