@@ -356,6 +356,7 @@ class ServiceController extends Controller
         $product = Product::findOrFail($id);
         
         categoryProduct::where('product_id',$id)->delete();
+        InvoicesProdect::where('product_id',$id)->delete();
 
         $images = Image::where('imagable_type', 'App\Models\Product')->where('imagable_id', $id)->get();
         foreach ($images as $image) {
