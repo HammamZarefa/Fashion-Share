@@ -140,7 +140,7 @@
   
                       <div class="col mb-3">
                         <label for="validationCustom02">@lang('Description')</label>
-                        <textarea rows="2" name="description" type="text"   class="form-control" id="validationCustom02" placeholder="@lang('Description')" value=""  aria-describedby="inputGroupPrepend" required></textarea>
+                        <textarea rows="2" name="description" type="text"   class="form-control" id="validationCustom02" placeholder="@lang('Description')" value=""  aria-describedby="inputGroupPrepend"></textarea>
                         <div class="valid-feedback">
                           Looks good!
                         </div>

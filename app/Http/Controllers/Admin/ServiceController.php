@@ -61,7 +61,7 @@ class ServiceController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'string',
+            'description' => 'nullable|string',
             'price' => 'required',
             'category_id' => 'required|exists:categories,id',
             'color_id' => 'required|exists:colors,id',
