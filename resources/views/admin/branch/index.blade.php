@@ -88,7 +88,7 @@
                             <label class="font-weight-bold ">@lang('Name') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="name" 
+                                <input type="text" class="form-control has-error bold " id="code" name="name"
                                        placeholder="@lang('Enter branch name')">
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             </div>
                         </div>
 
-                       
+
 
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('working_hours') <span
@@ -127,7 +127,7 @@
                             </div>
                         </div>
 
-                        
+
 
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('longitude') <span
@@ -144,9 +144,11 @@
                                 <input type="text" class="form-control has-error bold " id="code" name="latitude" >
                             </div>
                         </div>
+                        <div id="map" style="height: 200px;"></div>
+
                     </div>
 
-                   
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
                         <button type="submit" class="btn btn--primary" id="btn-save" value="add">@lang('Save')</button>
@@ -179,7 +181,7 @@
                             </div>
                         </div>
 
-                        
+
 
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Address') <span
@@ -190,13 +192,13 @@
                                     </div>
                         </div>
 
-                       
+
 
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('working_hours') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="working_hours" 
+                                <input type="text" class="form-control has-error bold " id="code" name="working_hours"
                                 value="{{$item->working_hours ?? ''}}" >
                             </div>
                         </div>
@@ -205,7 +207,7 @@
                             <label class="font-weight-bold ">@lang('phone') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="phone" 
+                                <input type="text" class="form-control has-error bold " id="code" name="phone"
                                 value="{{$item->phone ?? ''}}" >
                             </div>
                         </div>
@@ -214,19 +216,19 @@
                             <label class="font-weight-bold ">@lang('whatsapp') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="whatsapp" 
+                                <input type="text" class="form-control has-error bold " id="code" name="whatsapp"
                                 value="{{$item->whatsapp ?? ''}}" >
                             </div>
                         </div>
 
                         <div class="form-row form-group">
-                    
+
 
                             <label class="font-weight-bold ">@lang('longitude') <span
                                 class="text-danger">*</span></label>
 
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="longitude" 
+                                <input type="text" class="form-control has-error bold " id="code" name="longitude"
                                 value="{{$item->longitude ?? ''}}" >
                             </div>
 
@@ -234,22 +236,22 @@
                                 class="text-danger">*</span></label>
 
                         <div class="col-sm-12">
-                            <input type="text" class="form-control has-error bold " id="code" name="latitude" 
+                            <input type="text" class="form-control has-error bold " id="code" name="latitude"
                             value="{{$item->latitude ?? ''}}" >
                         </div>
-                        
+
                             <br>
                             <div class="col-sm-12">
                                 <p>{{$item->location}}</p>
                                 <br>
                                 <div class="mapouter"><div id="gmap_canvas" class="gmap_canvas">
                                     <iframe id="maps_google" name="map"
-                                    class="gmap_iframe" 
-                                    width="100%" 
-                                    frameborder="0" 
-                                    scrolling="no" 
-                                    marginheight="0" 
-                                    marginwidth="0" 
+                                    class="gmap_iframe"
+                                    width="100%"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    marginheight="0"
+                                    marginwidth="0"
                                     {{-- src="https://maps.google.com/maps?width=500&amp;height=500&amp;hl=en&amp;q=35.53802606238954, 35.77994740061135&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" --}}
                                     >
                                 </iframe>
@@ -265,7 +267,7 @@
                                     value="add">@lang('Update')</button>
                         </div>
 
-                        
+
                     </div>
                 </form>
             </div>
@@ -322,7 +324,7 @@
                 modal.find('input[name=location]').val(location);
 
                 document.getElementById('maps_google').src="https://maps.google.com/maps?width=500&height=500&hl=en&q="+longitude+", "+latitude+"&t=&z=14&ie=UTF8&iwloc=B&output=embed";
-                
+
 
                 modal.modal('show');
             });
@@ -335,5 +337,25 @@
                 modal.modal('show');
             });
         })(jQuery);
+
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([36.650390625, 33.4314413355753]), // Initial map center coordinates
+                zoom: 10 // Initial zoom level
+            })
+        });
+
+        // Event handler for clicking on the map
+        map.on('click', function(event) {
+            var coordinates = ol.proj.toLonLat(event.coordinate);
+            alert("You clicked the map at " + coordinates);
+            // You can handle the picked location data here
+        });
     </script>
 @endpush

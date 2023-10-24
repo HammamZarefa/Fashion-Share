@@ -78,7 +78,7 @@
 <script src="{{asset('assets/admin/js/vendor/select2.min.js')}}"></script>
 <!-- main js -->
 <script src="{{asset('assets/admin/js/app.js')}}"></script>
-
+<script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
 {{-- LOAD NIC EDIT --}}
 <script>
     (function($,document){
