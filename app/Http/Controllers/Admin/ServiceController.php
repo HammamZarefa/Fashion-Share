@@ -315,12 +315,12 @@ class ServiceController extends Controller
         if($product->is_for_sale){
             $product->update(['status'=>'sale']);
             $this->insertInInvoices($product);
-            $this->send_event_notification($product->user->id),'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
+            $this->send_event_notification($product->user,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
         }
         else{
             $product->update(['status'=>'rent']);
             $this->insertInInvoices($product);
-            $this->send_event_notification( $product->user->id) ,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
+            $this->send_event_notification( $product->user ,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
         }
         }
         $notify[] = ['success', 'Status updated!'];
