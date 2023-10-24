@@ -24,6 +24,12 @@ class CustomFieldResource extends JsonResource
 
         if ($this->description)
             $data['description'] = $this->description;
+
+        if ($this->category_id)
+            $data['category_id'] = $this->category_id;
+
+         if ($this->section_id)
+            $data['section_id'] = $this->section_id;
         return $data;
 
     }
