@@ -6,6 +6,7 @@ use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Category;
+use App\Models\categoryProduct;
 use App\Models\Color;
 use App\Models\Condition;
 use App\Models\GeneralSetting;
@@ -342,6 +343,8 @@ class ServiceController extends Controller
 
     public function delete($id){
         $product = Product::findOrFail($id);
+        
+        categoryProduct::where('product_id',$id)->delete();
 
         $images =  Image::where('imagable_type','App\Models\Product')->where('imagable_id',$id)->get();
         foreach($images as $image){
