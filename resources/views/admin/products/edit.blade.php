@@ -194,9 +194,9 @@
                     <div class="col mb-3 ">
                       <label for="validationCustom04">@lang('Size')</label>
                       <select   id="sizes" name="size_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                        {{-- @foreach($Sizes as $size)
+                        @foreach($Sizes as $size)
                         <option value="{{$size->id}}"  {{ $services->size_id == $size->id ? "selected" :""}}>{{ $size->name }}</option>
-                        @endforeach --}}
+                        @endforeach
                      </select>
                     
                       {{-- <input type="text" class="form-control" id="validationCustom04" placeholder="State" value="" required> --}}
@@ -326,6 +326,9 @@ function addRowCategory(ele)
       category.forEach(function(item, index) {
         var option = document.createElement("option");
         option.value = item.id;
+        if(option.value == {{$services->category_id}}){
+          option.selected=true;
+        }
         option.innerHTML = item.name;
         if(i == 0){option.selected =true};
         i++;
@@ -350,6 +353,8 @@ function addRowCategory(ele)
 }
 
 function addRowSizes(ele){
+  removeOptions(document.getElementById('sizes'));
+
       var name= ele;
       Categories = {!! json_encode($Categories) !!};
       if(Categories!= null){
@@ -362,6 +367,9 @@ function addRowSizes(ele){
       size.forEach(function(item, index) {
         var option = document.createElement("option");
         option.value = item.id;
+        if(option.value == {{$services->size_id}}){
+          option.selected=true;
+        }
         option.innerHTML = item.name;
         x.add(option);
         }
@@ -370,8 +378,8 @@ function addRowSizes(ele){
 
 
       window.onload = selectSection();
-      function selectSection (){
 
+      function selectSection (){
         var firstselectsection = document.getElementById("sections");
         addRowCategory(firstselectsection.value);
       };

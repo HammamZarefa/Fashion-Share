@@ -6,6 +6,7 @@ use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Category;
+use App\Models\categoryProduct;
 use App\Models\Color;
 use App\Models\Condition;
 use App\Models\GeneralSetting;
@@ -353,6 +354,8 @@ class ServiceController extends Controller
     public function delete($id)
     {
         $product = Product::findOrFail($id);
+        
+        categoryProduct::where('product_id',$id)->delete();
 
         $images = Image::where('imagable_type', 'App\Models\Product')->where('imagable_id', $id)->get();
         foreach ($images as $image) {
@@ -395,6 +398,16 @@ class ServiceController extends Controller
         $sections = Section::all();
         return view('admin.products.list',
             compact('page_title', 'services', 'empty_message', 'branches', 'sections', 'categories'));
+    }
 
+    public function ditails($id){
+        $page_title = 'Services';
+        $empty_message = 'No Result Found';
+        $item = Product::
+        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            ->find($id);
+        return view('admin.products.details',
+        compact('page_title', 'empty_message' ,'item'));
+  
     }
 }

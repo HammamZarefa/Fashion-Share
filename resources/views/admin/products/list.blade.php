@@ -71,6 +71,7 @@
                             <tr>
                                 <th scope="col">@lang('Code')</th>
                                 <th scope="col">@lang('Name')</th>
+                                <th scope="col">@lang('Product Image')</th>
                                 <th scope="col">@lang('User')</th>
                                 <th scope="col">@lang('Category')</th>
                                 <th scope="col">@lang('Price')</th>
@@ -85,9 +86,16 @@
                             @forelse($services as $item)
                                 <tr>
                                     <td>{{$item->sku}}</td>
+                                    <td><span class="name">{{__($item->name)}}</span></td>
                                     <td>
-                                        <span class="name">{{__($item->name)}}</span>
-                                    </td>
+                                        @if(@$item->images[0])
+                                        <img
+                                        src="{{ getImage(imagePath()['service']['path'].'/'. $item->images[0]->path,imagePath()['service']['size'])}}"
+                                                    class="card-img-top"
+                                        alt="Waterfall" />
+                                        @endif
+                                     </td>
+                                    
                                     <td data-label="@lang('User')">
                                         <span class="name">{{__(@$item->user->email)}}</span>
                                     </td>
@@ -123,14 +131,19 @@
                                         </a>
 
                                         <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"
-                                           data-original-title="@lang('Status')" data-toggle="tooltip"
+                                           data-original-title="@lang('Change Status')" data-toggle="tooltip"
                                            data-url="{{ route('admin.services.update',$item->id)}}"
                                            data-name="{{ $item->name }}"
                                            data-field="{{$item->field_name}}">
                                             <i class="la la-edit"></i>
                                         </a>
 
-                                        <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
+                                        <a href="{{ route('admin.services.ditails', $item->id) }}"
+                                            class="icon-btn bg--info ml-1" data-toggle="tooltip" title="@lang('Show Details')"
+                                            data-original-title="@lang('Show')">
+                                            <i class="la la-eye"></i>
+                                         </a>
+                                        {{-- <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
                                            data-original-title="@lang('Show')" data-toggle="tooltip"
                                            data-name="{{ $item->name }}"
                                            data-user="{{$item->user->email ?? ''}}"
@@ -148,8 +161,8 @@
                                            data-location="{{$item->locaton}}"
                                            data-sections="{{$item->section->name}}"
                                            data-field="{{$item->field_name}}">
-                                            <i class="la la-eye"></i>
-                                        </a>
+                                        <i class="la la-eye"></i>
+                                        </a> --}}
                                         @if($item->status == "available")
                                             <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
                                                data-original-title="$" data-toggle="tooltip"
