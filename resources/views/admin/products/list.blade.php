@@ -82,7 +82,9 @@
                                     <td data-label="@lang('User')">
                                         <span class="name">{{__(@$item->user->email)}}</span>
                                     </td>
-                                    <td>{{$item->categories[0]->name}}</td>
+                                    <td>
+                                       {{$item->categories[0]->name ?? ''}}
+                                    </td>
                                     <td>{{$item->price}}</td>
                                     <td>{{@$item->branch->name}}</td>
                                     <td>{{$item->is_for_sale ? 'Sale' : 'Rent'}}</td>
