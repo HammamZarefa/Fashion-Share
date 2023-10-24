@@ -2,57 +2,74 @@
 @section('panel')
     <div class="row">
         <div class="col-lg-12">
-            
-           
             <div class="card">
-              
                 <div class="card-header">
-                    <form id="myForm"  method="POST" action="{{ route('admin.services.filter') }}">
-                        @csrf  
-
+                    <form id="myForm" method="GET" action="{{ route('admin.services.filter') }}">
                         <div class="row mb-none-30">
+                            <div class="col-xl-2  col-sm-6 mb-30">
+                                <input type="text" name="sku" class="form-control"
+                                       placeholder="@lang('Product Code')" value="{{ request()->sku ?? '' }}">
+                            </div>
+                            @if(!Auth::guard('admin')->user()->branch)
+                                <div class="col-xl-2  col-sm-6 mb-30">
+                                    <select name="branch" id="categorylist" class="form-control statusfield">
+                                        <option value="" selected>@lang('All Branch')</option>
+                                        @foreach($branches as $branch)
+                                            <option value="{{$branch->id}}"
+                                                    @if(request()->branch == $branch->id) selected @endif>{{$branch->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+                            <div class="col-xl-2  col-sm-6 mb-30">
+                                <select name="section" id="categorylist" class="form-control statusfield">
+                                    <option value="" selected>@lang('All Sections')</option>
+                                    @foreach($sections as $section)
+                                        <option value="{{$section->id}}"
+                                                @if(request()->section == $section->id) selected @endif>@lang($section->name)</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="col-xl-3  col-sm-6 mb-30">
-                            <select  name="category_id" id="categorylist" class="form-control statusfield">
-                                <option value="" selected>@lang('All Branch')</option>
-                                @foreach($Branches as $Branche)
-                                    <option value="{{$Branche->id}}">@lang($Branche->name)</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="col-xl-2  col-sm-6 mb-30">
+                                <select name="category" id="categorylist" class="form-control statusfield">
+                                    <option value="" selected>@lang('All Category')</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}"
+                                                @if(request()->category == $category->id) selected @endif>@lang($category->name)</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="col-xl-3  col-sm-6 mb-30">
-                            <select  name="section_id" id="categorylist" class="form-control statusfield">
-                                <option value="" selected>@lang('All Sections')</option>
-                                @foreach($sections as $section)
-                                    <option value="{{$section->id}}">@lang($section->name)</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="col-xl-2  col-sm-6 mb-30">
+                                <select name="is_for_sale" id="type" class="form-control statusfield">
+                                    <option value="" selected>@lang('All Product')</option>
+                                    <option value="1"
+                                            @if(isset(request()->is_for_sale) && request()->is_for_sale==1 ) selected @endif>@lang("For sale")
+                                    </option>
+                                    <option value="0"
+                                            @if(isset(request()->is_for_sale) && request()->is_for_sale == 0 ) selected @endif>@lang("For rent")
+                                    </option>
+                                </select>
+                            </div>
 
-                        <div class="col-xl-3  col-sm-6 mb-30">
-                            <select  name="branch_id" id="categorylist" class="form-control statusfield">
-                                <option value="" selected>@lang('All Category')</option>
-                                @foreach($categories as $categorie)
-                                    <option value="{{$categorie->id}}">@lang($categorie->name)</option>
-                                @endforeach
-                            </select>
+                            <div class="">
+                                <button class="btn btn-sm btn--primary text--small"
+                                        type="submit">@lang('Search')</button>
+                                <a class="btn btn-sm btn--info"
+                                   href="{{route('admin.services.index')}}">@lang('clear')</a>
+                            </div>
                         </div>
-
-                        <div class="">
-                            <button class="btn btn-success" type="submit">Search</button>
-                        </div>
-                    </div>
 
                     </form>
                 </div>
 
                 <div class="card-body">
                     <div class="table-responsive--sm table-responsive">
-                        <table class="table table--light style--two custom-data-table">
+                        <table class="table table--light style--two">
                             <thead>
                             <tr>
-                                <th scope="col">@lang('ID')</th>
+                                <th scope="col">@lang('Code')</th>
                                 <th scope="col">@lang('Name')</th>
                                 <th scope="col">@lang('Product Image')</th>
                                 <th scope="col">@lang('User')</th>
@@ -68,7 +85,7 @@
                             <tbody>
                             @forelse($services as $item)
                                 <tr>
-                                    <td>{{$item->id}}</td>
+                                    <td>{{$item->sku}}</td>
                                     <td><span class="name">{{__($item->name)}}</span></td>
                                     <td>
                                         @if(@$item->images[0])
@@ -109,7 +126,8 @@
                                     </td>
                                     <td data-label="@lang('Action')">
                                         <a href="{{ route('admin.services.edit', $item->id) }}"
-                                           class="icon-btn editGatewayBtn ml-1" data-toggle="tooltip" title="@lang('Edit')"
+                                           class="icon-btn editGatewayBtn ml-1" data-toggle="tooltip"
+                                           title="@lang('Edit')"
                                            data-original-title="@lang('Edit')">
                                             <i class="la la-pencil"></i>
                                         </a>
@@ -148,19 +166,19 @@
                                         <i class="la la-eye"></i>
                                         </a> --}}
                                         @if($item->status == "available")
-                                        <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
-                                           data-original-title="$" data-toggle="tooltip"
-                                           data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
-                                           data-is_for_sale="{{ $item->is_for_sale }}">
-                                            <i class="la la-usd"></i>
-                                        </a>
+                                            <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
+                                               data-original-title="$" data-toggle="tooltip"
+                                               data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
+                                               data-is_for_sale="{{ $item->is_for_sale }}">
+                                                <i class="la la-usd"></i>
+                                            </a>
                                         @endif
-                                        <a  href="javascript:void(0)"  class="icon-btn bg--danger ml-1 DeleteService" 
-                                            data-toggle="tooltip" title="@lang('Delete')"
-                                            data-url="{{ route('admin.services.delete', $item->id)}}"
-                                            data-original-title="@lang('Delete')">
-                                             <i class="la la-trash"></i>
-                                         </a>
+                                        <a href="javascript:void(0)" class="icon-btn bg--danger ml-1 DeleteService"
+                                           data-toggle="tooltip" title="@lang('Delete')"
+                                           data-url="{{ route('admin.services.delete', $item->id)}}"
+                                           data-original-title="@lang('Delete')">
+                                            <i class="la la-trash"></i>
+                                        </a>
 
                                     </td>
                                 </tr>
@@ -178,7 +196,7 @@
                 <div class="" style="margin:auto; margin-bottom: 20px">
                     {!! $services->links("pagination::bootstrap-4") !!}
                 </div>
-                
+
             </div><!-- card end -->
         </div>
     </div>
@@ -217,32 +235,33 @@
     </div>
 
 
-    
-{{-- ACTIVATE METHOD MODAL --}}
-<div id="DeleteService" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    @lang('Are you sure to Delete?')
-                </h5>
-                <button type="button" class="close" style="margin: -1rem -1rem -1rem -1rem" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" method="POST">
-                @csrf
-                @method('DELETE')
 
-              
-                <div class="modal-footer">
-                    <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
-                    <button type="submit" class="btn btn--danger">@lang('Delete')</button>
+    {{-- ACTIVATE METHOD MODAL --}}
+    <div id="DeleteService" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        @lang('Are you sure to Delete?')
+                    </h5>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem -1rem" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </form>
+                <form action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
+                        <button type="submit" class="btn btn--danger">@lang('Delete')</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
     {{-- DEACTIVATE METHOD MODAL --}}
@@ -526,7 +545,7 @@
             $('.DeleteService').on('click', function () {
                 var modal = $('#DeleteService');
                 var url = $(this).data('url');
-              
+
 
                 modal.find('form').attr('action', url);
                 modal.modal('show');
@@ -580,8 +599,8 @@
                 modal.find('input[name=images]').val(images);
 
                 var container = document.getElementById('imageContainer');
-                var removeOldImage =  document.getElementsByClassName("col-lg-4");
-                while(removeOldImage.length > 0){
+                var removeOldImage = document.getElementsByClassName("col-lg-4");
+                while (removeOldImage.length > 0) {
                     removeOldImage[0].parentNode.removeChild(removeOldImage[0]);
                 }
                 var keys = [];
@@ -603,8 +622,8 @@
                     for (var key in images[i]) {
                         if (images[i].hasOwnProperty(key)) {
                             if (key == "path") {
-                                 var path = "{{ url('assets/images/service/')}}";
-                                img.src = path + '/' + images[i][key] ;
+                                var path = "";
+                                img.src = path + '/' + images[i][key];
 
                                 card.appendChild(img);
 

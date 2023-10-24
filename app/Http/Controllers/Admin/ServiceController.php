@@ -38,23 +38,23 @@ class ServiceController extends Controller
     public function index()
     {
         $sections = Section::all();
-        $branch = Auth::guard('admin')->user()->branch_id;
+        $branch = Auth::guard('admin')->user()->branch;
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $categories = Category::orderBy('name')->get();
-        if(is_null($branch)){
-            $Branches = Branch::whereHas('products')->get();
+        if (is_null($branch)) {
+            $branches = Branch::whereHas('products')->groupBy('id')->get();
             $services = Product::
             with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
-           ->latest()->paginate(getPaginate());
+                ->latest()->paginate(getPaginate());
+        } else {
+            $branches = Branch::find($branch);
+            $services = Product::
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+                ->where('branch_id', $branch)->latest()->paginate(getPaginate());
         }
-        else{
-            $Branches = Branch::find($branch);
-            $services = Product::
-            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
-           ->where('branch_id',$branch)->latest()->paginate(getPaginate());
-           }
-        return view('admin.products.list', compact('page_title','sections', 'services', 'Branches','empty_message', 'categories'));
+        return view('admin.products.list',
+            compact('page_title', 'sections', 'services', 'branches', 'empty_message', 'categories'));
     }
 
     public function store(Request $request)
@@ -71,11 +71,11 @@ class ServiceController extends Controller
             'condition_id' => 'required|exists:conditions,id',
             'branch_id' => 'required|exists:branches,id',
             'is_for_sale' => 'required',
-            'images'=>'array',
+            'images' => 'array',
             'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
-            'location'  => 'nullable|string',
-            'status'=>'required',
-            'user_id'=>'nullabel|exists:users,id',
+            'location' => 'nullable|string',
+            'status' => 'required',
+            'user_id' => 'nullabel|exists:users,id',
         ]);
         if ($validator->fails()) {
             $notify[] = ['error', 'validation'];
@@ -91,10 +91,10 @@ class ServiceController extends Controller
             'section_id' => $request->input('section_id'),
             'size_id' => $request->input('size_id'),
             'condition_id' => $request->input('condition_id'),
-            'location'=>$request->input('location'),
+            'location' => $request->input('location'),
             'user_id' => auth()->id(),
             'branch_id' => $request->input('branch_id'),
-            'status' =>  $request->input('status'),
+            'status' => $request->input('status'),
             'is_for_sale' => $request->input('is_for_sale'),
             'user_id' => $request->input('user_id'),
         ]);
@@ -115,8 +115,8 @@ class ServiceController extends Controller
             }
         }
 
-        if(isset($request['status'])){
-            if(($request['status'] == 'sale') || $request['status']=='rent'){
+        if (isset($request['status'])) {
+            if (($request['status'] == 'sale') || $request['status'] == 'rent') {
                 $this->insertInInvoices($product);
             }
         }
@@ -125,7 +125,7 @@ class ServiceController extends Controller
         return redirect()->route('admin.services.index')->withNotify($notify);
     }
 
-    public function update( $product,Request $request)
+    public function update($product, Request $request)
     {
 
         $product = Product::findOrFail($product);
@@ -142,9 +142,9 @@ class ServiceController extends Controller
             'branch_id' => 'exists:branches,id',
             'is_for_sale' => 'boolean',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status'=>'nullable',
-            'location'  => 'nullable|string',
-            'user_id'=>'nullabel|exists:users,id',
+            'status' => 'nullable',
+            'location' => 'nullable|string',
+            'user_id' => 'nullabel|exists:users,id',
 
         ]);
 
@@ -170,38 +170,43 @@ class ServiceController extends Controller
 
         if ($request->category_id)
             $product->categories()->sync($request->category_id);
-            if (isset($request['images'])) {
-                foreach ($request->file('images') as $image) {
-                    $path = imagePath()['service']['path'];
-                    $size = imagePath()['service']['size'];
-                    $filename = $image;
+        if (isset($request['images'])) {
+            foreach ($request->file('images') as $image) {
+                $path = imagePath()['service']['path'];
+                $size = imagePath()['service']['size'];
+                $filename = $image;
 
-                    $filename = uploadImage($image, $path, $size, $filename);
-                    // $product->image=$filename;
-                    // Create the image record in the database
-                    $product->images()->create([
-                        'path' => $filename,
-                        // Add other image fields as needed
-                    ]);
-                }
+                $filename = uploadImage($image, $path, $size, $filename);
+                // $product->image=$filename;
+                // Create the image record in the database
+                $product->images()->create([
+                    'path' => $filename,
+                    // Add other image fields as needed
+                ]);
             }
-        if(isset($request['status'])){
-            if($product->user){
-            if($request['status'] = "available"){
-                $this->send_event_notification(User::find($product->user->id) , '', ' تم تفعيل منتجك ', 'Your product has been activated' );}
-            if($request['status'] = "not_available"){
-               $this->send_event_notification( User::find($product->user->id),'', ' تم الغاء تفعيل منتجك ' , 'Your product has been deactivated'  );}
-            if($request['status'] = "sale"){
-                $this->send_event_notification( User::find($product->user->id),'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );}
-            if($request['status'] = "rent"){
-                 $this->send_event_notification( User::find($product->user->id), '',' تم تغيير حالة منتجك الى أجار ' , 'Your product status has been changed to Rent'  );}
-            if($request['status'] = "rejected"){
-                $this->send_event_notification( $product->user,'', ' تم رفض منتجك' , 'Your product has been rejected' );}
+        }
+        if (isset($request['status'])) {
+            if ($product->user) {
+                if ($request['status'] = "available") {
+                    $this->send_event_notification(User::find($product->user->id), '', ' تم تفعيل منتجك ', 'Your product has been activated');
+                }
+                if ($request['status'] = "not_available") {
+                    $this->send_event_notification(User::find($product->user->id), '', ' تم الغاء تفعيل منتجك ', 'Your product has been deactivated');
+                }
+                if ($request['status'] = "sale") {
+                    $this->send_event_notification(User::find($product->user->id), '', ' تم تغيير حالة منتجك الى بيع ', 'Your product status has been changed to Sold');
+                }
+                if ($request['status'] = "rent") {
+                    $this->send_event_notification(User::find($product->user->id), '', ' تم تغيير حالة منتجك الى أجار ', 'Your product status has been changed to Rent');
+                }
+                if ($request['status'] = "rejected") {
+                    $this->send_event_notification($product->user, '', ' تم رفض منتجك', 'Your product has been rejected');
+                }
             }
         }
 
-        if(isset($request['status'])){
-            if(($request['status'] == 'sale') || $request['status']=='rent'){
+        if (isset($request['status'])) {
+            if (($request['status'] == 'sale') || $request['status'] == 'rent') {
                 $this->insertInInvoices($product);
             }
         }
@@ -264,7 +269,8 @@ class ServiceController extends Controller
         return view('admin.services.index', compact('page_title', 'services', 'empty_message', 'search', 'categories'));
     }
 
-    public function edit($service){
+    public function edit($service)
+    {
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $Colors = Color::all();
@@ -273,21 +279,22 @@ class ServiceController extends Controller
         $Materials = Material::all();
         $Sections = Section::with('category')->get();
         $branchs = Branch::all();
-        $Categories= Category::with(['section','sizes'])->get();
+        $Categories = Category::with(['section', 'sizes'])->get();
         $Users = User::all();
 
         $services = Product::with('images')->findOrFail($service);
         return view('admin.products.edit',
-        compact('page_title', 'services', 'Categories','empty_message','Users' ,'Colors','Sizes','Conditions','Materials','Sections','branchs'));
+            compact('page_title', 'services', 'Categories', 'empty_message', 'Users', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections', 'branchs'));
 
     }
 
-    public function create(){
+    public function create()
+    {
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $Colors = Color::all();
         $Sizes = Size::with('category')->get();
-        $Categories= Category::with('sizes')->get();
+        $Categories = Category::with('sizes')->get();
         $Conditions = Condition::all();
         $Materials = Material::all();
         $Sections = Section::with('category')->get();
@@ -298,108 +305,99 @@ class ServiceController extends Controller
         with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
             ->latest()->paginate(getPaginate());
         return view('admin.products.create',
-        compact('page_title', 'empty_message' ,'Colors','Categories','Users','Sizes','Conditions','Materials','Sections','branchs'));
+            compact('page_title', 'empty_message', 'Colors', 'Categories', 'Users', 'Sizes', 'Conditions', 'Materials', 'Sections', 'branchs'));
     }
 
-    public function deleteImage($id){
-      $image =  Image::findOrFail($id);
-      if(File::exists(public_path($image))){
-        File::delete(public_path('upload/bio.png'));
+    public function deleteImage($id)
+    {
+        $image = Image::findOrFail($id);
+        if (File::exists(public_path($image))) {
+            File::delete(public_path('upload/bio.png'));
         }
         $image->delete();
         $notify[] = ['success', 'Status updated!'];
-        return back()->withNotify($notify);    }
+        return back()->withNotify($notify);
+    }
 
-    public function insertInInvoices($product){
+    public function insertInInvoices($product)
+    {
         InvoicesProdect::create([
-            'product_id'=>$product->id,
-            'price'=>$product->price,
-            'status'=>$product->status,
-            'date_of_process'=>now(),
+            'product_id' => $product->id,
+            'price' => $product->price,
+            'status' => $product->status,
+            'date_of_process' => now(),
         ]);
     }
 
-    public function SaleOrRent($id){
+    public function SaleOrRent($id)
+    {
         $product = Product::find($id);
-        
-        if($product->is_for_sale){
-            $product->update(['status'=>'sale']);
+
+        if ($product->is_for_sale) {
+            $product->update(['status' => 'sale']);
             $this->insertInInvoices($product);
-            if($product->user){
-            $this->send_event_notification($product->user,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
+            if ($product->user) {
+                $this->send_event_notification($product->user, '', ' تم تغيير حالة منتجك الى بيع ', 'Your product status has been changed to Sold');
+            }
+        } else {
+            $product->update(['status' => 'rent']);
+            $this->insertInInvoices($product);
+            if ($product->user) {
+                $this->send_event_notification($product->user, '', ' تم تغيير حالة منتجك الى بيع ', 'Your product status has been changed to Sold');
             }
         }
-        else{
-            $product->update(['status'=>'rent']);
-            $this->insertInInvoices($product);
-            if($product->user){
-            $this->send_event_notification( $product->user ,'', ' تم تغيير حالة منتجك الى بيع ' , 'Your product status has been changed to Sold' );
-            }
-        }
-        
+
         $notify[] = ['success', 'Status updated!'];
-        return back()->withNotify($notify);  
+        return back()->withNotify($notify);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $product = Product::findOrFail($id);
         
         categoryProduct::where('product_id',$id)->delete();
 
-        $images =  Image::where('imagable_type','App\Models\Product')->where('imagable_id',$id)->get();
-        foreach($images as $image){
-                removeFile('assets/images/service/'  . $image->path);
+        $images = Image::where('imagable_type', 'App\Models\Product')->where('imagable_id', $id)->get();
+        foreach ($images as $image) {
+            removeFile('assets/images/service/' . $image->path);
         }
         $product->images()->delete();
         $product->delete();
         $notify[] = ['success', 'Service Deleted!'];
-        return back()->withNotify($notify);  
+        return back()->withNotify($notify);
     }
 
-    public function Filter(Request $request){
-       $request->validate([
-            'category_id'=>'nullable|exists:categories,id',
-            'section_id'=>'nullable|exists:sections,id',
-            'branch_id'=>'nullable|exists:branches,id',
-        ]);
-        // dd($request);
-        $branch = Auth::guard('admin')->user()->branch_id;
-        $sections = Section::all();
-        $page_title = 'Services';
+    public function Filter(Request $request)
+    {
+        $branch = Auth::guard('admin')->user()->branch;
+        $page_title = 'Products';
         $empty_message = 'No Result Found';
+        $services = Product::
+        when($request->category, function ($query) use ($request) {
+            $query->whereHas('categories', function ($query) use ($request) {
+                $query->where('categories.id', $request->category);
+            });
+        })
+            ->when($request->section, function ($query) use ($request) {
+                $query->where('section_id', $request->section);
+            })
+            ->when($branch, function ($query) use ($branch) {
+                $query->where('branch_id', $branch);
+            })
+            ->when($request->sku, function ($query) use ($request) {
+                $query->where('sku','LIKE', "%$request->sku%");
+            })
+            ->when($request->is_for_sale, function ($query) use ($request) {
+                $query->where('is_for_sale', "$request->is_for_sale");
+            })
+            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            ->latest()->paginate(getPaginate());
+
+        $branches = Branch::all();
         $categories = Category::orderBy('name')->get();
-        if(is_null($branch)){
-            $Branches = Branch::whereHas('products')->get();
-            $services = Product::
-            when($request->category_id, function ($query) use ($request) {
-                $query->where('category_id', $request->category_id);
-            })
-            ->when($request->section_id, function ($query) use ($request) {
-                $query->where('section_id', $request->section_id);
-            })
-            ->when($request->branch_id, function ($query) use ($request) {
-                $query->where('branch_id', $request->branch_id);
-            })->
-            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
-           ->latest()->paginate(getPaginate());
-        }
-        else{
-            $Branches = Branch::find($branch);
-            $services = Product::
-            when($request->category_id, function ($query) use ($request) {
-                $query->where('category_id', $request->category_id);
-            })
-            ->when($request->section_id, function ($query) use ($request) {
-                $query->where('section_id', $request->section_id);
-            })
-            ->when($request->branch_id, function ($query) use ($request) {
-                $query->where('branch_id', $request->branch_id);
-            })->
-            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
-           ->where('branch_id',$branch)->latest()->paginate(getPaginate());
-        }
-        return view('admin.products.list', compact('page_title','sections', 'services', 'Branches','empty_message', 'categories'));
-        
+        $sections = Section::all();
+        return view('admin.products.list',
+            compact('page_title', 'services', 'empty_message', 'branches', 'sections', 'categories'));
     }
 
     public function ditails($id){
