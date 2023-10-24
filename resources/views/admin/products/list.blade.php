@@ -113,7 +113,7 @@
                                         </a>
 
                                         <a href="{{ route('admin.services.ditails', $item->id) }}"
-                                            class="icon-btn bg--info ml-1" data-toggle="tooltip" title="@lang('Edit')"
+                                            class="icon-btn bg--info ml-1" data-toggle="tooltip" title="@lang('Show Details')"
                                             data-original-title="@lang('Show')">
                                             <i class="la la-eye"></i>
                                          </a>
