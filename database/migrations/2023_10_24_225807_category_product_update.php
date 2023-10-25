@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('category_product', function (Blueprint $table) {
-            $table->foreign('product_id')->references('id')->on('sections')->onDelete('cascade');
-        });
+        // Schema::table('category_product', function (Blueprint $table) {
+        //     $table->foreign('product_id')->references('id')->on('sections')->onDelete('cascade');
+        // });
     }
 
     /**
