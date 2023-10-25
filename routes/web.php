@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ColoresController;
 use App\Http\Controllers\Admin\InvoicesController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\SizesController;
@@ -123,6 +124,12 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('sizes',[SizesController::class,'store'])->name('sizes.store');
         Route::post('sizes/{id}',[SizesController::class,'update'])->name('sizes.update');
         Route::get('sizeSearch/{id}',[SizesController::class,'search'])->name('sizes.search');
+        
+        Route::get('colors',[ColoresController::class,'index'])->name('color.index');
+        Route::post('colors',[ColoresController::class,'store'])->name('color.store');
+        Route::put('colors/update/{id}',[ColoresController::class,'update'])->name('color.update');
+        Route::delete('colors/delete/{id}',[ColoresController::class,'destroy'])->name('color.delete');
+
         Route::get('/migrate', function(){
             \Artisan::call('migrate');
             dd('migrated!');

@@ -34,6 +34,6 @@ class InvoicesController extends Controller
 
         
     
-        return view('admin.Invoices.index',compact('page_title','branchs','invoices'));
+        return view('admin.Invoices.index',compact('page_title','id','branchs','invoices'));
     }
 }
