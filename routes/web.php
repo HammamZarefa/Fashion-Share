@@ -108,6 +108,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('branch/update/{id}', 'BranchController@update')->name('branch.update');
         Route::post('branch/store', 'BranchController@store')->name('branch.store');
         Route::delete('branch/delete/{id}', 'BranchController@delete')->name('branch.delete');
+        Route::get('branch/edit/{id}', 'BranchController@edit')->name('branch.edit');
 
         //Invoices
         Route::get('Invoices/{id?}',InvoicesController::class)->name('invoices');

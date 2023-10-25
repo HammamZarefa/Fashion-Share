@@ -42,7 +42,7 @@
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
                                            data-url="{{ route('admin.color.update',$item->id)}}"
                                            data-name="{{ $item->name }}"
-                                           data-Hexcolor="{{$item->Hexcolor}}"
+                                           data-hexcolor = "{{ $item->Hexcolor }}"
                                            data-field="{{$item->field_name}}">
                                             <i class="la la-edit"></i>
                                         </a>
@@ -227,11 +227,13 @@
                 var modal = $('#editModal');
                 var url = $(this).data('url');
                 var name = $(this).data('name');
-                var Hexcolor = $(this).data('Hexcolor');
-                console.log($(this).data('Hexcolor'));
+                var Hexcolor = $(this).data('hexcolor');
+
+                console.log(Hexcolor);
+
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
-                modal.find('input[name=favcolor]').val(Hexcolor);
+                modal.find('input[name=Hexcolor]').val(Hexcolor);
                 modal.modal('show');
             });
 

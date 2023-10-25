@@ -30,6 +30,23 @@ class CustomFieldResource extends JsonResource
 
          if ($this->section_id)
             $data['section_id'] = $this->section_id;
+        
+        if($this->Hexcolor)
+            $data['Hexcolor'] = $this->Hexcolor;
+        
+        if($this->address)
+            $data['address'] = $this->address;
+        if($this->location)
+            $data['location'] = $this->location;
+        if($this->working_hours)
+            $data['working_hours'] =$this->working_hours;
+        if($this->phone)
+            $data['phone'] =$this->phone;
+        if($this->whatsapp)
+            $data['whatsapp'] =$this->whatsapp;
+
+        
+
         return $data;
 
     }

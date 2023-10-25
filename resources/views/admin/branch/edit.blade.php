@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('panel')
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-lg-12">
             <div class="card b-radius--10 ">
                 <div class="card-body p-0">
@@ -35,13 +35,13 @@
                                     <td data-label="@lang('Adress')">{{__($item->whatsapp)}}</td>
 
                                     <td data-label="@lang('Action')">
-                                        <a href="{{ route('admin.branch.edit',$item->id)}}" class="icon-btn ml-1"
+                                        <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
-                                           {{-- data-url="{{ route('admin.branch.update',$item->id)}}" --}}
-                                           {{-- data-name="{{ $item->name }}" --}}
-                                           {{-- data-address="{{$item->address}}" --}}
-                                           {{-- data-latitude="{{$item->latitude}}" --}}
-                                           {{-- data-longitude="{{$item->longitude}}" --}}
+                                           data-url="{{ route('admin.branch.update',$item->id)}}"
+                                           data-name="{{ $item->name }}"
+                                           data-address="{{$item->address}}"
+                                           data-latitude="{{$item->latitude}}"
+                                           data-longitude="{{$item->longitude}}"
 
                                            >
                                             <i class="la la-edit"></i>
@@ -66,39 +66,39 @@
                 </div>
             </div><!-- card end -->
         </div>
-    </div>
+    </div> --}}
 
 
 
-    {{-- NEW MODAL --}}
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   
+
+    <div class="" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i
-                            class="fa fa-share-square"></i> @lang('Add New branch')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                </div>
-                <form class="form-horizontal" method="post" action="{{ route('admin.branch.store')}}"
-                      enctype="multipart/form-data">
+                
+                <form method="post" action="{{ route('admin.branch.update',$item->id)}}" enctype="multipart/form-data">
                     @csrf
+
                     <div class="modal-body">
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Name') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control has-error bold " id="code" name="name"
-                                       placeholder="@lang('Enter branch name')">
+                                       value="{{$item->name ?? ''}}" >
                             </div>
                         </div>
+
+
 
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Address') <span
                                     class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="address" >
-                            </div>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control has-error bold " id="code" name="address"
+                                        value="{{$item->address ?? ''}}"    >
+                                    </div>
                         </div>
 
 
@@ -107,7 +107,8 @@
                             <label class="font-weight-bold ">@lang('working_hours') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="working_hours" >
+                                <input type="text" class="form-control has-error bold " id="code" name="working_hours"
+                                value="{{$item->working_hours ?? ''}}" >
                             </div>
                         </div>
 
@@ -115,7 +116,8 @@
                             <label class="font-weight-bold ">@lang('phone') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="phone" >
+                                <input type="text" class="form-control has-error bold " id="code" name="phone"
+                                value="{{$item->phone ?? ''}}" >
                             </div>
                         </div>
 
@@ -123,114 +125,60 @@
                             <label class="font-weight-bold ">@lang('whatsapp') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="whatsapp" >
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('latitude') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="latitude" name="latitude" >
+                                <input type="text" class="form-control has-error bold " id="code" name="whatsapp"
+                                value="{{$item->whatsapp ?? ''}}" >
                             </div>
                         </div>
 
                         <div class="form-row form-group">
+
+
                             <label class="font-weight-bold ">@lang('longitude') <span
-                                    class="text-danger">*</span></label>
+                                class="text-danger">*</span></label>
+
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="longitude" name="longitude" >
+                                <input type="text" id="longitude" class="form-control has-error bold " id="code" name="longitude"
+                                value="{{$item->longitude ?? ''}}" >
                             </div>
+
+                            <label class="font-weight-bold ">@lang('latitude') <span
+                                class="text-danger">*</span></label>
+
+                        <div class="col-sm-12" >
+                            <input type="text" id="latitude" class="form-control has-error bold " id="code" name="latitude"
+                            value="{{$item->latitude ?? ''}}" >
                         </div>
 
-                        <div id="map" style="height: 200px;"></div>
+                        <br><br>
+                            
 
+                        <div class="form-row form-group">
 
+                        <div id="map" style="height: 200px"></div>
+
+                        </div>
                     </div>
 
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
-                        <button type="submit" class="btn btn--primary" id="btn-save" value="add">@lang('Save')</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn--primary" id="btn-save"
+                                    value="add">@lang('Update')</button>
+                        </div>
 
-    {{-- EDIT MODAL --}}
-    
 
-    {{-- Status MODAL --}}
-    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">@lang('Update Status')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <form method="post" action="">
-                    @csrf
-                    @method('delete')
-                    <input type="hidden" name="delete_id" id="delete_id" class="delete_id" value="0">
-                    <div class="modal-body">
-                        <p class="text-muted">@lang('Are you sure to delete?')</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('No')</button>
-                        <button type="submit" class="btn btn--primary">@lang('Yes')</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+  
 @endsection
 
 
-@push('breadcrumb-plugins')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i
-            class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
-@endpush
-
 @push('script')
     <script>
-        (function ($) {
-            "use strict";
-            $('.editBtn').on('click', function () {
-                var modal = $('#editModal');
-                var url = $(this).data('url');
-                var name = $(this).data('name');
-                var address = $(this).data('address');
-                var longitude = $(this).data('longitude');
-                var latitude = $(this).data('latitude');
-
-                console.log(longitude);
-                modal.find('form').attr('action', url);
-                modal.find('input[name=name]').val(name);
-                modal.find('input[name=location]').val(location);
-
-                // document.getElementById('maps_google').src="https://maps.google.com/maps?width=500&height=500&hl=en&q="+longitude+", "+latitude+"&t=&z=14&ie=UTF8&iwloc=B&output=embed";
-
-
-                
-       
-                modal.modal('show');
-            });
-
-            $('.statusBtn').on('click', function () {
-                var modal = $('#statusModal');
-                var url = $(this).data('url');
-
-                modal.find('form').attr('action', url);
-                modal.modal('show');
-            });
-        })(jQuery);
-
-
-
+      
 
         var map = new ol.Map({
             target: 'map',
@@ -240,7 +188,7 @@
                 })
             ],
             view: new ol.View({
-                center: ol.proj.fromLonLat([36.650390625, 33.4314413355753]), // Initial map center coordinates
+                center: ol.proj.fromLonLat([{{$item->longitude}}, {{$item->latitude}}]), // Initial map center coordinates
                 zoom: 10 // Initial zoom level
             })
         });

@@ -15,6 +15,13 @@ class BranchController extends Controller
         return view ('admin.branch.index',compact('branch','page_title','empty_message'));
     }
 
+    public function edit($id){
+        $page_title = 'Branch';
+        $empty_message = 'No Result Found';
+        $item = Branch::with('Admin')->find($id);
+        return view ('admin.branch.edit',compact('item','page_title','empty_message'));
+    }
+
     public function store(Request $request){
         \request()->validate([
             'name' => 'required|string',
@@ -39,6 +46,7 @@ class BranchController extends Controller
             'whatsapp'=> \request()->whatsapp,
             'latitude' => \request()->latitude,
             'longitude' => \request()->longitude,
+            'location'=> \request()->longitude .','. \request()->latitude,
         ]);
         
         $notify[] = ['success', 'Branch created!'];
@@ -68,10 +76,12 @@ class BranchController extends Controller
         $branch->whatsapp = \request()->whatsapp;
         $branch->latitude = \request()->latitude;
         $branch->longitude = \request()->longitude;
+        $branch->location =  \request()->longitude .','  .\request()->longitude;
 
         $branch->save();
         $notify[] = ['success', 'Branch updated!'];
-        return back()->withNotify($notify);
+        return redirect()->route('admin.branch')->withNotify($notify);
+
     }    
 
     public function delete($id){
