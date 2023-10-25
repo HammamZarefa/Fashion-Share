@@ -10,13 +10,15 @@ class Branch extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['name', 'address', 'working_hours', 'phone', 'whatsapp'];
+    protected $fillable = ['name', 'address', 'working_hours', 'phone', 'whatsapp','location','latitude','longitude'];
     protected $hidden = [
         'created_at',
         'updated_at',
         'deleted_at'
     ];
     public $translatable = ['name','address'];
+
+    
 
     public function products()
     {

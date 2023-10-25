@@ -10,7 +10,7 @@ class Color extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','Hexcolor'];
 
     protected $hidden = [
         'created_at',

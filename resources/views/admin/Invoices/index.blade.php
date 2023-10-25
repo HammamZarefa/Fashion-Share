@@ -4,17 +4,18 @@
 
 <div class="card-body col-4">
        
+    @if(!Auth::guard('admin')->user()->branch)
 
     <select class="custom-select" name="branch" onchange="window.location.href=this.options[this.selectedIndex].value;">
-        <option disabled selected>Select Branch</option>
+        <option  selected value=" {{ route('admin.invoices') }}">All Branch</option>
         @foreach($branchs as $branch)
-        <option value=" {{ route('admin.invoices',$branch->id) }}">
+        <option {{$id == $branch->id ?'selected':''}} value=" {{ route('admin.invoices',$branch->id) }}">
             
             {{ $branch->name }}
         </option>
      @endforeach
     </select>
-
+    @endif
 </div>
 
     <div class="row">      

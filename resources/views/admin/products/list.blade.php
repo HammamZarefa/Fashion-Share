@@ -89,7 +89,7 @@
                                     <td><span class="name">{{__($item->name)}}</span></td>
                                     <td>
                                         @if(@$item->images[0])
-                                        <img width="40px"
+                                        <img  max-width="40px"
                                         src="{{ getImage(imagePath()['service']['path'].'/'. $item->images[0]->path,imagePath()['service']['size'])}}"
 
                                         alt="Waterfall" />

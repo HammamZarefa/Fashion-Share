@@ -28,7 +28,7 @@
                 <li class="sidebar-menu-item {{menuActive('admin.section*')}}">
                     <a href="{{route('admin.model.index','section')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>
-                        <span class="menu-title">@lang('Section')</span>
+                        <span class="menu-title">@lang('Sections')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.categories*')}}">
@@ -58,9 +58,9 @@
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.color*')}}">
-                    <a href="{{route('admin.model.index','color')}}" class="nav-link ">
+                    <a href="{{route('admin.color.index')}}" class="nav-link ">
                         <i class="menu-icon las la-briefcase"></i>
-                        <span class="menu-title">@lang('Color')</span>
+                        <span class="menu-title">@lang('Colors')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.condition*')}}">
