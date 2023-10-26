@@ -46,7 +46,7 @@ class BranchController extends Controller
             'whatsapp'=> \request()->whatsapp,
             'latitude' => \request()->latitude,
             'longitude' => \request()->longitude,
-            'location'=> \request()->longitude .','. \request()->latitude,
+            'location'=> \request()->latitude .','. \request()->longitude,
         ]);
         
         $notify[] = ['success', 'Branch created!'];
@@ -76,7 +76,7 @@ class BranchController extends Controller
         $branch->whatsapp = \request()->whatsapp;
         $branch->latitude = \request()->latitude;
         $branch->longitude = \request()->longitude;
-        $branch->location =  \request()->longitude .','  .\request()->longitude;
+        $branch->location =  \request()->latitude .','  .\request()->longitude;
 
         $branch->save();
         $notify[] = ['success', 'Branch updated!'];

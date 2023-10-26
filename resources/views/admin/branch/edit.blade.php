@@ -133,14 +133,7 @@
                         <div class="form-row form-group">
 
 
-                            <label class="font-weight-bold ">@lang('longitude') <span
-                                class="text-danger">*</span></label>
-
-                            <div class="col-sm-12">
-                                <input type="text" id="longitude" class="form-control has-error bold " id="code" name="longitude"
-                                value="{{$item->longitude ?? ''}}" >
-                            </div>
-
+                            
                             <label class="font-weight-bold ">@lang('latitude') <span
                                 class="text-danger">*</span></label>
 
@@ -149,6 +142,16 @@
                             value="{{$item->latitude ?? ''}}" >
                         </div>
 
+
+                        <label class="font-weight-bold ">@lang('longitude') <span
+                            class="text-danger">*</span></label>
+
+                        <div class="col-sm-12">
+                            <input type="text" id="longitude" class="form-control has-error bold " id="code" name="longitude"
+                            value="{{$item->longitude ?? ''}}" >
+                        </div>
+
+                        
                         <br><br>
                             
 
@@ -188,7 +191,7 @@
                 })
             ],
             view: new ol.View({
-                center: ol.proj.fromLonLat([{{$item->longitude}}, {{$item->latitude}}]), // Initial map center coordinates
+                center: ol.proj.fromLonLat([{{$item->latitude}}, {{$item->longitude}}]), // Initial map center coordinates
                 zoom: 10 // Initial zoom level
             })
         });
