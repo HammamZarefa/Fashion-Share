@@ -21,57 +21,57 @@
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.branchs*')}}">
                     <a href="{{route('admin.branch')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
-                        <span class="menu-title">@lang('Branch')</span>
+                        <i class="menu-icon las la-store-alt"></i>
+                        <span class="menu-title">@lang('Branchs')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.section*')}}">
                     <a href="{{route('admin.model.index','section')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
+                        <i class="menu-icon las la-cubes"></i>
                         <span class="menu-title">@lang('Sections')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.categories*')}}">
                     <a href="{{route('admin.categories.index')}}" class="nav-link ">
-                        <i class="menu-icon las la-bars"></i>
+                        <i class="menu-icon las la-tags"></i>
                         <span class="menu-title">@lang('Categories')</span>
                     </a>
                 </li>
 
                 <li class="sidebar-menu-item {{menuActive('admin.services*')}}">
                     <a href="{{route('admin.services.index')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
+                        <i class="menu-icon las la-tshirt"></i>
                         <span class="menu-title">@lang('Services')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.size*')}}">
                     <a href="{{route('admin.size.index')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
+                        <i class="menu-icon las la-ruler"></i>
                         <span class="menu-title">@lang('Size')</span>
                     </a>
                 </li>
 
                 <li class="sidebar-menu-item {{menuActive('admin.invoices')}}">
                     <a href="{{route('admin.invoices')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
+                        <i class="menu-icon las la-file"></i>
                         <span class="menu-title">@lang('Invoices')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.color*')}}">
                     <a href="{{route('admin.color.index')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
+                        <i class="menu-icon las la-palette"></i>
                         <span class="menu-title">@lang('Colors')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.condition*')}}">
                     <a href="{{route('admin.model.index','condition')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
-                        <span class="menu-title">@lang('Condition')</span>
+                        <i class="menu-icon las la-info-circle"></i>
+                        <span class="menu-title">@lang('Product Condition')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{menuActive('admin.material*')}}">
                     <a href="{{route('admin.model.index','material')}}" class="nav-link ">
-                        <i class="menu-icon las la-briefcase"></i>
+                        <i class="menu-icon las la-vial"></i>
                         <span class="menu-title">@lang('Material')</span>
                     </a>
                 </li>
