@@ -26,13 +26,13 @@
                                     <td data-label="@lang('ID')">{{__($item->id)}}</td>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
                                     <td data-label="@lang('Admin')">{{__($item->Admin->email ?? '')}}</td>
-                                    <td data-label="@lang('Adress')">{{__($item->address)}}</td>
+                                    <td data-label="@lang('Address')">{{__($item->address)}}</td>
                                     <td data-label="@lang('latitude')">{{__($item->latitude)}}</td>
                                     <td data-label="@lang('longitude')">{{__($item->longitude)}}</td>
 
                                     <td data-label="@lang('Name')">{{__($item->working_hours)}}</td>
-                                    <td data-label="@lang('Adress')">{{__($item->phone)}}</td>
-                                    <td data-label="@lang('Adress')">{{__($item->whatsapp)}}</td>
+                                    <td data-label="@lang('phone')">{{__($item->phone)}}</td>
+                                    <td data-label="@lang('whatsapp')">{{__($item->whatsapp)}}</td>
 
                                     <td data-label="@lang('Action')">
                                         <a href="{{ route('admin.branch.edit',$item->id)}}" class="icon-btn ml-1"

@@ -151,7 +151,7 @@
                             value="{{$item->longitude ?? ''}}" >
                         </div>
 
-                        
+
                         <br><br>
                             
 
@@ -164,10 +164,14 @@
 
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn--primary" id="btn-save"
-                                    value="add">@lang('Update')</button>
-                        </div>
+                           
 
+                            <button type="button"   class="btn btn--dark" data-dismiss="modal"><a style="color: white" href="{{route('admin.branch')}}">@lang('Close')</a></button>
+
+                            <button type="submit"  class="btn btn--primary" id="btn-save"
+                            value="add">@lang('Update')</button>
+                
+                        </div>
 
                     </div>
                 </form>

@@ -39,7 +39,7 @@
                                  <tr> 
                                     <td data-label="@lang('Name')">{{__($invoice->id)}}</td>
                                     <td data-label="@lang('Name')">{{__($invoice->products->name )}}</td>
-                                    <td data-label="@lang('Adress')">{{__($invoice->price)}}</td>
+                                    <td data-label="@lang('Address')">{{__($invoice->price)}}</td>
                                     <td data-label="@lang('Status')">
                                       @if($invoice->status=='sale')
                                             <span
@@ -51,7 +51,7 @@
                                         @endif  
                                     </td>                                    
                                     <td data-label="@lang('Name')">{{__($invoice->date_of_process)}}</td>
-                                    <td data-label="@lang('Adress')">{{__($invoice->products->branch->name ??'')}}</td>
+                                    <td data-label="@lang('Address')">{{__($invoice->products->branch->name ??'')}}</td>
 
                                
 
