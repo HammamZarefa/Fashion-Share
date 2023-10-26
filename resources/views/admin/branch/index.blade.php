@@ -12,8 +12,8 @@
                                 <th scope="col">@lang('Name')</th>
                                 <th scope="col">@lang('Admin')</th>
                                 <th scope="col">@lang('Address')</th>
-                                <th scope="col">@lang('longitude')</th>
                                 <th scope="col">@lang('latitude')</th>
+                                <th scope="col">@lang('longitude')</th>
 
                                 <th scope="col">@lang('working_hours')</th>
                                 <th scope="col">@lang('phone')</th>
@@ -27,8 +27,8 @@
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
                                     <td data-label="@lang('Admin')">{{__($item->Admin->email ?? '')}}</td>
                                     <td data-label="@lang('Adress')">{{__($item->address)}}</td>
-                                    <td data-label="@lang('longitude')">{{__($item->longitude)}}</td>
                                     <td data-label="@lang('latitude')">{{__($item->latitude)}}</td>
+                                    <td data-label="@lang('longitude')">{{__($item->longitude)}}</td>
 
                                     <td data-label="@lang('Name')">{{__($item->working_hours)}}</td>
                                     <td data-label="@lang('Adress')">{{__($item->phone)}}</td>
