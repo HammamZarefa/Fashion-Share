@@ -53,9 +53,9 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i
-                            class="fa fa-share-square"></i> @lang('Add New '.$model)</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <h4 class="modal-title" id="myModalLabel">
+                         @lang('Add New '.$model)</h4>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
                 <form class="form-horizontal" method="post" action="{{ route('admin.model.store',$model)}}"
@@ -86,9 +86,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i
-                            class="fa fa-fw fa-share-square"></i>@lang('Edit')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <h4 class="modal-title" id="myModalLabel">@lang('Edit')</h4>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
                 <form method="post" enctype="multipart/form-data">
