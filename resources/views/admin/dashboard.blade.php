@@ -50,7 +50,7 @@
                         <span class="amount">{{$widget['total_Branch']}}</span>
                     </div>
                     <div class="desciption">
-                        <span class="text--small">@lang('Total Branchs')</span>
+                        <span class="text--small">@lang('Total Branches')</span>
                     </div>
                     <a href="{{route('admin.branch')}}"
                        class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
