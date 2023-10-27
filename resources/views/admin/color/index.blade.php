@@ -75,10 +75,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i
-                            class="fa fa-share-square"></i> @lang('Add Color')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        @lang('Add Color')</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="margin: -1rem -1rem -1rem 0rem" aria-label="Close"><span
+                            aria-hidden="true" >×</span></button>
                 </div>
                 <form class="form-horizontal" method="post" action="{{ route('admin.color.store')}}"
                       enctype="multipart/form-data">
@@ -92,8 +92,10 @@
                                        placeholder="@lang('Enter Color name')">
                             </div>
 
-                            <br><br><br><br>
-                            
+                        </div>
+
+                        <div class="form-row form-group">
+
                             <label class="font-weight-bold ">@lang('Hexcolor') <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-2">
@@ -133,9 +135,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i
-                            class="fa fa-fw fa-share-square"></i>@lang('Edit')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <h4 class="modal-title" id="myModalLabel">@lang('Edit')</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="margin: -1rem -1rem -1rem 0rem"  aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
                 <form method="POST" enctype="multipart/form-data">
@@ -150,12 +151,13 @@
                                        value="{{$item->name ?? ''}}" required>
                             </div>
 
-                            <br><br><br><br>
+                        </div>
+                        <div class="form-row form-group">
                             
                             <label class="font-weight-bold ">@lang('Hexcolor') <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-2">
-                                <input type="color" id="Hexcolor" name="Hexcolor" value="{{$item->Hexcolor}}"
+                                <input type="color" id="Hexcolor" name="Hexcolor" value="{{$item->Hexcolor ?? ''}}"
                                 style="
                                 appearance: auto;
                                  inline-size: 150px;
@@ -191,16 +193,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">@lang('Update Status')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">@lang('Are you sure to Delete?')</h4>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem"  data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <form method="post" action="">
                     @csrf
                     @method('delete')
                     <input type="hidden" name="delete_id" id="delete_id" class="delete_id" value="0">
-                    <div class="modal-body">
+                    {{-- <div class="modal-body">
                         <p class="text-muted">@lang('Are you sure to delete?')</p>
-                    </div>
+                    </div> --}}
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('No')</button>
                         <button type="submit" class="btn btn--primary">@lang('Yes')</button>

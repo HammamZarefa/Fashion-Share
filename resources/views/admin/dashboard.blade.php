@@ -32,7 +32,7 @@
                         <span class="amount">{{$widget['total_Product']}}</span>
                     </div>
                     <div class="desciption">
-                        <span class="text--small">@lang('Total Product')</span>
+                        <span class="text--small">@lang('Total Products')</span>
                     </div>
                     <a href="{{route('admin.services.index')}}"
                        class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
@@ -50,7 +50,7 @@
                         <span class="amount">{{$widget['total_Branch']}}</span>
                     </div>
                     <div class="desciption">
-                        <span class="text--small">@lang('Total Branch')</span>
+                        <span class="text--small">@lang('Total Branchs')</span>
                     </div>
                     <a href="{{route('admin.branch')}}"
                        class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
@@ -69,7 +69,7 @@
                         <span class="amount">{{$widget['total_Category']}}</span>
                     </div>
                     <div class="desciption">
-                        <span class="text--small">@lang('Total Category')</span>
+                        <span class="text--small">@lang('Total Categories')</span>
                     </div>
                     <a href="{{route('admin.categories.index')}}"
                        class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
@@ -88,7 +88,7 @@
                         <span class="amount">{{$widget['total_Section']}}</span>
                     </div>
                     <div class="desciption">
-                        <span class="text--small">@lang('Total Section')</span>
+                        <span class="text--small">@lang('Total Sections')</span>
                     </div>
                     <a href="{{route('admin.model.index','section')}}"
                        class="btn btn-sm text--small bg--white text--black box--shadow3 mt-3">@lang('View All')</a>
