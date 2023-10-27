@@ -66,6 +66,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('categories/update/{id}', 'CategoryController@update')->name('categories.update');
         Route::post('categories/status/{id}', 'CategoryController@status')->name('categories.status');
         Route::get('categoriesSearch/{id}','CategoryController@search')->name('categories.search');
+        Route::delete('categories/delete/{id}','CategoryController@delete')->name('categories.delete');
         //Services
         Route::get('services', 'ServiceController@index')->name('services.index');
         Route::post('services/store', 'ServiceController@store')->name('services.store');
@@ -125,6 +126,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('sizes',[SizesController::class,'store'])->name('sizes.store');
         Route::post('sizes/{id}',[SizesController::class,'update'])->name('sizes.update');
         Route::get('sizeSearch/{id}',[SizesController::class,'search'])->name('sizes.search');
+        Route::delete('sizes/{id}',[SizesController::class,'delete'])->name('sizes.delete');
         
         Route::get('colors',[ColoresController::class,'index'])->name('color.index');
         Route::post('colors',[ColoresController::class,'store'])->name('color.store');

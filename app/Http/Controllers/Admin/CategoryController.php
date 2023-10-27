@@ -101,4 +101,17 @@ class CategoryController extends Controller
         
         return view('admin.categories.index', compact('page_title','id', 'categories','sections', 'empty_message'));
       }
+
+      public function delete($id){
+        
+        $categories = Category::findOrFail('id',$id);
+        if($categories->images){
+            $path = imagePath()['category']['path'];
+            removeFile($path . '/' . $categories);
+        }
+        $categories->delete();
+        $notify[] = ['success', 'Category Deletedd!'];
+        return redirect()->route('admin.categories')->withNotify($notify);
+
+      }
 }
