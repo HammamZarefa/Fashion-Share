@@ -169,16 +169,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">@lang('Update Status')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">@lang('Are you sure to Delete?')</h4>
+                    <button type="button" class="close"  style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <form method="post" action="">
                     @csrf
                     @method('delete')
                     <input type="hidden" name="delete_id" id="delete_id" class="delete_id" value="0">
-                    <div class="modal-body">
+                    {{-- <div class="modal-body">
                         <p class="text-muted">@lang('Are you sure to delete?')</p>
-                    </div>
+                    </div> --}}
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('No')</button>
                         <button type="submit" class="btn btn--primary">@lang('Yes')</button>

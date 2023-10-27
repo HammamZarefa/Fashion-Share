@@ -43,6 +43,13 @@
                                            data-field="{{$item->field_name}}" >
                                             <i class="la la-edit"></i>
                                         </a>
+
+                                        <a href="javascript:void(0)"
+                                           class="icon-btn btn--danger ml-1 statusBtn"
+                                           data-original-title="@lang('Status')" data-toggle="tooltip"
+                                           data-url="{{ route('admin.sizes.delete', $item->id) }}">
+                                            <i class="la la-eye-slash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -82,7 +89,7 @@
                         </div>
 
                         <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Section') <span
+                            <label class="font-weight-bold ">@lang('Categories') <span
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
                                 <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
@@ -135,7 +142,7 @@
                                     @if(!$sizes->isEmpty())
 
                                     @foreach($categories as $category)
-                                       <option value="{{$category->id}}" {{ $item->section_id == $category->id ? "selected" :""}}>{{ $category->name }}</option>
+                                       <option value="{{$category->id}}" {{ $item->category->id == $category->id ? "selected" :""}}>{{ $category->name }}</option>
                                     @endforeach
                                     @endif
                                  </select>                            </div>
@@ -159,15 +166,16 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">@lang('Update Status')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">@lang('Are you sure to Delete?')</h4>
+                    <button type="button" class="close"  style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <form method="post" action="">
                     @csrf
+                    @method('DELETE')
                     <input type="hidden" name="delete_id" id="delete_id" class="delete_id" value="0">
-                    <div class="modal-body">
+                    {{-- <div class="modal-body">
                         <p class="text-muted">@lang('Are you sure to change the status?')</p>
-                    </div>
+                    </div> --}}
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('No')</button>
                         <button type="submit" class="btn btn--primary">@lang('Yes')</button>
@@ -192,8 +200,12 @@
                 var modal = $('#editModal');
                 var url = $(this).data('url');
                 var name = $(this).data('name');
+                var category = $(this).data('category');
+                
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name);
+                modal.find('select[name=section_id]').val(category);
+
                 modal.modal('show');
             });
 

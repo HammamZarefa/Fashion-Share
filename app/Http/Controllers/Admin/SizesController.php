@@ -71,4 +71,11 @@ class SizesController extends Controller
         $sizes = Size::where('category_id',$id)->with('category')->latest()->get();
         return view('admin.sizes.index', compact('page_title', 'id','sizes','categories', 'empty_message'));
       }
+
+      public function delete($id){
+        $size = Size::findOrFail($id);
+        $size->delete();
+        $notify[] = ['success', 'Color Deleted!'];
+        return back()->withNotify($notify);
+      }
 }

@@ -48,6 +48,13 @@
                                            data-field="{{$item->field_name}}" >
                                             <i class="la la-edit"></i>
                                         </a>
+
+                                        <a href="javascript:void(0)"
+                                           class="icon-btn btn--danger ml-1 statusBtn"
+                                           data-original-title="@lang('Status')" data-toggle="tooltip"
+                                           data-url="{{ route('admin.categories.delete', $item->id ) }}">
+                                            <i class="la la-eye-slash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
@@ -89,7 +96,7 @@
                             <label class="font-weight-bold ">@lang('Section') <span
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
+                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required  >
                                     <option selected disabled>Select Section</option>
                                     @foreach($sections as $section)
                                        <option value="{{$section->id}}" >{{ $section->name }}</option>
@@ -145,7 +152,8 @@
                                        <option value="{{$section->id}}" {{ $item->section_id == $section->id ? "selected" :""}}>{{ $section->name }}</option>
                                     @endforeach
                                     @endif
-                                 </select>                            </div>
+                                 </select>                     
+                               </div>
                         </div>
 
 
@@ -174,6 +182,7 @@
                 </div>
                 <form method="post" action="">
                     @csrf
+                    @method('DELETE')
                     <input type="hidden" name="delete_id" id="delete_id" class="delete_id" value="0">
                     <div class="modal-body">
                         <p class="text-muted">@lang('Are you sure to change the status?')</p>
