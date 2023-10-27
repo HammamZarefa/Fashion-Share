@@ -28,9 +28,12 @@
                                            data-description="{{ $item->description }}">
                                             <i class="la la-edit"></i>
                                         </a>
-                                        <a href="javascript:void(0)" class="icon-btn btn--{{ $item->status ? 'danger' : 'success' }} ml-1 statusBtn" data-original-title="@lang('Delete')" data-toggle="tooltip" data-url="{{ route('admin.banner.destroy', $item->id) }}">
+                                        <a href="javascript:void(0)" class="icon-btn btn--danger ml-1 statusBtn" data-original-title="@lang('Delete')" data-toggle="tooltip" data-url="{{ route('admin.banner.destroy', $item->id) }}">
                                             <i class="la la-trash"></i>
                                         </a>
+                                        {{-- <a href="javascript:void(0)" class="icon-btn btn--{{ $item->status ? 'danger' : 'success' }} ml-1 statusBtn" data-original-title="@lang('Delete')" data-toggle="tooltip" data-url="{{ route('admin.banner.destroy', $item->id) }}">
+                                            <i class="la la-trash"></i>
+                                        </a> --}}
 
                                     </td>
                                 </tr>
@@ -54,9 +57,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i
-                            class="fa fa-share-square"></i> @lang('Add New Banner')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <h4 class="modal-title" id="myModalLabel"> @lang('Add New Banner')</h4>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
                 <form class="form-horizontal" method="post" action="{{ route('admin.banner.store')}}" enctype="multipart/form-data">
@@ -69,10 +71,7 @@
                                 <input type="text" class="form-control has-error bold " id="code" name="name" required placeholder="@lang('Enter Banner title')">
                             </div>
                         </div>
-                        <div class="avatar-edit">
-                            <input type="file" class="profilePicUpload" name="image"  accept=".png, .jpg, .jpeg">
-                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
-                        </div>
+                        
                         <div class="form-row form-group" >
                             <label class="font-weight-bold ">@lang('description') <span
                                         class="text-danger">*</span></label>
@@ -80,6 +79,12 @@
                                 <input type="text" class="form-control has-error bold " id="code" name="description"  placeholder="@lang('desc')">
                             </div>
                         </div>
+
+                        <div class="avatar-edit">
+                            <input type="file" class="profilePicUpload" name="image"  accept=".png, .jpg, .jpeg">
+                            <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
+                        </div>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -96,9 +101,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"><i
-                            class="fa fa-fw fa-share-square"></i>@lang('Edit')</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <h4 class="modal-title" id="myModalLabel">@lang('Edit')</h4>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
                 <form method="post" enctype="multipart/form-data">

@@ -88,7 +88,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel"> @lang('Add New')</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
 
                     <form action="{{route('admin.language.store.key',$la->id)}}" method="post">
@@ -122,7 +122,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="myModalLabel">@lang('Edit')</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                     </div>
 
                     <form action="{{route('admin.language.update.key',$la->id)}}" method="post">
