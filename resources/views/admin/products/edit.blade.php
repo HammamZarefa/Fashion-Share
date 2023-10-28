@@ -370,9 +370,9 @@ function addRowSizes(ele){
         for(var i=0 ; i < Categories.length;i++){
           if(Categories[i].id == ele){
             ref=i;
-            console.log(ref);
           }     
-      }      }
+      }      
+    }
       size =  Categories[ref].sizes;
 
       var x = document.getElementById("sizes");
