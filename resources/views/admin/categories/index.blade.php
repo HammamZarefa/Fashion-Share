@@ -144,7 +144,7 @@
                             <label class="font-weight-bold ">@lang('Name') <span
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
+                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
                                     {{-- <option selected disabled>Select Section</option> --}}
 
                                     @if(!$categories->isEmpty())
