@@ -179,9 +179,9 @@
                     <div class="col mb-3">
                       <label for="validationCustom05">@lang('Categories')</label>
                       <select  onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                        {{-- @foreach($Sections[ {{!! $services->section_id !!}} ]->category as $Categorie)
+                        @foreach($Categories as $Categorie)
                           <option value="{{$Categorie->id}}" {{ $services->category_id == $Categorie->id ? "selected" :""}}>{{ $Categorie->name }}</option>
-                        @endforeach --}}
+                        @endforeach
                      </select>
                      
                       {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
@@ -318,7 +318,15 @@ function addRowCategory(ele)
 {
       var ID= ele;
       Sections = {!! json_encode($Sections) !!};
-      category =  Sections[ID-1].category;
+      var ref;
+      for(var i=0 ; i < Sections.length;i++){
+        if(Sections[i].id == ele){
+          ref=i;
+          console.log(ref);
+        }     
+      } 
+      category =  Sections[ref].category;
+     
       var categoryOptions = document.getElementById("categories"); 
       removeOptions(categoryOptions);
      
@@ -358,8 +366,15 @@ function addRowSizes(ele){
       var name= ele;
       Categories = {!! json_encode($Categories) !!};
       if(Categories!= null){
-      size =  Categories[name-1].sizes;
-      }
+        var ref;
+        for(var i=0 ; i < Categories.length;i++){
+          if(Categories[i].id == ele){
+            ref=i;
+            console.log(ref);
+          }     
+      }      }
+      size =  Categories[ref].sizes;
+
       var x = document.getElementById("sizes");
 
 
@@ -377,12 +392,12 @@ function addRowSizes(ele){
 }
 
 
-      window.onload = selectSection();
+      // window.onload = selectSection();
 
-      function selectSection (){
-        var firstselectsection = document.getElementById("sections");
-        addRowCategory(firstselectsection.value);
-      };
+      // function selectSection (){
+      //   var firstselectsection = document.getElementById("sections");
+      //   addRowCategory(firstselectsection.value);
+      // };
         </script>
 
 

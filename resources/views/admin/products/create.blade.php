@@ -230,7 +230,17 @@ function addRowCategory(ele)
 {
       var ID= ele;
       Sections = {!! json_encode($Sections) !!};
-      category =  Sections[ID-1].category;
+
+      var ref;
+      for(var i=0 ; i < Sections.length;i++){
+        if(Sections[i].id == ele){
+          ref=i;
+          console.log(ref);
+        }     
+      }
+      category =  Sections[ref].category;
+
+
       var categoryOptions = document.getElementById("categories"); 
       removeOptions(categoryOptions);
      
@@ -264,11 +274,20 @@ function addRowCategory(ele)
 function addRowSizes(ele){
    removeOptions(document.getElementById('sizes'));
     
-1
+
+
       var name= ele;
       Categories = {!! json_encode($Categories) !!};
       if(Categories!= null){
-      size =  Categories[name-1].sizes;
+
+        var ref;
+        for(var i=0 ; i < Categories.length;i++){
+          if(Categories[i].id == ele){
+            ref=i;
+            console.log(ref);
+          }     
+      }
+      size =  Categories[ref].sizes;
       }
       var x = document.getElementById("sizes");
 
