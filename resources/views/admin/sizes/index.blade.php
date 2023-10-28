@@ -73,7 +73,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">
-                         @lang('Add New Category')</h4>
+                         @lang('Add New Size')</h4>
                     <button type="button" class="close" data-dismiss="modal" style="margin: -1rem -1rem -1rem 0rem"1 aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
                 </div>
@@ -92,12 +92,13 @@
                             <label class="font-weight-bold ">@lang('Categories') <span
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                                    <option selected disabled>Select Categories</option>
+                                <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true" required>
                                     @foreach($categories as $category)
                                        <option value="{{$category->id}}" >{{ $category->name }}</option>
                                     @endforeach
-                                 </select>                            </div>
+                                 </select>       
+                                
+                            </div>
                         </div>
 
 
@@ -138,7 +139,7 @@
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
                                 <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                                    <option selected disabled>Select Section</option>
+                                    {{-- <option selected disabled>Select Section</option> --}}
                                     @if(!$sizes->isEmpty())
 
                                     @foreach($categories as $category)
