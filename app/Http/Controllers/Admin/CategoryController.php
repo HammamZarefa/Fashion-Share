@@ -111,7 +111,6 @@ class CategoryController extends Controller
         }
         $categories->delete();
         $notify[] = ['success', 'Category Deletedd!'];
-        return redirect()->route('admin.categories')->withNotify($notify);
-
+        return back()->withNotify($notify);
       }
 }
