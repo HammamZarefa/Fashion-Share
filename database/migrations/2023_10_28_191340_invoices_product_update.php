@@ -13,6 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('invoices_prodects');
+   
         Schema::create('invoices_prodects', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id')->nullable();
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoices_prodects');
+        //
     }
 };
