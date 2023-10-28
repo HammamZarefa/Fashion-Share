@@ -104,7 +104,7 @@ class CategoryController extends Controller
 
       public function delete($id){
         
-        $categories = Category::findOrFail('id',$id);
+        $categories = Category::findOrFail($id);
         if($categories->images){
             $path = imagePath()['category']['path'];
             removeFile($path . '/' . $categories);
