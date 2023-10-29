@@ -179,9 +179,9 @@
                     <div class="col mb-3">
                       <label for="validationCustom05">@lang('Categories')</label>
                       <select  onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                        @foreach($Categories as $Categorie)
+                        {{-- @foreach($Categories as $Categorie)
                           <option value="{{$Categorie->id}}" {{ $services->category_id == $Categorie->id ? "selected" :""}}>{{ $Categorie->name }}</option>
-                        @endforeach
+                        @endforeach --}}
                      </select>
                      
                       {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
@@ -322,15 +322,16 @@ function addRowCategory(ele)
       for(var i=0 ; i < Sections.length;i++){
         if(Sections[i].id == ele){
           ref=i;
-          console.log(ref);
         }     
       } 
+      if( Sections[ref].category){
       category =  Sections[ref].category;
      
       var categoryOptions = document.getElementById("categories"); 
       removeOptions(categoryOptions);
      
       var i=0;
+
       category.forEach(function(item, index) {
         var option = document.createElement("option");
         option.value = item.id;
@@ -348,7 +349,7 @@ function addRowCategory(ele)
     
       addRowSizes(categoryOptions.value);
 
-
+    }
   }
 
   function removeOptions(selectElement) {
@@ -370,9 +371,11 @@ function addRowSizes(ele){
         for(var i=0 ; i < Categories.length;i++){
           if(Categories[i].id == ele){
             ref=i;
-            console.log(ref);
           }     
-      }      }
+      }      
+    }
+
+    if( Categories[ref].sizes){
       size =  Categories[ref].sizes;
 
       var x = document.getElementById("sizes");
@@ -389,6 +392,7 @@ function addRowSizes(ele){
         x.add(option);
         }
       );
+    }
 }
 
 
