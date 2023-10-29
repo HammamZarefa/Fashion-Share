@@ -179,9 +179,9 @@
                     <div class="col mb-3">
                       <label for="validationCustom05">@lang('Categories')</label>
                       <select  onchange="addRowSizes(this.value)" id="categories" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
-                        {{-- @foreach($Categories as $Categorie)
-                          <option value="{{$Categorie->id}}" {{ $services->category_id == $Categorie->id ? "selected" :""}}>{{ $Categorie->name }}</option>
-                        @endforeach --}}
+                        @foreach($Categories as $Category)
+                          <option value="{{$Category->id}}" {{ $services->category_id == $Category->id ? "selected" :""}}>{{ $Category->name }}</option>
+                        @endforeach
                      </select>
                      
                       {{-- <input type="text" class="form-control" id="validationCustom05" placeholder="Zip" value="{{__($services[0]->section->name)}}" required> --}}
