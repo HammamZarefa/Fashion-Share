@@ -210,7 +210,7 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product updated successfully', 'data' => $product, 'status' => 200]);
     }
 
-    public function FilterNameDescription($NameDescription){
+    public function FilterNameDescription($NameDescription = null){
         $products = Product::where('status', 'available')
         ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
         ->when($NameDescription, function ($query) use ($NameDescription) {
