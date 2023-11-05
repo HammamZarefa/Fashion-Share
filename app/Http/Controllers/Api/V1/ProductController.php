@@ -209,4 +209,17 @@ class ProductController extends Controller
         $adminNotification->save();
         return response()->json(['message' => 'Product updated successfully', 'data' => $product, 'status' => 200]);
     }
+
+    public function FilterNameDescription($NameDescription){
+        $products = Product::where('status', 'available')
+        ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+        ->when($NameDescription, function ($query) use ($NameDescription) {
+            $query->where('name','LIKE', "%$NameDescription%")
+            ->OrWhere('description','LIKE', "%$NameDescription%");
+            })
+       
+        ->orderBy('id', 'desc')
+        ->paginate();
+    return ProductResource::collection($products);
+    }
 }

@@ -48,6 +48,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('user/forget', [AuthController::class, 'sendResetLinkEmail']);
     Route::post('products', [ProductController::class,'create']);
     Route::put('products/{product}', [ProductController::class,'update']);
+    Route::get('products/FilterNameDescriptions/{NameDescription}', [ProductController::class,'FilterNameDescription']);
 
     Route::post('store_FcmToken',[FcmTokenController::class,'store_FcmToken']);
 
