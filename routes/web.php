@@ -80,6 +80,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::delete('services/delete/{id}', 'ServiceController@delete')->name('services.delete');
         Route::get('services/details/{id}', 'ServiceController@ditails')->name('services.ditails');
         Route::get('services/filter', 'ServiceController@Filter')->name('services.filter');
+        Route::get('services/SaleOrRentQR/{id}', 'ServiceController@SaleOrRentQR')->name('services.test');
 
         // Manage Banner
         Route::get('banner',  'BannerController@index')->name('banner');
