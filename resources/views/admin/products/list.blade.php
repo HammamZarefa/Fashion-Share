@@ -636,6 +636,7 @@
 
 <form   id="myForm"   method="GET"  onsubmit="submitFormFromJavascriptFunction()">
 
+
 <script
     src="https://unpkg.com/html5-qrcode"> 
 </script> 
@@ -655,8 +656,11 @@
 
         domReady(function () { 
 
+            console.log("QR"); 
+
         // If found you qr code 
-        function onScanSuccess(decodeText, decodeResult) { 
+        function onScanSuccess(decodeText, decodeResult) {
+            console.log(decodeText); 
             document.getElementById("myForm").action = window.location.origin+"/admin/services/SaleOrRentQR/"+decodeText;
             document.getElementById("myForm").submit();
         } 
