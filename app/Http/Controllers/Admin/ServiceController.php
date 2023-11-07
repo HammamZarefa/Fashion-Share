@@ -415,4 +415,44 @@ class ServiceController extends Controller
         compact('page_title', 'empty_message' ,'item'));
 
     }
+
+    public function QR(){
+        $page_title = 'Services';
+        $empty_message = 'No Result Found';
+        return view('admin.QR-and-barcode.index' ,compact('page_title', 'empty_message' ));
+    }
+
+    public function SaleOrRentQR($code){
+        $product = Product::where('sku',$code)->first();
+        if($product){
+            if($product->status == "available"){
+                if ($product->is_for_sale) {
+                    $product->update(['status' => 'sale']);
+                    $this->insertInInvoices($product);
+                    if ($product->user) {
+                        $this->send_event_notification($product->user, '', ' تم تغيير حالة منتجك الى بيع ', 'Your product status has been changed to Sold');
+                    }
+                }
+                else {
+                    $product->update(['status' => 'rent']);
+                    $this->insertInInvoices($product);
+                    if ($product->user) {
+                        $this->send_event_notification($product->user, '', ' تم تغيير حالة منتجك الى بيع ', 'Your product status has been changed to Sold');
+                    }
+                }
+
+            $notify[] = ['success', 'Status updated!'];
+            return back()->withNotify($notify);    
+            }
+            else{
+                $notify[] = ['error', 'Product Not Available!'];
+                return back()->withNotify($notify);      
+            }
+        }
+        else{
+            $notify[] = ['error', 'Product Not Found!'];
+            return back()->withNotify($notify);    
+        }
+       
+    }
 }

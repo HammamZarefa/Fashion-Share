@@ -145,26 +145,7 @@
                                             data-original-title="@lang('Show')">
                                             <i class="la la-eye"></i>
                                          </a>
-                                        {{-- <a href="javascript:void(0)" class="icon-btn bg--info ml-1 showDetails"
-                                           data-original-title="@lang('Show')" data-toggle="tooltip"
-                                           data-name="{{ $item->name }}"
-                                           data-user="{{$item->user->email ?? ''}}"
-                                           data-branch="{{ $item->branch->name ?? ''}}"
-                                           data-category="{{$item->categories[0]->name}}"
-                                           data-price="{{$item->price}}"
-                                           data-is_for_sale="{{$item->is_for_sale ? 'Sale' : 'Rent'}}"
-                                           data-status="{{$item->status}}"
-                                           data-color="{{$item->color->name}}"
-                                           data-images="{{ $item->images }}"
-                                           data-condition="{{$item->condition->name}}"
-                                           data-material="{{$item->material->name}}"
-                                           data-size="{{$item->size->name}}"
-                                           data-description="{{$item->description}}"
-                                           data-location="{{$item->locaton}}"
-                                           data-sections="{{$item->section->name}}"
-                                           data-field="{{$item->field_name}}">
-                                        <i class="la la-eye"></i>
-                                        </a> --}}
+                                     
                                         @if($item->status == "available")
                                             <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
                                                data-original-title="$" data-toggle="tooltip"
@@ -198,6 +179,13 @@
                 </div>
 
             </div><!-- card end -->
+            {{-- QR Sections --}}
+                {{-- <div class="container">  --}}
+                    <div class="section" > 
+                        <div id="my-qr-reader" style="left: 3000px"> 
+                        </div> 
+                    </div> 
+                {{-- </div>  --}}
         </div>
     </div>
 
@@ -641,4 +629,61 @@
             document.getElementById("myForm").submit();
         }
     </script>
+
+
+
+
+
+<form   id="myForm"   method="GET"  onsubmit="submitFormFromJavascriptFunction()">
+
+<script
+    src="https://unpkg.com/html5-qrcode"> 
+</script> 
+
+<script>
+
+        function domReady(fn) { 
+        if ( 
+            document.readyState === "complete" || 
+            document.readyState === "interactive"
+        ) { 
+            setTimeout(fn, 10000); 
+        } else { 
+            document.addEventListener("DOMContentLoaded", fn); 
+        } 
+        } 
+
+        domReady(function () { 
+
+        // If found you qr code 
+        function onScanSuccess(decodeText, decodeResult) { 
+            document.getElementById("myForm").action = window.location.origin+"/admin/services/SaleOrRentQR/"+decodeText;
+            document.getElementById("myForm").submit();
+        } 
+
+        let htmlscanner = new Html5QrcodeScanner( 
+            "my-qr-reader", 
+            { fps: 10, qrbos: 250 } 
+        ); 
+        htmlscanner.render(onScanSuccess); 
+        });
+
+</script> 
+
+
+
+
+<style>
+    video { 
+        height: 350px;
+    width: 50% !important; 
+    border: 1px solid #b2b2b2 !important; 
+    border-radius: 0.25em; 
+}
+#my-qr-reader__dashboard_section{
+    display: none;
+}
+
+</style>
+
 @endpush
