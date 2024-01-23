@@ -3,7 +3,10 @@
 use App\Http\Controllers\Admin\ColoresController;
 use App\Http\Controllers\Admin\InvoicesController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\RentsController;
 use App\Http\Controllers\Admin\SizesController;
+use App\Http\Controllers\Admin\StyleController;
+use App\Http\Controllers\BarcodeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function(){
@@ -38,6 +41,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware('admin')->group(function () {
 
+        Route::get('/barcode-index', [BarcodeController::class, 'barcodeIndex']);
+
         Route::get('model/{model}','ModelController@index')->name('model.index');
         Route::post('model/{model}','ModelController@store')->name('model.store');
         Route::post('model/{model}/{id}','ModelController@update')->name('model.update');
@@ -67,6 +72,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('categories/status/{id}', 'CategoryController@status')->name('categories.status');
         Route::get('categoriesSearch/{id}','CategoryController@search')->name('categories.search');
         Route::delete('categories/delete/{id}','CategoryController@delete')->name('categories.delete');
+        Route::post('categories/add/{id}','CategoryController@add')->name('categories.add');
         //Services
         Route::get('services', 'ServiceController@index')->name('services.index');
         Route::post('services/store', 'ServiceController@store')->name('services.store');
@@ -111,9 +117,14 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('branch/store', 'BranchController@store')->name('branch.store');
         Route::delete('branch/delete/{id}', 'BranchController@delete')->name('branch.delete');
         Route::get('branch/edit/{id}', 'BranchController@edit')->name('branch.edit');
+        Route::get('branch/show/{id}', 'BranchController@show')->name('branch.show');
+        Route::get('branch/dashboard/{id}', 'BranchController@dashboard')->name('branch.dashboard');
 
         //Invoices
         Route::get('Invoices/{id?}',InvoicesController::class)->name('invoices');
+
+        //Rents
+        Route::get('rents/{id?}',RentsController::class)->name('rents');
 
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');
@@ -128,7 +139,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('sizes/{id}',[SizesController::class,'update'])->name('sizes.update');
         Route::get('sizeSearch/{id}',[SizesController::class,'search'])->name('sizes.search');
         Route::delete('sizes/{id}',[SizesController::class,'delete'])->name('sizes.delete');
-        
+
+        Route::get('styles',[StyleController::class,'index'])->name('style.index');
+        Route::post('styles',[StyleController::class,'store'])->name('styles.store');
+        Route::post('styles/{id}',[StyleController::class,'update'])->name('styles.update');
+        Route::get('styleSearch/{id}',[StyleController::class,'search'])->name('styles.search');
+        Route::delete('styles/{id}',[StyleController::class,'delete'])->name('styles.delete');
+
         Route::get('colors',[ColoresController::class,'index'])->name('color.index');
         Route::post('colors',[ColoresController::class,'store'])->name('color.store');
         Route::put('colors/update/{id}',[ColoresController::class,'update'])->name('color.update');

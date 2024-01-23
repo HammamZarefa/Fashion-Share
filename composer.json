@@ -23,6 +23,7 @@
         "mailjet/mailjet-apiv3-php": "^1.4",
         "paypal/rest-api-sdk-php": "*",
         "phpmailer/phpmailer": "^6.2",
+        "picqer/php-barcode-generator": "^2.4",
         "razorpay/razorpay": "^2.5",
         "sendgrid/sendgrid": "^7.6",
         "spatie/laravel-translatable": "^6.5",

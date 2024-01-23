@@ -57,6 +57,7 @@ class AdminController extends Controller
 
         $latestUser = User::latest()->limit(6)->get();
         $empty_message = 'User Not Found';
+//        $is_branch_admin = false;
         return view('admin.dashboard', compact('page_title', 'widget','empty_message'));
     }
 

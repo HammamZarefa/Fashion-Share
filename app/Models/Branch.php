@@ -10,7 +10,7 @@ class Branch extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['name', 'address', 'working_hours', 'phone', 'whatsapp','location','latitude','longitude'];
+    protected $fillable = ['name', 'address', 'working_hours', 'phone', 'whatsapp','location','latitude','longitude','code', 'mobile','social'];
     protected $hidden = [
         'created_at',
         'updated_at',
@@ -18,7 +18,7 @@ class Branch extends Model
     ];
     public $translatable = ['name','address'];
 
-    
+
 
     public function products()
     {
@@ -28,5 +28,10 @@ class Branch extends Model
     public function Admin()
     {
        return $this->hasOne(Admin::class);
+    }
+
+    public function categories()
+    {
+        return $this->morphedByMany(Category::class, 'branchable','branchables');
     }
 }

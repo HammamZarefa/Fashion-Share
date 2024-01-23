@@ -12,25 +12,24 @@ use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\isNull;
 
-class InvoicesController extends Controller
+class RentsController extends Controller
 {
     public function __invoke($id=null)
     {
-        $page_title = 'Invoices';
+        $page_title = 'Rents';
         $branchProduct = Auth::guard('admin')->user()->branch_id;
         $branchs = Branch::where(function($query) use($branchProduct){
            if(isset($branchProduct)){
             $query->where('id',$branchProduct); }
         })->select('id','name')->get();
-
         $invoices = InvoicesProdect::whereHas('products',function($query)use($branchProduct,$id){
             if(isset($branchProduct)){
             $query->where('branch_id',$branchProduct)
-            ->where('section_id','<>',4);
+            ->where('section_id',4);
             }
             elseif(isset($id)){
                 $query->where('branch_id',$id)
-                    ->where('section_id','<>',4);
+                    ->where('section_id',4);
             }
         })->latest()->paginate(getPaginate());
 

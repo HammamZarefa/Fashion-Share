@@ -21,4 +21,8 @@ class Section extends Model
     public function category(){
         return $this->hasMany(Category::class,'section_id');
     }
+
+    public function styles(){
+        return $this->hasMany(Style::class,'section_id');
+    }
 }
