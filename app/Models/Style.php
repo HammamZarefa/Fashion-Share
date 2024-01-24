@@ -19,4 +19,12 @@ class Style extends Model
     public function section(){
         return $this->belongsTo(Section::class,'section_id');
     }
+
+    /**
+     * Get all of the tags for the post.
+     */
+    public function branches()
+    {
+        return $this->morphToMany(Branch::class, 'branchable','branchables');
+    }
 }

@@ -17,6 +17,7 @@
                                 <tr>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
                                     <td data-label="@lang('Action')">
+                                        @if(!Auth::guard('admin')->user()->branch )
                                         <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
                                            data-url="{{ route('admin.model.update',['model'=> $model,'id'=>$item->id])}}"
@@ -30,6 +31,14 @@
                                            data-url="{{ route('admin.model.delete',['model'=>$model,'id'=> $item->id]) }}">
                                             <i class="la la-eye-slash"></i>
                                         </a>
+                                        @else
+                                            <a href="javascript:void(0)"
+                                               class="icon-btn {{Auth::guard('admin')->user()->branch->model($model)->where('branchable_id', $item->id)->exists() ? "btn--danger" :"btn--success"}} ml-1 addBtn"
+                                               data-original-title="@lang('Add Or Remove Category From Branch')" data-toggle="tooltip"
+                                               data-url="{{ route('admin.modelAddBranch.add',['model'=>$model,'id'=> $item->id]) }}">
+                                                <i class="la {{Auth::guard('admin')->user()->branch->model($model)->where('branchable_id', $item->id)->exists() ? "la-trash" :"la-check"}}"></i>
+                                            </a>
+                                        @endif
                                     </td>
 
                                 </tr>
@@ -137,14 +146,40 @@
         </div>
     </div>
 
-    
+
+
+    {{-- Add MODAL --}}
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">@lang('Are you sure to Add This Category To Your Branch?')</h4>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal"
+                            aria-hidden="true">&times;
+                    </button>
+                </div>
+                <form method="post" action="">
+                    @csrf
+                    <input type="hidden" name="delete_id" id="delete_id" class="delete_id" value="0">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('No')</button>
+                        <button type="submit" class="btn btn--primary">@lang('Yes')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
+
+@if(!Auth::guard('admin')->user()->branch )
 @push('breadcrumb-plugins')
     <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i
             class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
 @endpush
+@endif
 
 @push('script')
     <script>
@@ -161,6 +196,15 @@
 
             $('.statusBtn').on('click', function () {
                 var modal = $('#statusModal');
+                var url = $(this).data('url');
+
+                modal.find('form').attr('action', url);
+                modal.modal('show');
+            });
+
+
+            $('.addBtn').on('click', function () {
+                var modal = $('#addModal');
                 var url = $(this).data('url');
 
                 modal.find('form').attr('action', url);

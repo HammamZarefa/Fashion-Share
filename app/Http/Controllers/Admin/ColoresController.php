@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Color;
 use Illuminate\Http\Request;
+use Auth;
 
 class ColoresController extends Controller
 {
@@ -35,7 +36,7 @@ class ColoresController extends Controller
         $color->name= $request->name;
         $color->Hexcolor = $request->Hexcolor;
         $color->save();
-        
+
         $notify[] = ['success', 'Color added!'];
         return back()->withNotify($notify);
     }
@@ -65,8 +66,22 @@ class ColoresController extends Controller
         $color->name= $request->name;
         $color->Hexcolor = $request->Hexcolor;
         $color->save();
-        
+
         $notify[] = ['success', 'Color Updated!'];
+        return back()->withNotify($notify);
+    }
+
+    public function add($id)
+    {
+        $color = Color::findOrFail($id);
+        $branch = Auth::guard('admin')->user()->branch;
+        if ($branch->colors()->where('branchable_id', $color->id)->exists()) {
+            $branch->colors()->detach($color);
+        } else {
+            $branch->colors()->attach($color);
+        }
+
+        $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);
     }
 

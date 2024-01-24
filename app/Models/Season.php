@@ -11,4 +11,12 @@ class Season extends Model
 
     protected $fillable = ['name'];
     public $translatable = ['name'];
+
+    /**
+     * Get all of the tags for the post.
+     */
+    public function branches()
+    {
+        return $this->morphToMany(Branch::class, 'branchable','branchables');
+    }
 }

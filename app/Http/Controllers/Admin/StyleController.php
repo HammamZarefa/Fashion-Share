@@ -9,6 +9,7 @@ use App\Models\Section;
 use App\Models\Size;
 use App\Models\Style;
 use Illuminate\Http\Request;
+use Auth;
 
 class StyleController extends Controller
 {
@@ -80,6 +81,20 @@ class StyleController extends Controller
 
         $styles = Style::where('category_id',$id)->with('category')->latest()->get();
         return view('admin.styles.index', compact('page_title', 'id','styles','categories','sections', 'empty_message'));
+    }
+
+    public function add($id)
+    {
+        $style = Style::findOrFail($id);
+        $branch = Auth::guard('admin')->user()->branch;
+        if ($branch->styles()->where('branchable_id', $style->id)->exists()) {
+            $branch->styles()->detach($style);
+        } else {
+            $branch->styles()->attach($style);
+        }
+
+        $notify[] = ['success', 'Status updated!'];
+        return back()->withNotify($notify);
     }
 
     public function delete($id){

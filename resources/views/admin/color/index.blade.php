@@ -20,7 +20,7 @@
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
                                     <td data-label="@lang('Hexcolor')">{{@__($item->Hexcolor)}}</td>
                                     <td data-label="@lang('color')">
-                                        @if($item->Hexcolor) <div  
+                                        @if($item->Hexcolor) <div
                                         style="
                                             margin:auto;
                                              appearance: auto;
@@ -34,10 +34,11 @@
                                              border-color: buttonborder;
                                              border-image: initial;
                                              padding: 1px 2px;
-                                        ">  </div> 
-                                        @endif                                
+                                        ">  </div>
+                                        @endif
                                         </td>
                                     <td data-label="@lang('Action')">
+                                        @if(!Auth::guard('admin')->user()->branch )
                                         <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
                                            data-url="{{ route('admin.color.update',$item->id)}}"
@@ -52,6 +53,14 @@
                                            data-url="{{ route('admin.color.delete', $item->id) }}">
                                             <i class="la la-eye-slash"></i>
                                         </a>
+                                        @else
+                                            <a href="javascript:void(0)"
+                                               class="icon-btn {{Auth::guard('admin')->user()->branch->colors()->where('branchable_id', $item->id)->exists() ? "btn--danger" :"btn--success"}} ml-1 addBtn"
+                                               data-original-title="@lang('Add Or Remove Color From Branch')" data-toggle="tooltip"
+                                               data-url="{{ route('admin.colors.add', $item->id ) }}">
+                                                <i class="la {{Auth::guard('admin')->user()->branch->colors()->where('branchable_id', $item->id)->exists() ? "la-trash" :"la-check"}}"></i>
+                                            </a>
+                                        @endif
                                     </td>
 
                                 </tr>
@@ -114,10 +123,10 @@
                                             border-image: initial;
                                             padding: 1px 2px;
                                        ">
-                            
+
                                 <br>
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -153,7 +162,7 @@
 
                         </div>
                         <div class="form-row form-group">
-                            
+
                             <label class="font-weight-bold ">@lang('Hexcolor') <span
                                 class="text-danger">*</span></label>
                             <div class="col-sm-2">
@@ -172,7 +181,7 @@
                                  border-image: initial;
                                  padding: 1px 2px;
                             ">
-                            
+
                                 <br>
                             </div>
                         </div>
@@ -212,14 +221,38 @@
         </div>
     </div>
 
-    
+    {{-- Add MODAL --}}
+    <div class="modal fade" id="addColorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">@lang('Are you sure to Add This Category To Your Branch?')</h4>
+                    <button type="button" class="close" style="margin: -1rem -1rem -1rem 0rem" data-dismiss="modal"
+                            aria-hidden="true">&times;
+                    </button>
+                </div>
+                <form method="post" action="">
+                    @csrf
+                    <input type="hidden" name="delete_id" id="delete_id" class="delete_id" value="0">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('No')</button>
+                        <button type="submit" class="btn btn--primary">@lang('Yes')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 
-
+@if(!Auth::guard('admin')->user()->branch )
 @push('breadcrumb-plugins')
     <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i
             class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
 @endpush
+@endif
 
 @push('script')
     <script>
@@ -241,6 +274,14 @@
 
             $('.statusBtn').on('click', function () {
                 var modal = $('#statusModal');
+                var url = $(this).data('url');
+
+                modal.find('form').attr('action', url);
+                modal.modal('show');
+            });
+
+            $('.addBtn').on('click', function () {
+                var modal = $('#addColorModal');
                 var url = $(this).data('url');
 
                 modal.find('form').attr('action', url);

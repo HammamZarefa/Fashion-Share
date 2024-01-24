@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Section;
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ModelController extends Controller
 {
     public function index($model)
     {
-        
         $model = Str::ucfirst($model);
         $modelClass = "App\\Models\\$model";
         $page_title = $model;
@@ -49,6 +50,27 @@ class ModelController extends Controller
         $item->name = \request()->name;
         $item->save();
         $notify[] = ['success', $model . ' updated!'];
+        return back()->withNotify($notify);
+    }
+
+
+
+
+
+    public function add($model, $id)
+    {
+
+        $model = Str::ucfirst($model);
+        $modelClass = "App\\Models\\$model";
+        $item = $modelClass::findOrFail($id);
+        $branch = Auth::guard('admin')->user()->branch;
+        if ($branch->model($model)->where('branchable_id', $item->id)->exists()) {
+            $branch->model($model)->detach($item);
+        } else {
+            $branch->model($model)->attach($item);
+        }
+
+        $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);
     }
 

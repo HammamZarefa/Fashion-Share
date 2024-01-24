@@ -47,6 +47,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('model/{model}','ModelController@store')->name('model.store');
         Route::post('model/{model}/{id}','ModelController@update')->name('model.update');
         Route::delete('model/{model}/{id}','ModelController@delete')->name('model.delete');
+
+        Route::post('modelAddBranch/{model}/{id}','ModelController@add')->name('modelAddBranch.add');
         Route::get('search','AdminController@search')->name('search');
         Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
         Route::get('profile', 'AdminController@profile')->name('profile');
@@ -139,17 +141,20 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('sizes/{id}',[SizesController::class,'update'])->name('sizes.update');
         Route::get('sizeSearch/{id}',[SizesController::class,'search'])->name('sizes.search');
         Route::delete('sizes/{id}',[SizesController::class,'delete'])->name('sizes.delete');
+        Route::post('sizes/add/{id}',[SizesController::class,'add'])->name('sizes.add');
 
         Route::get('styles',[StyleController::class,'index'])->name('style.index');
         Route::post('styles',[StyleController::class,'store'])->name('styles.store');
         Route::post('styles/{id}',[StyleController::class,'update'])->name('styles.update');
         Route::get('styleSearch/{id}',[StyleController::class,'search'])->name('styles.search');
         Route::delete('styles/{id}',[StyleController::class,'delete'])->name('styles.delete');
+        Route::post('styles/add/{id}',[StyleController::class,'add'])->name('styles.add');
 
         Route::get('colors',[ColoresController::class,'index'])->name('color.index');
         Route::post('colors',[ColoresController::class,'store'])->name('color.store');
         Route::put('colors/update/{id}',[ColoresController::class,'update'])->name('color.update');
         Route::delete('colors/delete/{id}',[ColoresController::class,'destroy'])->name('color.delete');
+        Route::post('colors/add/{id}',[ColoresController::class,'add'])->name('colors.add');
 
         Route::get('/migrate', function(){
             \Artisan::call('migrate');
