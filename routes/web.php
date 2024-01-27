@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RentsController;
 use App\Http\Controllers\Admin\SizesController;
 use App\Http\Controllers\Admin\StyleController;
 use App\Http\Controllers\BarcodeController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function(){
@@ -83,6 +84,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('services/search', 'ServiceController@search')->name('services.search');
         Route::get('services/edit/{id}', 'ServiceController@edit')->name('services.edit');
         Route::get('services/create', 'ServiceController@create')->name('services.create');
+        Route::get('service/create/{id}', 'ServiceController@createWithSupplier')->name('service.createWithSupplier');
+        Route::post('service/store/{id}', 'ServiceController@storeWithSupplier')->name('service.storeWithSupplier');
+        Route::get('service/edit/{supplier_id}/{product_id}', 'ServiceController@editWithSupplier')->name('service.editWithSupplier');
+        Route::post('service/Update/{supplier_id}/{product_id}', 'ServiceController@updateWithSupplier')->name('service.updateWithSupplier');
         Route::get('services/deleteImage/{id}', 'ServiceController@deleteImage')->name('services.deleteImage');
         Route::get('services/SaleOrRent/{id}', 'ServiceController@SaleOrRent')->name('services.SaleOrRent');
         Route::delete('services/delete/{id}', 'ServiceController@delete')->name('services.delete');
@@ -149,6 +154,14 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('styleSearch/{id}',[StyleController::class,'search'])->name('styles.search');
         Route::delete('styles/{id}',[StyleController::class,'delete'])->name('styles.delete');
         Route::post('styles/add/{id}',[StyleController::class,'add'])->name('styles.add');
+
+        Route::get('suppliers',[SupplierController::class,'index'])->name('suppliers.index');
+        Route::post('suppliers',[SupplierController::class,'store'])->name('suppliers.store');
+        Route::post('suppliers/{id}',[SupplierController::class,'update'])->name('suppliers.update');
+        Route::get('suppliers/show/{id}',[SupplierController::class,'show'])->name('suppliers.show');
+        Route::get('suppliersSearch/{id}',[SupplierController::class,'search'])->name('suppliers.search');
+        Route::delete('suppliers/{id}',[SupplierController::class,'delete'])->name('suppliers.delete');
+        Route::post('suppliers/add/{id}',[SupplierController::class,'add'])->name('suppliers.add');
 
         Route::get('colors',[ColoresController::class,'index'])->name('color.index');
         Route::post('colors',[ColoresController::class,'store'])->name('color.store');

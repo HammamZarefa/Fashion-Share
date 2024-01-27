@@ -79,6 +79,12 @@
                     </a>
                 </li>
                 @if(Auth::guard('admin')->user()->branch)
+                <li class="sidebar-menu-item {{menuActive('admin.suppliers*')}}">
+                    <a href="{{route('admin.suppliers.index')}}" class="nav-link ">
+                        <i class="menu-icon las la-users"></i>
+                        <span class="menu-title">@lang('Suppliers')</span>
+                    </a>
+                </li>
                 <li class="sidebar-menu-item {{menuActive('admin.services*')}}">
                     <a href="{{route('admin.services.index')}}" class="nav-link ">
                         <i class="menu-icon las la-tshirt"></i>
