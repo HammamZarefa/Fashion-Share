@@ -73,4 +73,8 @@ class Product extends Model
     {
         return  $this->belongsTo(Supplier::class,'supplier_id');
     }
+
+    public function invoicesProducts(){
+        return $this->belongsToMany(InvoicesProdect::class,'product_invoices_product');
+    }
 }

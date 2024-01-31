@@ -66,7 +66,7 @@
                                     <div class="col mb-3 ">
 
                                         <label for="validationCustom05">@lang('Section')</label>
-                                        <select id="sections" name="section_id"
+                                        <select onmouseup="filterCategoriesBySection(this.value)" id="sections" name="section_id"
                                                  class="form-control selectpicker" data-live-search="true"
                                                 required>
                                             @foreach($Sections as $Section)
@@ -83,11 +83,11 @@
                                     </div>
                                     <div class="col mb-3">
                                         <label for="validationCustom05">@lang('Categories')</label>
-                                        <select id="categories" name="category_id"
+                                        <select id="categories" name="category_id" onmouseup="filterSizesByCategory(this.value)" onchange="filterSizesByCategory(this.value)"
                                                 class="form-control selectpicker" data-live-search="true">
                                             @foreach($Categories as $Category)
                                                 <option value="{{$Category->id}}"
-                                                        @if ($services->category_id == $Category->id) selected @endif >{{ $Category->name }}</option>
+                                                        @if ($services->category_id == $Category->id) selected @endif @if($Category->where('section_id',$services->section_id)->first() == null )  disabled @endif>{{ $Category->name }}</option>
                                             @endforeach
 
                                         </select>
@@ -226,7 +226,7 @@
                                     <div class="col mb-3">
                                         <label for="validationCustom05">@lang('Style')</label>
 
-                                        <select name="style_id" value="" class="form-control selectpicker"
+                                        <select name="style_id" value="" class="form-control selectpicker" id="styles"
                                                 data-live-search="true" required>
                                             @foreach($styles as $style)
                                                 <option value="{{$style->id}}"
@@ -338,91 +338,72 @@
 @endsection
 @push('script')
     <script>
+        document.getElementById("sections").addEventListener("mouseup", function() {
+            filterCategoriesBySection(this.value);
+        });
 
-        {{--function addRowCategory(ele) {--}}
-        {{--    var ID = ele;--}}
-        {{--    Sections = {!! json_encode($Sections) !!};--}}
+        function filterCategoriesBySection(sectionId) {
+            var categoriesSelect = document.getElementById("categories");
+            categoriesSelect.disabled = false;
+            categoriesSelect.innerHTML = "";
 
-        {{--    var ref;--}}
-        {{--    for (var i = 0; i < Sections.length; i++) {--}}
-        {{--        if (Sections[i].id == ele) {--}}
-        {{--            ref = i;--}}
-        {{--            console.log(ref);--}}
-        {{--        }--}}
-        {{--    }--}}
-        {{--    category = Sections[ref].category;--}}
+            var categories = {!! json_encode($Categories) !!};
+            var filteredCategories = categories.filter(function(category) {
+                return category.section_id == sectionId;
+            });
 
+            filteredCategories.forEach(function(category,index) {
+                var option = document.createElement("option");
+                option.value = category.id;
+                option.text = category.name;
+                categoriesSelect.appendChild(option);
+                if (index == 0){
+                    filterSizesByCategory(category.id)
+                }
 
-        {{--    var categoryOptions = document.getElementById("categories");--}}
-        {{--    removeOptions(categoryOptions);--}}
+            });
+        }
 
-        {{--    var i = 0;--}}
-        {{--    category.forEach(function (item, index) {--}}
-        {{--        var option = document.createElement("option");--}}
-        {{--        option.value = item.id;--}}
-        {{--        option.innerHTML = item.name;--}}
-        {{--        if (i == 0) {--}}
-        {{--            option.selected = true--}}
-        {{--        }--}}
-        {{--        ;--}}
-        {{--        i++;--}}
-        {{--        categoryOptions.add(option);--}}
-        {{--    });--}}
+        document.getElementById("categories").addEventListener("onmouseup", function() {
+            filterSizesByCategory(this.value);
+        });
+        document.getElementById("categories").addEventListener("change", function() {
+            filterSizesByCategory(this.value);
+        });
 
+        function filterSizesByCategory(categoryId) {
+            var sizesSelect = document.getElementById("sizes");
+            sizesSelect.disabled = false;
+            sizesSelect.innerHTML = "";
 
-        {{--    removeOptions(document.getElementById('sizes'));--}}
+            var sizes = {!! json_encode($Sizes) !!};
+            var filteredSizess = sizes.filter(function(size) {
+                return size.category_id == categoryId;
+            });
 
-        {{--    addRowSizes(categoryOptions.value);--}}
+            filteredSizess.forEach(function(size) {
+                var option = document.createElement("option");
+                option.value = size.id;
+                option.text = size.name;
+                sizesSelect.appendChild(option);
+            });
 
+            var stylesSelect = document.getElementById("styles");
+            stylesSelect.disabled = false;
+            stylesSelect.innerHTML = "";
 
-        {{--}--}}
+            var styles = {!! json_encode($styles) !!};
+            var filteredStyles = styles.filter(function(style) {
+                return style.category_id == categoryId;
+            });
 
-        {{--function removeOptions(selectElement) {--}}
-        {{--    var i, L = selectElement.options.length - 1;--}}
-        {{--    for (i = L; i >= 0; i--) {--}}
-        {{--        selectElement.remove(i);--}}
-        {{--    }--}}
-
-
-        {{--}--}}
-
-        {{--function addRowSizes(ele) {--}}
-        {{--    removeOptions(document.getElementById('sizes'));--}}
-
-
-        {{--    var name = ele;--}}
-        {{--    Categories = {!! json_encode($Categories) !!};--}}
-        {{--    if (Categories != null) {--}}
-
-        {{--        var ref;--}}
-        {{--        for (var i = 0; i < Categories.length; i++) {--}}
-        {{--            if (Categories[i].id == ele) {--}}
-        {{--                ref = i;--}}
-        {{--            }--}}
-        {{--        }--}}
-        {{--        console.log(Categories)--}}
-        {{--        size = Categories[ref].sizes;--}}
-        {{--    }--}}
-        {{--    var x = document.getElementById("sizes");--}}
-
-        {{--    console.log(size)--}}
-        {{--    size.forEach(function (item, index) {--}}
-        {{--            var option = document.createElement("option");--}}
-        {{--            option.value = item.id;--}}
-        {{--            option.innerHTML = item.name;--}}
-        {{--            x.add(option);--}}
-        {{--        }--}}
-        {{--    );--}}
-        {{--}--}}
-
-
-        {{--window.onload = selectSection();--}}
-
-        {{--function selectSection() {--}}
-
-        {{--    var firstselectsection = document.getElementById("sections");--}}
-        {{--    addRowCategory(firstselectsection.value);--}}
-        {{--};--}}
+            filteredStyles.forEach(function(style) {
+                var styleOption = document.createElement("option");
+                styleOption.value = style.id;
+                styleOption.text = style.name;
+                stylesSelect.appendChild(styleOption);
+            });
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/JsBarcode.all.min.js"></script>
     <script>
