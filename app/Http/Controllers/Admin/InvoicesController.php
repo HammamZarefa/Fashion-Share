@@ -25,7 +25,7 @@ class InvoicesController extends Controller
             $query->where('id',$branch_id); }
         })->select('id','name')->first();
 
-        $invoices = InvoicesProdect::whereHas('products',function($query)use($branch_id,$id){
+        $invoices = InvoicesProdect::where('is_rent',false)->whereHas('products',function($query)use($branch_id,$id){
             if(isset($branch_id)){
             $query->where('branch_id',$branch_id);
             }
@@ -65,7 +65,7 @@ class InvoicesController extends Controller
             return back()->with('error',"There are un error");
         }
 
-        $invoice->user_id = $branchAdmin->id;
+        $invoice->user_id = null;
         $invoice->date_of_return = null;
         $invoice->username = null;
         $invoice->mobile = null;

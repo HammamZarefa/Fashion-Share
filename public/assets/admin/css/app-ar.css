@@ -7183,3 +7183,19 @@ a.icon-btn {
 .custom-select-for-products{
     height: 200px;
 }
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    direction: ltr;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #00aaff;
+    transition: width 0.3s ease-in-out;
+}

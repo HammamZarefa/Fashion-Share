@@ -52,6 +52,14 @@
                     </li>
                 @endif
                 @if (Auth::guard('admin')->user()->branch || isset($branch_id))
+                    @if(Auth::guard('admin')->user()->is_from_admin)
+                        <li class="sidebar-menu-item {{menuActive('admin.dashboard')}}">
+                            <a href="{{route('admin.dashboard')}}" class=" btn btn-primary">
+
+                                <span class="menu-title">@lang('General Control Panel')</span>
+                            </a>
+                        </li>
+                    @endif
                     <li class="sidebar-menu-item {{menuActive('admin.invoices')}}">
                         <a href="{{route('admin.invoices')}}" class="nav-link ">
                             <i class="menu-icon las la-file"></i>
@@ -79,21 +87,27 @@
                     </a>
                 </li>
                 @if(Auth::guard('admin')->user()->branch)
-                <li class="sidebar-menu-item {{menuActive('admin.suppliers*')}}">
-                    <a href="{{route('admin.suppliers.index')}}" class="nav-link ">
-                        <i class="menu-icon las la-users"></i>
-                        <span class="menu-title">@lang('Suppliers')</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item {{menuActive('admin.services*')}}">
-                    <a href="{{route('admin.services.index')}}" class="nav-link ">
-                        <i class="menu-icon las la-tshirt"></i>
-                        <span class="menu-title">@lang('Services')</span>
-                    </a>
-                </li>
-                    @endif
-                    <hr>
-                    <li class="sidebar__menu-header">@lang('Product Fillter')</li>
+                    <li class="sidebar-menu-item {{menuActive('admin.suppliers*')}}">
+                        <a href="{{route('admin.suppliers.index')}}" class="nav-link ">
+                            <i class="menu-icon las la-users"></i>
+                            <span class="menu-title">@lang('Suppliers')</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item {{menuActive('admin.services*')}}">
+                        <a href="{{route('admin.services.index')}}" class="nav-link ">
+                            <i class="menu-icon las la-tshirt"></i>
+                            <span class="menu-title">@lang('Services')</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item {{menuActive('admin.statistics*')}}">
+                        <a href="{{route('admin.statistics')}}" class="nav-link ">
+                            <i class="menu-icon las la-chart-bar"></i>
+                            <span class="menu-title">@lang('Statistics')</span>
+                        </a>
+                    </li>
+                @endif
+                <hr>
+                <li class="sidebar__menu-header">@lang('Product Fillter')</li>
                 <li class="sidebar-menu-item {{menuActive('admin.size*')}}">
                     <a href="{{route('admin.size.index')}}" class="nav-link ">
                         <i class="menu-icon las la-ruler"></i>
@@ -133,16 +147,16 @@
                     </a>
                 </li>
 
-                    <hr>
-                    <li class="sidebar__menu-header">@lang('Setting')</li>
-                    @if(Auth::guard('admin')->user()->branch || isset($branch_id))
-                <li class="sidebar-menu-item">
-                    <a href="{{route('admin.banner')}}" class="nav-link ">
-                        <i class="menu-icon la la-list"></i>
-                        <span class="menu-title">@lang('Manage Banners')</span>
-                    </a>
-                </li>
-                    @endif
+                <hr>
+                <li class="sidebar__menu-header">@lang('Setting')</li>
+                @if(Auth::guard('admin')->user()->branch || isset($branch_id))
+                    <li class="sidebar-menu-item">
+                        <a href="{{route('admin.banner')}}" class="nav-link ">
+                            <i class="menu-icon la la-list"></i>
+                            <span class="menu-title">@lang('Manage Banners')</span>
+                        </a>
+                    </li>
+                @endif
 
                 {{--                Orders--}}
                 {{--                <li class="sidebar-menu-item sidebar-dropdown">--}}

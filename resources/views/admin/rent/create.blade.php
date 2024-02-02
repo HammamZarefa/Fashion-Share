@@ -18,9 +18,26 @@
             </select>
         @endif
     </div>
-
+    <form action="{{route('admin.rent.store',)}}" method="post">
+        @csrf
     <div class="row">
         <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="client_name">@lang('Client Name')</label>
+                            <input type="text" class="form-control" placeholder="@lang('Client Name')" name="client_name">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="client_name">@lang('Mobile')</label>
+                            <input type="text" class="form-control" placeholder="@lang('Mobile')" name="mobile">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="">
                 <div class="card-body p-0">
                     <div class="table-responsive--sm table-responsive b-radius--10">
@@ -31,6 +48,7 @@
                                 <th scope="col">@lang('Products Code')</th>
                                 <th scope="col">@lang('Products Name')</th>
                                 <th scope="col">@lang('Sell Price')</th>
+                                <th scope="col">@lang('Return Date')</th>
                                 <th scope="col">@lang('Action')</th>
                             </tr>
                             </thead>
@@ -57,8 +75,7 @@
             </div><!-- card end -->
         </div>
         <div class="col-lg-5">
-            <form action="{{route('admin.invoice.store',)}}" method="post">
-                @csrf
+
                 <div class="hidden" id="invoice_products">
 
                 </div>
@@ -110,28 +127,6 @@
                             </div>
                         </div>
                         <br>
-                        <div class="row">
-                            <div class="col-md-5"  style="text-align: right;">
-                                <h5>@lang('Discount :')</h5>
-
-                            </div>
-                            <div class="col-md-5">
-                                <input onblur="discountPrice()" class="form-group" type="text" name="discount" id="discountInput">
-                            </div>
-                        </div>
-                        <br>
-
-                        <div class="row">
-                            <div class="col-md-6"  style="text-align: right;">
-                                <h4>@lang('Total After Discount :')</h4>
-
-                            </div>
-                            <div class="col-md-4">
-                                <span id="totalPriceAfterDiscount">0 </span><span>sp</span>
-                                <input type="hidden" name="total_price_after_discount" id="total_price_input_after_discount">
-                            </div>
-                        </div>
-                        <br>
                         <div class="row" style="justify-content: center;">
                             <button type="submit" class="btn btn-primary b-radius--capsule" style="width: 90%;">
                                 @lang('Sell')
@@ -140,11 +135,10 @@
 
                     </div>
                 </div>
-            </form>
 
         </div>
     </div>
-
+    </form>
 
 
 
@@ -190,21 +184,8 @@
             newPrice = parseInt(oldPrice) - parseInt(price)
             document.getElementById('totalPrice').innerHTML = newPrice + ' '
 
-            oldPriceAfterDiscount = document.getElementById('totalPriceAfterDiscount').innerHTML
-            newPriceAfterDiscount = parseInt(oldPriceAfterDiscount) - parseInt(price)
-            document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
-
             document.getElementById('total_price_input').value = newPrice
-            document.getElementById('total_price_input_after_discount').value = newPriceAfterDiscount
 
-
-        }
-        function discountPrice(){
-            val = document.getElementById('discountInput').value;
-            oldPriceBeforDiscount = document.getElementById('totalPrice').innerHTML
-            newPriceAfterDiscount = parseInt(oldPriceBeforDiscount) - parseInt(val)
-            document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
-            document.getElementById('total_price_input_after_discount').value = newPriceAfterDiscount
 
         }
         $(document).ready(function() {
@@ -230,6 +211,7 @@
                 newRow.append('<td>' + sku + '</td>');
                 newRow.append('<td>' + name + '</td>');
                 newRow.append('<td>' + price + '</td>');
+                newRow.append('<td><input class="form-control" type="date" name="return_date_'+id+'"></td>');
                 newRow.append('<td><div class="btn btn--danger" onclick="removeRow(this,'+price+')"><i class="la la-trash"></i> </div></td>');
 
                 // Append the new row to the table body
@@ -244,13 +226,9 @@
                 // Append the new row to the table body
                 $('#invoicTableBody').append(newRow2);
                 oldPrice = document.getElementById('totalPrice').innerHTML
-                oldPriceAfterDiscount = document.getElementById('totalPriceAfterDiscount').innerHTML
                 newPrice = parseInt(oldPrice) + parseInt(price)
-                newPriceAfterDiscount = parseInt(oldPriceAfterDiscount) + parseInt(price)
                 document.getElementById('totalPrice').innerHTML = newPrice + ' '
                 document.getElementById('total_price_input').value = newPrice
-                document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
-                document.getElementById('total_price_input_after_discount').value = newPriceAfterDiscount
 
                 var newRow3 = ('<input type="hidden" name="products[]" value="' + id + '">');
                 console.log(newRow3);

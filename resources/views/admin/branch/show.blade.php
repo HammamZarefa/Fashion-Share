@@ -141,8 +141,8 @@
                         <div class="modal-footer">
 
                             <a href="{{ route('admin.branch.dashboard',$item->id)}}" class="icon-btn ml-1"
-                               data-original-title="@lang('Open Branch Control panel')" data-toggle="tooltip">
-                                @lang('Open Branch Control panel')
+                               data-original-title="@lang('Login As Branch Admin')" data-toggle="tooltip">
+                                @lang('Login As Branch Admin')
                             </a>
                         </div>
 

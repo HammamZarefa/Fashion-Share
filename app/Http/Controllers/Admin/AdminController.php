@@ -44,6 +44,12 @@ class AdminController extends Controller
 
     public function dashboard()
     {
+        if (Auth::guard('admin')->user()->is_from_admin){
+            $user = Auth::guard('admin')->user();
+            $user->branch_id = null;
+            $user->save();
+            Auth::guard('admin')->loginUsingId($user->super_admin_id);
+        }
         $page_title = 'Dashboard';
 
         // User Info

@@ -134,6 +134,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
         //Rents
         Route::get('rents/{id?}',RentsController::class)->name('rents');
+        Route::get('rent/create/{id?}',[RentsController::class,'create'])->name('rent.create');
+        Route::post('rent/store/{id?}', [RentsController::class,'store'])->name('rent.store');
 
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');
@@ -170,6 +172,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::put('colors/update/{id}',[ColoresController::class,'update'])->name('color.update');
         Route::delete('colors/delete/{id}',[ColoresController::class,'destroy'])->name('color.delete');
         Route::post('colors/add/{id}',[ColoresController::class,'add'])->name('colors.add');
+
+
+        Route::get('statistics', 'BranchController@statistics')->name('statistics');
 
         Route::get('/migrate', function(){
             \Artisan::call('migrate');
