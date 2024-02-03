@@ -11,6 +11,10 @@ class InvoicesProdect extends Model
     protected $guarded = [];
 
     public function products(){
-        return $this->belongsTo(Product::class,'product_id');
+        return $this->belongsToMany(Product::class,'product_invoices_product');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
     }
 }

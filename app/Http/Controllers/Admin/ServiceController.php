@@ -15,10 +15,13 @@ use App\Models\Image;
 use App\Models\InvoicesProdect;
 use App\Models\Material;
 use App\Models\Product;
+use App\Models\Season;
 use App\Models\Section;
 use App\Models\Size;
+use App\Models\Style;
+use App\Models\Supplier;
 use App\Models\User;
-use App\Trait\NotificationTrait;
+use App\trait\NotificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -51,7 +54,7 @@ class ServiceController extends Controller
         } else {
             $branches = $branch;
             $services = Product::
-            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
                 ->where('branch_id', $branch->id)->latest()->paginate(getPaginate());
         }
         return view('admin.products.list',
@@ -99,10 +102,9 @@ class ServiceController extends Controller
             'is_for_sale' => $request->input('is_for_sale'),
             'user_id' => $request->input('user_id'),
         ]);
-        $product->update ([
+        $product->update([
             'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
-        ]) ;
-        $product->categories()->attach($request->category_id);
+        ]);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -172,8 +174,7 @@ class ServiceController extends Controller
             'user_id',
         ]));
 
-        if ($request->category_id)
-            $product->categories()->sync($request->category_id);
+
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -312,6 +313,213 @@ class ServiceController extends Controller
             compact('page_title', 'empty_message', 'Colors', 'Categories', 'Users', 'Sizes', 'Conditions', 'Materials', 'Sections', 'branchs'));
     }
 
+    public function createWithSupplier($id)
+    {
+        $supplier = Supplier::find($id);
+        $branch = Auth::guard('admin')->user()->branch;
+        $page_title = 'Add Product';
+        $empty_message = 'No Result Found';
+        $Colors = $branch->colors;
+        $Sizes = $branch->sizes;
+        $Categories = $branch->categories;
+        $Conditions = $branch->conditions;
+        $Materials = $branch->materials;
+        $Sections = $branch->sections;
+        $seasons = $branch->seasons;
+        $styles = $branch->styles;
+        return view('admin.suppliers.createProduct',
+            compact('page_title', 'empty_message', 'Colors',
+                'Categories', 'Sizes', 'Conditions',
+                'Materials', 'Sections', 'supplier',
+                'seasons', 'styles'
+            ));
+    }
+
+    public function editWithSupplier($supplier,$service)
+    {
+        $supplier = Supplier::find($supplier);
+        $services = Product::with('images')->findOrFail($service);
+        $branch = Auth::guard('admin')->user()->branch;
+        $page_title = 'Services';
+        $empty_message = 'No Result Found';
+        $Colors = $branch->colors;
+        $Sizes = $branch->sizes;
+        $Categories = $branch->categories;
+        $Conditions = $branch->conditions;
+        $Materials = $branch->materials;
+        $Sections = $branch->sections;
+        $seasons = $branch->seasons;
+        $styles = $branch->styles;
+
+        $services = Product::with('images')->findOrFail($service);
+        return view('admin.suppliers.editProduct',
+            compact('page_title', 'services','seasons','styles','supplier', 'Categories', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections'));
+
+    }
+//    public function createWithSupplier($id)
+//    {
+//        $supplier = Supplier::find($id);
+//        $branch = Auth::guard('admin')->user()->branch;
+//        $page_title = 'Add Product';
+//        $empty_message = 'No Result Found';
+//        $Colors = $branch->colors;
+//        $Categories = $branch->categories()->with('sizes')->get();
+////        dd($Categories);
+////        $Categories = $branch->categories;
+//        $Sizes = Size::with('category')->whereHas('category', function ($query) use ($Categories) {
+//            $query->whereIn('id', $Categories->pluck('id'));
+//        })->get();
+//
+//        $Sections = Section::with('category')->whereHas('category', function ($query) use ($Categories) {
+//            $query->whereIn('id', $Categories->pluck('id'));
+//        })->get();
+//        $Conditions = $branch->conditions;
+//        $Materials = $branch->materials;
+//        $seasons = $branch->seasons;
+//        $styles = $branch->styles;
+//        return view('admin.suppliers.createProduct',
+//            compact('page_title', 'empty_message', 'Colors',
+//                'Categories', 'Sizes', 'Conditions',
+//                'Materials', 'Sections', 'supplier',
+//                'seasons', 'styles'
+//            ));
+//    }
+
+    public function storeWithSupplier(Request $request, $id)
+    {
+        $supplier = Supplier::find($id);
+        $branchAdmin = Auth::guard('admin')->user();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'images' => 'array',
+            'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
+            'section_id' => 'required|exists:sections,id',
+            'category_id' => 'required|exists:categories,id',
+            'size_id' => 'required|exists:sizes,id',
+            'material_id' => 'required|exists:materials,id',
+            'season_id' => 'required|exists:seasons,id',
+            'status' => 'required',
+            'description' => 'nullable|string',
+            'color_id' => 'required|exists:colors,id',
+            'condition_id' => 'required|exists:conditions,id',
+            'style_id' => 'required|exists:styles,id',
+            'buy_price' => 'required',
+            'price' => 'required',
+            'sell_price' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $notify[] = ['error', 'validation'];
+            return back()->withNotify($notify);
+        }
+        $product = new Product();
+        $product->name = $request->input('name');
+        $product->section_id = $request->input('section_id');
+        $product->category_id = $request->input('category_id');
+        $product->size_id = $request->input('size_id');
+        $product->material_id = $request->input('material_id');
+        $product->season_id = $request->input('season_id');
+        $product->status = $request->input('status');
+        $product->description = $request->input('description');
+        $product->color_id = $request->input('color_id');
+        $product->condition_id = $request->input('condition_id');
+        $product->style_id = $request->input('style_id');
+        $product->buy_price = $request->input('buy_price');
+        $product->price = $request->input('price');
+        $product->sell_price = $request->input('sell_price');
+        $product->barcode = $request->input('barcode');
+        $product->location = '';
+        $product->user_id = $branchAdmin->id;
+        $product->supplier_id = $supplier->id;
+        $product->branch_id = $branchAdmin->branch_id;
+        $product->is_for_sale = '0';
+        $product->save();
+        $product->update([
+            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+        ]);
+        if (isset($request['images'])) {
+            foreach ($request->file('images') as $image) {
+                $path = imagePath()['service']['path'];
+                $size = imagePath()['service']['size'];
+                $filename = $image;
+
+                $filename = uploadImage($image, $path, $size, $filename);
+                $product->images()->create([
+                    'path' => $filename,
+                ]);
+            }
+        }
+        $notify[] = ['success', 'Product added!'];
+
+        return redirect()->route('admin.suppliers.show', $supplier->id)->withNotify($notify);
+    }
+    public function updateWithSupplier(Request $request, $sup_id,$product)
+    {
+        $supplier = Supplier::find($sup_id);
+        $branchAdmin = Auth::guard('admin')->user();
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'images' => 'array',
+            'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
+            'section_id' => 'required|exists:sections,id',
+            'category_id' => 'required|exists:categories,id',
+            'size_id' => 'required|exists:sizes,id',
+            'material_id' => 'required|exists:materials,id',
+            'season_id' => 'required|exists:seasons,id',
+            'status' => 'required',
+            'description' => 'nullable|string',
+            'color_id' => 'required|exists:colors,id',
+            'condition_id' => 'required|exists:conditions,id',
+            'style_id' => 'required|exists:styles,id',
+            'buy_price' => 'required',
+            'price' => 'required',
+            'sell_price' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $notify[] = ['error', 'validation'];
+            return back()->withNotify($notify);
+        }
+        $product = Product::find($product);
+        $product->name = $request->input('name');
+        $product->section_id = $request->input('section_id');
+        $product->category_id = $request->input('category_id');
+        $product->size_id = $request->input('size_id');
+        $product->material_id = $request->input('material_id');
+        $product->season_id = $request->input('season_id');
+        $product->status = $request->input('status');
+        $product->description = $request->input('description');
+        $product->color_id = $request->input('color_id');
+        $product->condition_id = $request->input('condition_id');
+        $product->style_id = $request->input('style_id');
+        $product->buy_price = $request->input('buy_price');
+        $product->price = $request->input('price');
+        $product->sell_price = $request->input('sell_price');
+        $product->barcode = $request->input('barcode');
+        $product->location = '';
+        $product->user_id = $branchAdmin->id;
+        $product->supplier_id = $supplier->id;
+        $product->branch_id = $branchAdmin->branch_id;
+        $product->is_for_sale = '0';
+        $product->save();
+        $product->update([
+            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+        ]);
+        if (isset($request['images'])) {
+            foreach ($request->file('images') as $image) {
+                $path = imagePath()['service']['path'];
+                $size = imagePath()['service']['size'];
+                $filename = $image;
+
+                $filename = uploadImage($image, $path, $size, $filename);
+                $product->images()->create([
+                    'path' => $filename,
+                ]);
+            }
+        }
+        $notify[] = ['success', 'Product added!'];
+
+        return redirect()->route('admin.suppliers.show', $supplier->id)->withNotify($notify);
+    }
+
     public function deleteImage($id)
     {
         $image = Image::findOrFail($id);
@@ -359,8 +567,8 @@ class ServiceController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        categoryProduct::where('product_id',$id)->delete();
-        InvoicesProdect::where('product_id',$id)->delete();
+        categoryProduct::where('product_id', $id)->delete();
+        InvoicesProdect::where('product_id', $id)->delete();
 
         $images = Image::where('imagable_type', 'App\Models\Product')->where('imagable_id', $id)->get();
         foreach ($images as $image) {
@@ -379,7 +587,7 @@ class ServiceController extends Controller
         $empty_message = 'No Result Found';
         $services = Product::
         when($request->category, function ($query) use ($request) {
-            $query->whereHas('categories', function ($query) use ($request) {
+            $query->whereHas('category', function ($query) use ($request) {
                 $query->where('categories.id', $request->category);
             });
         })
@@ -390,12 +598,12 @@ class ServiceController extends Controller
                 $query->where('branch_id', $branch);
             })
             ->when($request->sku, function ($query) use ($request) {
-                $query->where('sku','LIKE', "%$request->sku%");
+                $query->where('sku', 'LIKE', "%$request->sku%");
             })
             ->when($request->is_for_sale, function ($query) use ($request) {
                 $query->where('is_for_sale', "$request->is_for_sale");
             })
-            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->latest()->paginate(getPaginate());
 
         $branches = Branch::all();
@@ -405,35 +613,37 @@ class ServiceController extends Controller
             compact('page_title', 'services', 'empty_message', 'branches', 'sections', 'categories'));
     }
 
-    public function ditails($id){
+    public function ditails($id)
+    {
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $item = Product::
-        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->find($id);
         return view('admin.products.details',
-        compact('page_title', 'empty_message' ,'item'));
+            compact('page_title', 'empty_message', 'item'));
 
     }
 
-    public function QR(){
+    public function QR()
+    {
         $page_title = 'Services';
         $empty_message = 'No Result Found';
-        return view('admin.QR-and-barcode.index' ,compact('page_title', 'empty_message' ));
+        return view('admin.QR-and-barcode.index', compact('page_title', 'empty_message'));
     }
 
-    public function SaleOrRentQR($code){
-        $product = Product::where('sku',$code)->first();
-        if($product){
-            if($product->status == "available"){
+    public function SaleOrRentQR($code)
+    {
+        $product = Product::where('sku', $code)->first();
+        if ($product) {
+            if ($product->status == "available") {
                 if ($product->is_for_sale) {
                     $product->update(['status' => 'sale']);
                     $this->insertInInvoices($product);
                     if ($product->user) {
                         $this->send_event_notification($product->user, '', ' تم تغيير حالة منتجك الى بيع ', 'Your product status has been changed to Sold');
                     }
-                }
-                else {
+                } else {
                     $product->update(['status' => 'rent']);
                     $this->insertInInvoices($product);
                     if ($product->user) {
@@ -441,18 +651,16 @@ class ServiceController extends Controller
                     }
                 }
 
-            $notify[] = ['success', 'Status updated!'];
-            return back()->withNotify($notify);    
-            }
-            else{
+                $notify[] = ['success', 'Status updated!'];
+                return back()->withNotify($notify);
+            } else {
                 $notify[] = ['error', 'Product Not Available!'];
-                return back()->withNotify($notify);      
+                return back()->withNotify($notify);
             }
-        }
-        else{
+        } else {
             $notify[] = ['error', 'Product Not Found!'];
-            return back()->withNotify($notify);    
+            return back()->withNotify($notify);
         }
-       
+
     }
 }

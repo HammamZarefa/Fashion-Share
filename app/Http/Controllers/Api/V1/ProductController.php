@@ -34,7 +34,7 @@ class ProductController extends Controller
     public function index(ProductsListRequest $request)
     {
         $products = Product::where('status', 'available')
-            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->when($request->size, function ($query) use ($request) {
                 $query->where('size_id', $request->size);
             })
@@ -42,10 +42,10 @@ class ProductController extends Controller
                 $query->where('color_id', $request->color);
             })
             ->when($request->priceFrom, function ($query) use ($request) {
-                $query->where('price', '>=', $request->priceFrom);
+                $query->where('sell_price', '>=', $request->priceFrom);
             })
             ->when($request->priceTo, function ($query) use ($request) {
-                $query->where('price', '<=', $request->priceTo);
+                $query->where('sell_price', '<=', $request->priceTo);
             })
             ->when($request->condition, function ($query) use ($request) {
                 $query->where('condition_id', $request->condition);
@@ -63,12 +63,10 @@ class ProductController extends Controller
                 $query->where('is_for_sale', $request->sale);
             })
             ->when($request->category, function ($query) use ($request) {
-                $query->whereHas('categories', function ($query) use ($request) {
-                    $query->where('categories.id', $request->category);
-                });
+                    $query->where('category_id', $request->category);
             })
             ->when($request->sortBy, function ($query) use ($request) {
-                if (!in_array($request->sortBy, ['price', 'created_at'])
+                if (!in_array($request->sortBy, ['sell_price', 'created_at'])
                     || (!in_array($request->sortOrder, ['asc', 'desc']))) {
                     return;
                 }
@@ -91,6 +89,8 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'string',
             'price' => 'required',
+            'buy_price' => 'nullable',
+            'sell_price' => 'nullable',
             'category_id' => 'required|exists:categories,id',
             'color_id' => 'required|exists:colors,id',
             'material_id' => 'required|exists:materials,id',
@@ -101,6 +101,10 @@ class ProductController extends Controller
             'is_for_sale' => 'required',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location' => 'nullable|string',
+            'season_id' => 'nullable|exists:seasons,id',
+            'style_id' => 'nullable|exists:styles,id',
+            'supplier_id' => 'nullable|exists:suppliers,id',
+            'barcode' => 'nullable|numeric|min:10',
         ]);
 
         if ($validator->fails()) {
@@ -121,11 +125,16 @@ class ProductController extends Controller
             'status' => 'pending',
             'is_for_sale' => $request->input('is_for_sale'),
             'location' => $request->input('location'),
+            'buy_price' => $request->input('buy_price'),
+            'sell_price' => $request->input('sell_price'),
+            'season_id' => $request->input('season_id'),
+            'style_id' => $request->input('style_id'),
+            'supplier_id' => $request->input('supplier_id'),
+            'barcode' => $request->input('barcode'),
         ]);
         $product->update ([
             'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
         ]) ;
-        $product->categories()->attach($request->category_id);
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -156,6 +165,8 @@ class ProductController extends Controller
             'name' => 'string|max:255',
             'description' => 'string',
             'price' => 'numeric',
+            'buy_price' => 'nullable',
+            'sell_price' => 'nullable',
             'category_id' => 'exists:categories,id',
             'color_id' => 'exists:colors,id',
             'material_id' => 'exists:materials,id',
@@ -165,7 +176,11 @@ class ProductController extends Controller
             'branch_id' => 'exists:branches,id',
             'is_for_sale' => 'boolean',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'location' => 'nullable|string'
+            'location' => 'nullable|string',
+            'season_id' => 'nullable|exists:seasons,id',
+            'style_id' => 'nullable|exists:styles,id',
+            'supplier_id' => 'nullable|exists:suppliers,id',
+            'barcode' => 'nullable|numeric|min:10',
         ]);
 
         if ($validator->fails()) {
@@ -176,6 +191,8 @@ class ProductController extends Controller
             'name',
             'description',
             'price',
+            'buy_price',
+            'sell_price',
             'category_id',
             'color_id',
             'material_id',
@@ -184,11 +201,12 @@ class ProductController extends Controller
             'condition_id',
             'branch_id',
             'is_for_sale',
-            'location'
+            'location',
+            'season_id',
+            'style_id',
+            'supplier_id',
+            'barcode',
         ]));
-
-        if ($request->category_id)
-            $product->categories()->sync($request->category_id);
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = time() . '_' . $image->getClientOriginalName();
@@ -212,12 +230,12 @@ class ProductController extends Controller
 
     public function FilterNameDescription($NameDescription = null){
         $products = Product::where('status', 'available')
-        ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+        ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
         ->when($NameDescription, function ($query) use ($NameDescription) {
             $query->where('name','LIKE', "%$NameDescription%")
             ->OrWhere('description','LIKE', "%$NameDescription%");
             })
-       
+
         ->orderBy('id', 'desc')
         ->paginate();
     return ProductResource::collection($products);

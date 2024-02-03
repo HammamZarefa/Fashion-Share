@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Section;
+use Auth;
 use Illuminate\Http\Request;
 use Image;
 
@@ -63,7 +64,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->name = \request()->name;
         $category->section_id = request()->section_id;
-        
+
         $image = $request->file('image');
         $path = 'assets/images/category/';
         $size = imagePath()['category']['size'];
@@ -93,17 +94,31 @@ class CategoryController extends Controller
         return back()->withNotify($notify);
     }
 
+    public function add($id)
+    {
+        $cat = Category::findOrFail($id);
+        $branch = Auth::guard('admin')->user()->branch;
+        if ($branch->categories()->where('branchable_id', $cat->id)->exists()) {
+            $branch->categories()->detach($cat);
+        } else {
+            $branch->categories()->attach($cat);
+        }
+
+        $notify[] = ['success', 'Status updated!'];
+        return back()->withNotify($notify);
+    }
+
     public function search($id){
         $page_title = 'Categories';
         $empty_message = 'No Result Found';
         $sections = Section::all();
         $categories = Category::with('section')->where('section_id',$id)->latest()->get();
-        
+
         return view('admin.categories.index', compact('page_title','id', 'categories','sections', 'empty_message'));
       }
 
       public function delete($id){
-        
+
         $categories = Category::findOrFail($id);
         if($categories->images){
             $path = imagePath()['category']['path'];

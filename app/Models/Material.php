@@ -17,4 +17,12 @@ class Material extends Model
     {
         $this->hasMany(Product::class);
     }
+
+    /**
+     * Get all of the tags for the post.
+     */
+    public function branches()
+    {
+        return $this->morphToMany(Branch::class, 'branchable','branchables');
+    }
 }

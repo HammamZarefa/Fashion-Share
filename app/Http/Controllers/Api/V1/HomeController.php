@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomFieldResource;
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Size;
@@ -12,34 +13,73 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 
-    function getDataByModelName($modelName)
+    function getDataByModelName($modelName,$branchId = null)
     {
         try {
             $validatedData = validator(['model_name' => $modelName], [
                 'model_name' => 'required|
-            in:size,color,section,condition,material,branch,category,banner'
+            in:size,color,section,condition,material,branch,category,banner,season,style,supplier'
             ])->validate();
-            $modelName = ucfirst($modelName);
-            $data = app("App\\Models\\{$modelName}")->all();
+            if ($branchId != null){
+                $branch = Branch::find($branchId);
+                $models = $modelName.'s';
+                $data = $branch->$models;
+            }else{
+                $modelName = ucfirst($modelName);
+                $data = app("App\\Models\\{$modelName}")->all();
+            }
+
             return CustomFieldResource::collection($data);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);
         }
     }
 
-    function getDataByModels(Request $request)
+    function getDataByModels(Request $request,$branchId = null)
     {
         try {
             $validatedData = validator(['models' => $request->models], [
                 'models' => 'required|array',
-                'models.*' => 'in:size,color,section,condition,material,branch,category,banner'
+                'models.*' => 'in:size,color,section,condition,material,branch,category,banner,season,style,supplier'
             ])->validate();
             $data = [];
-            foreach ($request->models as $model) {
-                $modelName = ucfirst($model);
-                $datamodel = app("App\\Models\\{$modelName}")->all();
-                $data[$modelName] = CustomFieldResource::collection($datamodel);
+            if ($branchId != null) {
+                $branch = Branch::find($branchId);
+
+                foreach ($request->models as $model) {
+                    if ($model == 'category'){
+                        $models = 'categories';
+                        $datamodel = $branch->$models;
+                        $modelName = ucfirst($model);
+                        $data[$modelName] = CustomFieldResource::collection($datamodel);
+                    }elseif ($model == 'branch'){
+
+                    }elseif ($model == 'supplier'){
+                        $modelName = ucfirst($model);
+                        $datamodel = app("App\\Models\\{$modelName}")->all();
+                        $data[$modelName] = CustomFieldResource::collection($datamodel);
+                    }elseif ($model == 'banner'){
+                        $modelName = ucfirst($model);
+                        $datamodel = app("App\\Models\\{$modelName}")->all();
+                        $data[$modelName] = CustomFieldResource::collection($datamodel);
+                    }else{
+                        $models = $model.'s';
+                        $datamodel = $branch->$models;
+                        $modelName = ucfirst($model);
+                        $data[$modelName] = CustomFieldResource::collection($datamodel);
+                    }
+
+
+//                    dd($data);
+                }
+            }else{
+                foreach ($request->models as $model) {
+                    $modelName = ucfirst($model);
+                    $datamodel = app("App\\Models\\{$modelName}")->all();
+                    $data[$modelName] = CustomFieldResource::collection($datamodel);
+                }
             }
+
             return response()->json($data);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 401);

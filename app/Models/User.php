@@ -55,4 +55,14 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
+    public function invoicesProducts()
+    {
+        return $this->hasMany(InvoicesProdect::class,'user_id');
+    }
+
+    public function supplier()
+    {
+        return $this->hasOne(Supplier::class,'user_id');
+    }
+
 }

@@ -20,7 +20,7 @@ class Category extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->hasMany(Product::class);
     }
 
     public function section(){
@@ -29,5 +29,17 @@ class Category extends Model
 
     public function sizes(){
         return $this->hasMany(Size::class,'category_id');
+    }
+
+    public function styles(){
+        return $this->hasMany(Style::class,'category_id');
+    }
+
+    /**
+     * Get all of the tags for the post.
+     */
+    public function branches()
+    {
+        return $this->morphToMany(Branch::class, 'branchable','branchables');
     }
 }

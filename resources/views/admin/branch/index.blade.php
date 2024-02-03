@@ -10,14 +10,10 @@
                             <tr>
                                 <th scope="col">@lang('ID')</th>
                                 <th scope="col">@lang('Name')</th>
-                                <th scope="col">@lang('Admin')</th>
+                                <th scope="col">@lang('Code')</th>
                                 <th scope="col">@lang('Address')</th>
-                                <th scope="col">@lang('latitude')</th>
-                                <th scope="col">@lang('longitude')</th>
-
-                                <th scope="col">@lang('working_hours')</th>
-                                <th scope="col">@lang('phone')</th>
-                                <th scope="col">@lang('whatsapp')</th>
+                                <th scope="col">@lang('Mobile')</th>
+                                <th scope="col">@lang('Action')</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -25,14 +21,9 @@
                                 <tr>
                                     <td data-label="@lang('ID')">{{__($item->id)}}</td>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
-                                    <td data-label="@lang('Admin')">{{__($item->Admin->email ?? '')}}</td>
+                                    <td data-label="@lang('Admin')">{{__($item->code)}}</td>
                                     <td data-label="@lang('Address')">{{__($item->address)}}</td>
-                                    <td data-label="@lang('latitude')">{{__($item->latitude)}}</td>
-                                    <td data-label="@lang('longitude')">{{__($item->longitude)}}</td>
-
-                                    <td data-label="@lang('Name')">{{__($item->working_hours)}}</td>
-                                    <td data-label="@lang('phone')">{{__($item->phone)}}</td>
-                                    <td data-label="@lang('whatsapp')">{{__($item->whatsapp)}}</td>
+                                    <td data-label="@lang('latitude')">{{__($item->mobile)}}</td>
 
                                     <td data-label="@lang('Action')">
                                         <a href="{{ route('admin.branch.edit',$item->id)}}" class="icon-btn ml-1"
@@ -45,6 +36,10 @@
 
                                            >
                                             <i class="la la-edit"></i>
+                                        </a>
+                                        <a href="{{ route('admin.branch.show',$item->id)}}" class="icon-btn ml-1"
+                                           data-original-title="@lang('Show')" data-toggle="tooltip">
+                                            <i class="la la-eye"></i>
                                         </a>
                                         <a href="javascript:void(0)"
                                            class="icon-btn btn--danger ml-1 statusBtn"
@@ -72,7 +67,7 @@
 
     {{-- NEW MODAL --}}
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="max-width: 60%;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">
@@ -83,70 +78,119 @@
                 <form class="form-horizontal" method="post" action="{{ route('admin.branch.store')}}"
                       enctype="multipart/form-data">
                     @csrf
+
                     <div class="modal-body">
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Name') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="name"
-                                       placeholder="@lang('Enter branch name')">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Name') <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="code" name="name"
+                                                   placeholder="@lang('Enter branch name')">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('phone') </label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="code" name="phone" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Mobile') <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="mobile" name="mobile" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Facebook') </label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="facebook" name="facebook" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('latitude') </label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="latitude" name="latitude" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('longitude') </label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="longitude" name="longitude" >
+                                        </div>
+                                    </div>
+
+                                    <div id="map" style="height: 200px;"></div>
+
+
+
+                                </div>
+                                <div class="col-md-6">
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Code') <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="code" name="code" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Address') <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="code" name="address" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Whatsapp') <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="whatsapp" name="whatsapp" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Instagram') </label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="instagram" name="instagram" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('Twitter') </label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="twitter" name="twitter" >
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="form-row form-group">
+                                        <label class="font-weight-bold ">@lang('working_hours') <span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control has-error bold " id="code" name="working_hours" >
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
                             </div>
                         </div>
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Address') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="address" >
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('working_hours') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="working_hours" >
-                            </div>
-                        </div>
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('phone') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="phone" >
-                            </div>
-                        </div>
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('whatsapp') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="whatsapp" >
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('latitude') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="latitude" name="latitude" >
-                            </div>
-                        </div>
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('longitude') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="longitude" name="longitude" >
-                            </div>
-                        </div>
-
-                        <div id="map" style="height: 200px;"></div>
-
 
                     </div>
 
@@ -161,7 +205,7 @@
     </div>
 
     {{-- EDIT MODAL --}}
-    
+
 
     {{-- Status MODAL --}}
     <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -215,8 +259,8 @@
                 // document.getElementById('maps_google').src="https://maps.google.com/maps?width=500&height=500&hl=en&q="+longitude+", "+latitude+"&t=&z=14&ie=UTF8&iwloc=B&output=embed";
 
 
-                
-       
+
+
                 modal.modal('show');
             });
 
@@ -253,12 +297,12 @@
             console.log(coordinates[0]);
         });
 
-        
 
 
-              
-      
 
-      
+
+
+
+
     </script>
 @endpush

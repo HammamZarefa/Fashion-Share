@@ -21,4 +21,16 @@ class Size extends Model
     public function category(){
         return $this->belongsTo(Category::class,'category_id');
     }
+
+    public function section(){
+        return $this->belongsTo(Section::class,'section_id');
+    }
+
+    /**
+     * Get all of the tags for the post.
+     */
+    public function branches()
+    {
+        return $this->morphToMany(Branch::class, 'branchable','branchables');
+    }
 }

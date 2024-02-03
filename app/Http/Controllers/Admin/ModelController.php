@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Section;
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ModelController extends Controller
 {
     public function index($model)
     {
-        
         $model = Str::ucfirst($model);
         $modelClass = "App\\Models\\$model";
         $page_title = $model;
@@ -31,6 +32,12 @@ class ModelController extends Controller
         $request = \request();
         $object = new $modelClass;
         $object->name = $request->name;
+        if ($model == 'Section') {
+            if ($request->is_rent == 'on')
+                $object->is_rent = true;
+            else
+                $object->is_rent = false;
+        }
         $object->save();
         $notify[] = ['success', $model . ' added!'];
         return back()->withNotify($notify);
@@ -47,8 +54,32 @@ class ModelController extends Controller
         ]);
         $item = $modelClass::findOrFail($id);
         $item->name = \request()->name;
+        if ($model == 'Section') {
+            if ($request->is_rent == 'on')
+                $item->is_rent = true;
+            else
+                $item->is_rent = false;
+        }
         $item->save();
         $notify[] = ['success', $model . ' updated!'];
+        return back()->withNotify($notify);
+    }
+
+
+    public function add($model, $id)
+    {
+
+        $model = Str::ucfirst($model);
+        $modelClass = "App\\Models\\$model";
+        $item = $modelClass::findOrFail($id);
+        $branch = Auth::guard('admin')->user()->branch;
+        if ($branch->model($model)->where('branchable_id', $item->id)->exists()) {
+            $branch->model($model)->detach($item);
+        } else {
+            $branch->model($model)->attach($item);
+        }
+
+        $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);
     }
 
@@ -62,3 +93,6 @@ class ModelController extends Controller
         return back()->withNotify($notify);
     }
 }
+
+
+//AIzaSyBA7tMdzfk6qOFC_EykaBtGs6q9R4QnM5o

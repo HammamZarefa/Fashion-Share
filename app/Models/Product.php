@@ -14,9 +14,10 @@ class Product extends Model
     use HasFactory;
     protected $guarded=['id'];
     public $translatable = ['name', 'description'];
-    public function categories() : BelongsToMany
+
+    public function category() : BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function images(): MorphMany
@@ -49,6 +50,16 @@ class Product extends Model
         return $this->belongsTo(Condition::class);
     }
 
+    public function season(): BelongsTo
+    {
+        return $this->belongsTo(Season::class);
+    }
+
+    public function style(): BelongsTo
+    {
+        return $this->belongsTo(Style::class);
+    }
+
     public function user(): BelongsTo
     {
         return  $this->belongsTo(User::class);
@@ -56,5 +67,14 @@ class Product extends Model
     public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return  $this->belongsTo(Supplier::class,'supplier_id');
+    }
+
+    public function invoicesProducts(){
+        return $this->belongsToMany(InvoicesProdect::class,'product_invoices_product');
     }
 }

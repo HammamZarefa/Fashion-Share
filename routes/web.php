@@ -3,7 +3,11 @@
 use App\Http\Controllers\Admin\ColoresController;
 use App\Http\Controllers\Admin\InvoicesController;
 use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\RentsController;
 use App\Http\Controllers\Admin\SizesController;
+use App\Http\Controllers\Admin\StyleController;
+use App\Http\Controllers\BarcodeController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function(){
@@ -38,10 +42,14 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware('admin')->group(function () {
 
+        Route::get('/barcode-index', [BarcodeController::class, 'barcodeIndex']);
+
         Route::get('model/{model}','ModelController@index')->name('model.index');
         Route::post('model/{model}','ModelController@store')->name('model.store');
         Route::post('model/{model}/{id}','ModelController@update')->name('model.update');
         Route::delete('model/{model}/{id}','ModelController@delete')->name('model.delete');
+
+        Route::post('modelAddBranch/{model}/{id}','ModelController@add')->name('modelAddBranch.add');
         Route::get('search','AdminController@search')->name('search');
         Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
         Route::get('profile', 'AdminController@profile')->name('profile');
@@ -67,6 +75,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('categories/status/{id}', 'CategoryController@status')->name('categories.status');
         Route::get('categoriesSearch/{id}','CategoryController@search')->name('categories.search');
         Route::delete('categories/delete/{id}','CategoryController@delete')->name('categories.delete');
+        Route::post('categories/add/{id}','CategoryController@add')->name('categories.add');
         //Services
         Route::get('services', 'ServiceController@index')->name('services.index');
         Route::post('services/store', 'ServiceController@store')->name('services.store');
@@ -75,6 +84,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('services/search', 'ServiceController@search')->name('services.search');
         Route::get('services/edit/{id}', 'ServiceController@edit')->name('services.edit');
         Route::get('services/create', 'ServiceController@create')->name('services.create');
+        Route::get('service/create/{id}', 'ServiceController@createWithSupplier')->name('service.createWithSupplier');
+        Route::post('service/store/{id}', 'ServiceController@storeWithSupplier')->name('service.storeWithSupplier');
+        Route::get('service/edit/{supplier_id}/{product_id}', 'ServiceController@editWithSupplier')->name('service.editWithSupplier');
+        Route::post('service/Update/{supplier_id}/{product_id}', 'ServiceController@updateWithSupplier')->name('service.updateWithSupplier');
         Route::get('services/deleteImage/{id}', 'ServiceController@deleteImage')->name('services.deleteImage');
         Route::get('services/SaleOrRent/{id}', 'ServiceController@SaleOrRent')->name('services.SaleOrRent');
         Route::delete('services/delete/{id}', 'ServiceController@delete')->name('services.delete');
@@ -111,9 +124,18 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('branch/store', 'BranchController@store')->name('branch.store');
         Route::delete('branch/delete/{id}', 'BranchController@delete')->name('branch.delete');
         Route::get('branch/edit/{id}', 'BranchController@edit')->name('branch.edit');
+        Route::get('branch/show/{id}', 'BranchController@show')->name('branch.show');
+        Route::get('branch/dashboard/{id}', 'BranchController@dashboard')->name('branch.dashboard');
 
         //Invoices
         Route::get('Invoices/{id?}',InvoicesController::class)->name('invoices');
+        Route::get('Invoice/create/{id?}',[InvoicesController::class,'create'])->name('invoice.create');
+        Route::post('Invoice/store/{id?}', [InvoicesController::class,'store'])->name('invoice.store');
+
+        //Rents
+        Route::get('rents/{id?}',RentsController::class)->name('rents');
+        Route::get('rent/create/{id?}',[RentsController::class,'create'])->name('rent.create');
+        Route::post('rent/store/{id?}', [RentsController::class,'store'])->name('rent.store');
 
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');
@@ -128,11 +150,31 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('sizes/{id}',[SizesController::class,'update'])->name('sizes.update');
         Route::get('sizeSearch/{id}',[SizesController::class,'search'])->name('sizes.search');
         Route::delete('sizes/{id}',[SizesController::class,'delete'])->name('sizes.delete');
-        
+        Route::post('sizes/add/{id}',[SizesController::class,'add'])->name('sizes.add');
+
+        Route::get('styles',[StyleController::class,'index'])->name('style.index');
+        Route::post('styles',[StyleController::class,'store'])->name('styles.store');
+        Route::post('styles/{id}',[StyleController::class,'update'])->name('styles.update');
+        Route::get('styleSearch/{id}',[StyleController::class,'search'])->name('styles.search');
+        Route::delete('styles/{id}',[StyleController::class,'delete'])->name('styles.delete');
+        Route::post('styles/add/{id}',[StyleController::class,'add'])->name('styles.add');
+
+        Route::get('suppliers',[SupplierController::class,'index'])->name('suppliers.index');
+        Route::post('suppliers',[SupplierController::class,'store'])->name('suppliers.store');
+        Route::post('suppliers/{id}',[SupplierController::class,'update'])->name('suppliers.update');
+        Route::get('suppliers/show/{id}',[SupplierController::class,'show'])->name('suppliers.show');
+        Route::get('suppliersSearch/{id}',[SupplierController::class,'search'])->name('suppliers.search');
+        Route::delete('suppliers/{id}',[SupplierController::class,'delete'])->name('suppliers.delete');
+        Route::post('suppliers/add/{id}',[SupplierController::class,'add'])->name('suppliers.add');
+
         Route::get('colors',[ColoresController::class,'index'])->name('color.index');
         Route::post('colors',[ColoresController::class,'store'])->name('color.store');
         Route::put('colors/update/{id}',[ColoresController::class,'update'])->name('color.update');
         Route::delete('colors/delete/{id}',[ColoresController::class,'destroy'])->name('color.delete');
+        Route::post('colors/add/{id}',[ColoresController::class,'add'])->name('colors.add');
+
+
+        Route::get('statistics', 'BranchController@statistics')->name('statistics');
 
         Route::get('/migrate', function(){
             \Artisan::call('migrate');

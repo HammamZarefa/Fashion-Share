@@ -18,7 +18,7 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'price' => number_format($this->price, 2),
+            'price' => number_format($this->sell_price, 2),
             'color' => [
                 'id' => $this->color->id,
                 'name' => $this->color->name
@@ -51,7 +51,7 @@ class ProductResource extends JsonResource
             'is_for_sale' => $this->is_for_sale,
             'user' => isset($this->user->email)? $this->user->email :null,
             // 'user' => $this->user->email ,
-            'categories' => ['id' => $this->categories->first()->id, 'name' => $this->categories->first()->name],
+            'categories' => ['id' => $this->category->id, 'name' => $this->category->name],
             'images' => $this->images->map(function ($image) {
                 return [
                     'is_default' => $image->is_default,

@@ -100,7 +100,7 @@
                                         <span class="name">{{__(@$item->user->email)}}</span>
                                     </td>
                                     <td>
-                                       {{$item->categories[0]->name ?? ''}}
+                                       {{$item->category->name ?? ''}}
                                     </td>
                                     <td>{{$item->price}}</td>
                                     <td>{{@$item->branch->name}}</td>
@@ -145,7 +145,7 @@
                                             data-original-title="@lang('Show')">
                                             <i class="la la-eye"></i>
                                          </a>
-                                     
+
                                         @if($item->status == "available")
                                             <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
                                                data-original-title="$" data-toggle="tooltip"
@@ -181,10 +181,10 @@
             </div><!-- card end -->
             {{-- QR Sections --}}
                 {{-- <div class="container">  --}}
-                    <div class="section" > 
-                        <div id="my-qr-reader" style="left: 3000px"> 
-                        </div> 
-                    </div> 
+                    <div class="section" >
+                        <div id="my-qr-reader" style="left: 3000px">
+                        </div>
+                    </div>
                 {{-- </div>  --}}
         </div>
     </div>
@@ -638,51 +638,51 @@
 
 
 <script
-    src="https://unpkg.com/html5-qrcode"> 
-</script> 
+    src="https://unpkg.com/html5-qrcode">
+</script>
 
 <script>
 
-        function domReady(fn) { 
-        if ( 
-            document.readyState === "complete" || 
+        function domReady(fn) {
+        if (
+            document.readyState === "complete" ||
             document.readyState === "interactive"
-        ) { 
-            setTimeout(fn, 10000); 
-        } else { 
-            document.addEventListener("DOMContentLoaded", fn); 
-        } 
-        } 
+        ) {
+            setTimeout(fn, 10000);
+        } else {
+            document.addEventListener("DOMContentLoaded", fn);
+        }
+        }
 
-        domReady(function () { 
+        domReady(function () {
 
-            console.log("QR"); 
+            console.log("QR");
 
-        // If found you qr code 
+        // If found you qr code
         function onScanSuccess(decodeText, decodeResult) {
-            console.log(decodeText); 
+            console.log(decodeText);
             document.getElementById("myForm").action = window.location.origin+"/admin/services/SaleOrRentQR/"+decodeText;
             document.getElementById("myForm").submit();
-        } 
+        }
 
-        let htmlscanner = new Html5QrcodeScanner( 
-            "my-qr-reader", 
-            { fps: 10, qrbos: 250 } 
-        ); 
-        htmlscanner.render(onScanSuccess); 
+        let htmlscanner = new Html5QrcodeScanner(
+            "my-qr-reader",
+            { fps: 10, qrbos: 250 }
+        );
+        htmlscanner.render(onScanSuccess);
         });
 
-</script> 
+</script>
 
 
 
 
 <style>
-    video { 
+    video {
         height: 350px;
-    width: 50% !important; 
-    border: 1px solid #b2b2b2 !important; 
-    border-radius: 0.25em; 
+    width: 50% !important;
+    border: 1px solid #b2b2b2 !important;
+    border-radius: 0.25em;
 }
 #my-qr-reader__dashboard_section{
     display: none;
