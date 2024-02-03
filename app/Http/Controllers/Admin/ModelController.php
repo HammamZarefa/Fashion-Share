@@ -32,6 +32,12 @@ class ModelController extends Controller
         $request = \request();
         $object = new $modelClass;
         $object->name = $request->name;
+        if ($model == 'Section') {
+            if ($request->is_rent == 'on')
+                $object->is_rent = true;
+            else
+                $object->is_rent = false;
+        }
         $object->save();
         $notify[] = ['success', $model . ' added!'];
         return back()->withNotify($notify);
@@ -48,13 +54,16 @@ class ModelController extends Controller
         ]);
         $item = $modelClass::findOrFail($id);
         $item->name = \request()->name;
+        if ($model == 'Section') {
+            if ($request->is_rent == 'on')
+                $item->is_rent = true;
+            else
+                $item->is_rent = false;
+        }
         $item->save();
         $notify[] = ['success', $model . ' updated!'];
         return back()->withNotify($notify);
     }
-
-
-
 
 
     public function add($model, $id)

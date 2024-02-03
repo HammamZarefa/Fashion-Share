@@ -15,9 +15,9 @@ class Product extends Model
     protected $guarded=['id'];
     public $translatable = ['name', 'description'];
 
-    public function categories() : BelongsToMany
+    public function category() : BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function images(): MorphMany

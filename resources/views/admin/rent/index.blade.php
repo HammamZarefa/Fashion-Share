@@ -68,10 +68,7 @@
                                     </td>
                                     <td data-label="@lang('Category')">
                                         @foreach($invoice->products as $product)
-                                            @foreach($product->categories as $category)
-                                                {{__($category->name )}}<br><br>
-                                            @endforeach
-                                                <br>
+                                            {{__($product->category->name )}}<br><br>
                                         @endforeach
                                     </td>
                                     <td data-label="@lang('Status')">

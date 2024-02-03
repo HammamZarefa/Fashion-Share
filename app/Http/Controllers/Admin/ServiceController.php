@@ -54,7 +54,7 @@ class ServiceController extends Controller
         } else {
             $branches = $branch;
             $services = Product::
-            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
                 ->where('branch_id', $branch->id)->latest()->paginate(getPaginate());
         }
         return view('admin.products.list',
@@ -105,7 +105,6 @@ class ServiceController extends Controller
         $product->update([
             'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
         ]);
-        $product->categories()->attach($request->category_id);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -175,8 +174,7 @@ class ServiceController extends Controller
             'user_id',
         ]));
 
-        if ($request->category_id)
-            $product->categories()->sync($request->category_id);
+
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -438,7 +436,6 @@ class ServiceController extends Controller
         $product->update([
             'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
         ]);
-        $product->categories()->attach($request->category_id);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -506,7 +503,6 @@ class ServiceController extends Controller
         $product->update([
             'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
         ]);
-        $product->categories()->attach($request->category_id);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -591,7 +587,7 @@ class ServiceController extends Controller
         $empty_message = 'No Result Found';
         $services = Product::
         when($request->category, function ($query) use ($request) {
-            $query->whereHas('categories', function ($query) use ($request) {
+            $query->whereHas('category', function ($query) use ($request) {
                 $query->where('categories.id', $request->category);
             });
         })
@@ -607,7 +603,7 @@ class ServiceController extends Controller
             ->when($request->is_for_sale, function ($query) use ($request) {
                 $query->where('is_for_sale', "$request->is_for_sale");
             })
-            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->latest()->paginate(getPaginate());
 
         $branches = Branch::all();
@@ -622,7 +618,7 @@ class ServiceController extends Controller
         $page_title = 'Services';
         $empty_message = 'No Result Found';
         $item = Product::
-        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->find($id);
         return view('admin.products.details',
             compact('page_title', 'empty_message', 'item'));

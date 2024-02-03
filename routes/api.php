@@ -25,13 +25,13 @@ use Illuminate\Support\Facades\Session;
 
 Route::get('products', [ProductController::class,'index']);
 Route::get('products/{product}', [ProductController::class,'show']);
-Route::get('data/{model_name}', [HomeController::class, 'getDataByModelName']);
+Route::get('data/{model_name}/{branchId?}', [HomeController::class, 'getDataByModelName']);
 Route::get('language/{lang}', function ($lang) {
     app()->setLocale($lang);
     Session::put('locale', $lang);
     return $lang;
 });
-Route::get('data', [HomeController::class, 'getDataByModels']);
+Route::get('dataByModel/{branchId?}', [HomeController::class, 'getDataByModels']);
 Route::prefix('admin')->middleware(['auth:sanctum'])->group(function () {
 //    Route::middleware('role:admin')->group(function () {
 //        Route::post('products', [Admin\ProductController::class, 'store']);

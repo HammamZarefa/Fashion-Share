@@ -67,12 +67,12 @@
 
                                     <td  data-label="@lang('Category')"><b>@lang('Category') : </b>
                                     </td>
-                                    <td data-label="@lang('Category')">{{$item->categories[0]->name}}</td>
+                                    <td data-label="@lang('Category')">{{$item->category->name}}</td>
 
                                 </tr>
                                 </tbody>
 
-                                
+
                             </table>
                         </div>
 
@@ -93,16 +93,16 @@
                 <img
                     src="{{ getImage(imagePath()['service']['path'].'/'. $img->path,imagePath()['service']['size'])}}"
                               class="card-img-top" alt="Waterfall" />
-               
+
               </div>
               <br>
             </div>
             @endforeach
-        
+
           </div>
         </div>
       </div>
-      
+
                     </div>
             </div><!-- card end -->
         </div>

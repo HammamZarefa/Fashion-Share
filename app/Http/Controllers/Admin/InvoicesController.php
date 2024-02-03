@@ -43,7 +43,11 @@ class InvoicesController extends Controller
     {
         $page_title = 'Invoice Create';
         $branch_id = Auth::guard('admin')->user()->branch_id;
-        $products = Product::where('branch_id',$branch_id)->get();
+        $products = Product::where('branch_id',$branch_id)
+            ->whereHas('section',function($query){
+                $query->where('is_rent',false);
+            })
+            ->get();
         return view('admin.Invoices.create',compact('page_title','products'));
     }
 
