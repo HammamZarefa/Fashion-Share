@@ -46,7 +46,7 @@ class ProductFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (Product $product) {
-            $product->images()->createMany(\App\Models\Image::factory(5)->make()->toArray());
+            $product->images()->createMany(\App\Models\Image::factory(2)->make()->toArray());
             $product->sku = ($product->is_for_sale ? 'S' : 'R') . str_pad($product->category_id, 3, '0',
                     STR_PAD_LEFT) . '-' .
                 str_pad($product->id, 6, '0', STR_PAD_LEFT);

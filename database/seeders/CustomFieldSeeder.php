@@ -130,7 +130,7 @@ class CustomFieldSeeder extends Seeder
             Style::create($style);
 
         User::factory()->create();
-        Product::factory(1000)->create();
+        Product::factory(100)->create();
         Banner::factory(3)->create();
 
     }

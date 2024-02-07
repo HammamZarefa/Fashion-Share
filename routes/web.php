@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ColoresController;
 use App\Http\Controllers\Admin\InvoicesController;
+use App\Http\Controllers\Admin\ManageUsersController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\RentsController;
 use App\Http\Controllers\Admin\SizesController;
@@ -63,6 +64,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
         // Users Manager
         Route::get('users', 'ManageUsersController@allUsers')->name('users.all');
+        Route::post('users',[ManageUsersController::class,'store'])->name('users.store');
+        Route::post('users/{id}',[ManageUsersController::class,'updateAdmin'])->name('users.update');
+        Route::delete('users/delete/{id}','ManageUsersController@delete')->name('users.delete');
 
         Route::get('users/send-email', 'ManageUsersController@showEmailAllForm')->name('users.email.all');
         Route::post('users/send-email', 'ManageUsersController@sendEmailAll')->name('users.email.send');
