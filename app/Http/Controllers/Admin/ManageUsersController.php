@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin;
 use App\Models\Deposit;
 use App\Models\Gateway;
 use App\Models\GeneralSetting;
@@ -21,7 +22,7 @@ class ManageUsersController extends Controller
     {
         $page_title = 'Manage Users';
         $empty_message = 'No user found';
-        $users = User::latest()->paginate(getPaginate());
+        $users = Admin::where('branch_id','<>',null)->where('is_from_admin',0)->latest()->paginate(getPaginate());
         return view('admin.users.list', compact('page_title', 'empty_message', 'users'));
     }
 

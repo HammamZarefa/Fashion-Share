@@ -8,10 +8,12 @@
                         <table class="table table--light style--two">
                             <thead>
                             <tr>
-                                <th scope="col">@lang('ID')</th>
-                                <th scope="col">@lang('email')</th>
-                                <th scope="col">@lang('phone')</th>
-                                <th scope="col">@lang('image')</th>
+                                <th scope="col">@lang('Image')</th>
+                                <th scope="col">@lang('Name')</th>
+                                <th scope="col">@lang('User Name')</th>
+                                <th scope="col">@lang('Email')</th>
+                                <th scope="col">@lang('Branch')</th>
+                                <th scope="col">@lang('Action')</th>
 
                                 {{-- <th scope="col">@lang('Phone')</th>
                                 <th scope="col">@lang('Joined At')</th>
@@ -21,12 +23,9 @@
                             <tbody>
                             @forelse($users as $user)
                             <tr>
-                              
+
                                 {{-- <td data-label="@lang('Username')"><a href="{{ route('admin.users.detail', $user->id) }}">{{ $user->username }}</a></td> --}}
-                                <td data-label="@lang('ID')">{{ $user->id }}</td>
-                                <td data-label="@lang('Email')">{{ $user->email }}</td>
-                                <td data-label="@lang('Phone')">{{ $user->phone }}</td>
-                                <td data-label="@lang('User')">
+                                <td data-label="@lang('Image')">
                                     <div class="user">
                                         <div class="thumb">
                                             <img src="{{ getImage(imagePath()['profile']['user']['path'].'/'.$user->image,imagePath()['profile']['user']['size'])}}" alt="@lang('image')">
@@ -34,12 +33,18 @@
                                         <span class="name">{{$user->fullname}}</span>
                                     </div>
                                 </td>
+                                <td data-label="@lang('Name')">{{ $user->name }}</td>
+                                <td data-label="@lang('User Name')">{{ $user->username }}</td>
+                                <td data-label="@lang('Email')">{{ $user->email }}</td>
+                                <td data-label="@lang('Branch')">{{ $user->branch->name }}</td>
+                                <td data-label="@lang('Action')">{{ $user->branch->name }}</td>
+
                                 {{-- <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td> --}}
-                                {{-- <td data-label="@lang('Action')"> --}}
-                                    {{-- <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')"> --}}
-                                        {{-- <i class="las la-desktop text--shadow"></i> --}}
-                                    {{-- </a> --}}
-                                {{-- </td> --}}
+{{--                                 <td data-label="@lang('Action')">--}}
+{{--                                     <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">--}}
+{{--                                         <i class="las la-desktop text--shadow"></i>--}}
+{{--                                     </a>--}}
+{{--                                 </td>--}}
                             </tr>
                             @empty
                                 <tr>
