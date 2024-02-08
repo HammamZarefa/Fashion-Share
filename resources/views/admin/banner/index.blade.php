@@ -19,7 +19,7 @@
                                 <tr>
                                     <td data-label="@lang('Name')">{{__($item->name)}}</td>
                                     <td data-label="@lang('Description')">{{__($item->description)}}</td>
-                                    <td data-label="@lang('Image')"><img src="{{ getImage(imagePath()['banner']['path'].'/'. $item->cover,imagePath()['banner']['size'])}}"></td>
+                                    <td data-label="@lang('Image')"><img src="{{ getImage(imagePath()['banner']['path'].'/'. $item->image,imagePath()['banner']['size'])}}"></td>
                                     <td data-label="@lang('Action')">
                                         <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                            data-original-title="@lang('Edit')" data-toggle="tooltip"
@@ -71,7 +71,7 @@
                                 <input type="text" class="form-control has-error bold " id="code" name="name" required placeholder="@lang('Enter Banner title')">
                             </div>
                         </div>
-                        
+
                         <div class="form-row form-group" >
                             <label class="font-weight-bold ">@lang('description') <span
                                         class="text-danger">*</span></label>
@@ -84,7 +84,7 @@
                             <input type="file" class="profilePicUpload" name="image"  accept=".png, .jpg, .jpeg">
                             <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
                         </div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
