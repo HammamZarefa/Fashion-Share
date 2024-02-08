@@ -132,13 +132,13 @@
                                             <i class="la la-pencil"></i>
                                         </a>
 
-                                        <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"
-                                           data-original-title="@lang('Change Status')" data-toggle="tooltip"
-                                           data-url="{{ route('admin.services.update',$item->id)}}"
-                                           data-name="{{ $item->name }}"
-                                           data-field="{{$item->field_name}}">
-                                            <i class="la la-edit"></i>
-                                        </a>
+{{--                                        <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"--}}
+{{--                                           data-original-title="@lang('Change Status')" data-toggle="tooltip"--}}
+{{--                                           data-url="{{ route('admin.services.update',$item->id)}}"--}}
+{{--                                           data-name="{{ $item->name }}"--}}
+{{--                                           data-field="{{$item->field_name}}">--}}
+{{--                                            <i class="la la-edit"></i>--}}
+{{--                                        </a>--}}
 
                                         <a href="{{ route('admin.services.ditails', $item->id) }}"
                                             class="icon-btn bg--info ml-1" data-toggle="tooltip" title="@lang('Show Details')"
@@ -146,14 +146,14 @@
                                             <i class="la la-eye"></i>
                                          </a>
 
-                                        @if($item->status == "available")
-                                            <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"
-                                               data-original-title="$" data-toggle="tooltip"
-                                               data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"
-                                               data-is_for_sale="{{ $item->is_for_sale }}">
-                                                <i class="la la-usd"></i>
-                                            </a>
-                                        @endif
+{{--                                        @if($item->status == "available")--}}
+{{--                                            <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"--}}
+{{--                                               data-original-title="$" data-toggle="tooltip"--}}
+{{--                                               data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"--}}
+{{--                                               data-is_for_sale="{{ $item->is_for_sale }}">--}}
+{{--                                                <i class="la la-usd"></i>--}}
+{{--                                            </a>--}}
+{{--                                        @endif--}}
                                         <a href="javascript:void(0)" class="icon-btn bg--danger ml-1 DeleteService"
                                            data-toggle="tooltip" title="@lang('Delete')"
                                            data-url="{{ route('admin.services.delete', $item->id)}}"
@@ -486,10 +486,10 @@
 @endsection
 
 
-@push('breadcrumb-plugins')
-    <a class="btn btn-sm btn--primary box--shadow1 text--small" href="{{ route('admin.services.create') }}"><i
-            class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
-@endpush
+{{--@push('breadcrumb-plugins')--}}
+{{--    <a class="btn btn-sm btn--primary box--shadow1 text--small" href="{{ route('admin.services.create') }}"><i--}}
+{{--            class="fa fa-fw fa-plus"></i>@lang('Add New')</a>--}}
+{{--@endpush--}}
 @push('script')
     <script>
 

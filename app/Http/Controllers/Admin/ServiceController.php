@@ -21,7 +21,7 @@ use App\Models\Size;
 use App\Models\Style;
 use App\Models\Supplier;
 use App\Models\User;
-use App\trait\NotificationTrait;
+use App\traits\NotificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -134,47 +134,54 @@ class ServiceController extends Controller
     public function update($product, Request $request)
     {
 
-        $product = Product::findOrFail($product);
+//        $supplier = Supplier::find($sup_id);
+        $branchAdmin = Auth::guard('admin')->user();
         $validator = Validator::make($request->all(), [
-            'name' => 'string|max:255',
-            'description' => 'string',
-            'price' => 'numeric',
-            'category_id' => 'exists:categories,id',
-            'color_id' => 'exists:colors,id',
-            'material_id' => 'exists:materials,id',
-            'section_id' => 'exists:sections,id',
-            'size_id' => 'exists:sizes,id',
-            'condition_id' => 'exists:conditions,id',
-            'branch_id' => 'exists:branches,id',
-            'is_for_sale' => 'boolean',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status' => 'nullable',
-            'location' => 'nullable|string',
-            'user_id' => 'nullabel|exists:users,id',
-
+            'name' => 'required|string|max:255',
+            'images' => 'array',
+            'images.*' => 'mimes:jpg,jpeg,png,bmp|max:2000',
+            'section_id' => 'required|exists:sections,id',
+            'category_id' => 'required|exists:categories,id',
+            'size_id' => 'required|exists:sizes,id',
+            'material_id' => 'required|exists:materials,id',
+            'season_id' => 'required|exists:seasons,id',
+            'status' => 'required',
+            'description' => 'nullable|string',
+            'color_id' => 'required|exists:colors,id',
+            'condition_id' => 'required|exists:conditions,id',
+            'style_id' => 'required|exists:styles,id',
+            'buy_price' => 'required',
+            'price' => 'required',
+            'sell_price' => 'required',
         ]);
-
         if ($validator->fails()) {
-            // return back()->withNotify(['error' => $validator->messages()]);
+            $notify[] = ['error', 'validation'];
+            return back()->withNotify($notify);
         }
-        $product->update($request->only([
-            'name',
-            'description',
-            'price',
-            'category_id',
-            'color_id',
-            'material_id',
-            'section_id',
-            'size_id',
-            'condition_id',
-            'branch_id',
-            'status',
-            'is_for_sale',
-            'location',
-            'user_id',
-        ]));
-
-
+        $product = Product::find($product);
+        $product->name = $request->input('name');
+        $product->section_id = $request->input('section_id');
+        $product->category_id = $request->input('category_id');
+        $product->size_id = $request->input('size_id');
+        $product->material_id = $request->input('material_id');
+        $product->season_id = $request->input('season_id');
+        $product->status = $request->input('status');
+        $product->description = $request->input('description');
+        $product->color_id = $request->input('color_id');
+        $product->condition_id = $request->input('condition_id');
+        $product->style_id = $request->input('style_id');
+        $product->buy_price = $request->input('buy_price');
+        $product->price = $request->input('price');
+        $product->sell_price = $request->input('sell_price');
+        $product->barcode = $request->input('barcode');
+        $product->location = '';
+        $product->user_id = $branchAdmin->id;
+        $product->branch_id = $branchAdmin->branch_id;
+        $product->is_for_sale = '0';
+        $product->save();
+        $product->update([
+            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+        ]);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -182,37 +189,9 @@ class ServiceController extends Controller
                 $filename = $image;
 
                 $filename = uploadImage($image, $path, $size, $filename);
-                // $product->image=$filename;
-                // Create the image record in the database
                 $product->images()->create([
                     'path' => $filename,
-                    // Add other image fields as needed
                 ]);
-            }
-        }
-        if (isset($request['status'])) {
-            if ($product->user) {
-                if ($request['status'] = "available") {
-                    $this->send_event_notification(User::find($product->user->id), '', ' تم تفعيل منتجك ', 'Your product has been activated');
-                }
-                if ($request['status'] = "not_available") {
-                    $this->send_event_notification(User::find($product->user->id), '', ' تم الغاء تفعيل منتجك ', 'Your product has been deactivated');
-                }
-                if ($request['status'] = "sale") {
-                    $this->send_event_notification(User::find($product->user->id), '', ' تم تغيير حالة منتجك الى بيع ', 'Your product status has been changed to Sold');
-                }
-                if ($request['status'] = "rent") {
-                    $this->send_event_notification(User::find($product->user->id), '', ' تم تغيير حالة منتجك الى أجار ', 'Your product status has been changed to Rent');
-                }
-                if ($request['status'] = "rejected") {
-                    $this->send_event_notification($product->user, '', ' تم رفض منتجك', 'Your product has been rejected');
-                }
-            }
-        }
-
-        if (isset($request['status'])) {
-            if (($request['status'] == 'sale') || $request['status'] == 'rent') {
-                $this->insertInInvoices($product);
             }
         }
         $notify[] = ['success', 'product updated!'];
@@ -276,20 +255,22 @@ class ServiceController extends Controller
 
     public function edit($service)
     {
+        $services = Product::with('images')->findOrFail($service);
+        $branch = Auth::guard('admin')->user()->branch;
         $page_title = 'Services';
         $empty_message = 'No Result Found';
-        $Colors = Color::all();
-        $Sizes = Size::with('category')->get();
-        $Conditions = Condition::all();
-        $Materials = Material::all();
-        $Sections = Section::with('category')->get();
-        $branchs = Branch::all();
-        $Categories = Category::with(['section', 'sizes'])->get();
-        $Users = User::all();
+        $Colors = $branch->colors;
+        $Sizes = $branch->sizes;
+        $Categories = $branch->categories;
+        $Conditions = $branch->conditions;
+        $Materials = $branch->materials;
+        $Sections = $branch->sections;
+        $seasons = $branch->seasons;
+        $styles = $branch->styles;
 
         $services = Product::with('images')->findOrFail($service);
         return view('admin.products.edit',
-            compact('page_title', 'services', 'Categories', 'empty_message', 'Users', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections', 'branchs'));
+            compact('page_title', 'services', 'Categories','seasons','styles', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections'));
 
     }
 
@@ -307,7 +288,7 @@ class ServiceController extends Controller
         $Users = User::all();
 
         $services = Product::
-        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+        with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->latest()->paginate(getPaginate());
         return view('admin.products.create',
             compact('page_title', 'empty_message', 'Colors', 'Categories', 'Users', 'Sizes', 'Conditions', 'Materials', 'Sections', 'branchs'));
@@ -356,34 +337,6 @@ class ServiceController extends Controller
             compact('page_title', 'services','seasons','styles','supplier', 'Categories', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections'));
 
     }
-//    public function createWithSupplier($id)
-//    {
-//        $supplier = Supplier::find($id);
-//        $branch = Auth::guard('admin')->user()->branch;
-//        $page_title = 'Add Product';
-//        $empty_message = 'No Result Found';
-//        $Colors = $branch->colors;
-//        $Categories = $branch->categories()->with('sizes')->get();
-////        dd($Categories);
-////        $Categories = $branch->categories;
-//        $Sizes = Size::with('category')->whereHas('category', function ($query) use ($Categories) {
-//            $query->whereIn('id', $Categories->pluck('id'));
-//        })->get();
-//
-//        $Sections = Section::with('category')->whereHas('category', function ($query) use ($Categories) {
-//            $query->whereIn('id', $Categories->pluck('id'));
-//        })->get();
-//        $Conditions = $branch->conditions;
-//        $Materials = $branch->materials;
-//        $seasons = $branch->seasons;
-//        $styles = $branch->styles;
-//        return view('admin.suppliers.createProduct',
-//            compact('page_title', 'empty_message', 'Colors',
-//                'Categories', 'Sizes', 'Conditions',
-//                'Materials', 'Sections', 'supplier',
-//                'seasons', 'styles'
-//            ));
-//    }
 
     public function storeWithSupplier(Request $request, $id)
     {

@@ -68,9 +68,6 @@ class HomeController extends Controller
                         $modelName = ucfirst($model);
                         $data[$modelName] = CustomFieldResource::collection($datamodel);
                     }
-
-
-//                    dd($data);
                 }
             }else{
                 foreach ($request->models as $model) {
