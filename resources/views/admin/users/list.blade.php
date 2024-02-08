@@ -36,7 +36,7 @@
                                 <td data-label="@lang('Name')">{{ $user->name }}</td>
                                 <td data-label="@lang('User Name')">{{ $user->username }}</td>
                                 <td data-label="@lang('Email')">{{ $user->email }}</td>
-                                <td data-label="@lang('Branch')">{{ $user->branch->name }}</td>
+                                <td data-label="@lang('Branch')">{{ @$user->branch->name }}</td>
                                 <td data-label="@lang('Action')">
                                     <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                        data-original-title="@lang('Edit')" data-toggle="tooltip"

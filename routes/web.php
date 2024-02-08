@@ -184,6 +184,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             \Artisan::call('migrate');
             dd('migrated!');
         });
+        Route::get('/seed', function(){
+            \Artisan::call('db:seed');
+            dd('seeded!');
+        });
 
     });
 });
