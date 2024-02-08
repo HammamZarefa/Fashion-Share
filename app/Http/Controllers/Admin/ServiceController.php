@@ -21,7 +21,7 @@ use App\Models\Size;
 use App\Models\Style;
 use App\Models\Supplier;
 use App\Models\User;
-use App\traits\NotificationTrait;
+use App\Traits\NotificationTrait;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
