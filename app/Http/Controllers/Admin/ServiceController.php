@@ -49,7 +49,7 @@ class ServiceController extends Controller
         if (is_null($branch)) {
             $branches = Branch::whereHas('products')->groupBy('id')->get();
             $services = Product::
-            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'categories', 'images'])
+            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
                 ->latest()->paginate(getPaginate());
         } else {
             $branches = $branch;
