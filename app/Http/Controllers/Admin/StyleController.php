@@ -9,7 +9,7 @@ use App\Models\Section;
 use App\Models\Size;
 use App\Models\Style;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class StyleController extends Controller
 {
@@ -21,10 +21,21 @@ class StyleController extends Controller
     public function index()
     {
         $page_title = 'Style';
+        $auth = Auth::guard('admin')->user();
         $empty_message = 'No Result Found';
-        $categories = Category::all();
-        $sections = Section::all();
-        $styles = Style::with(['category','section'])->latest()->get();
+        if ($auth->branch != null){
+            $sections = $auth->branch->sections;
+            $categories = $auth->branch->categories;
+            $styles = Style::with(['category','section'])
+                ->whereIn('category_id',$categories->pluck('id'))
+                ->whereIn('section_id',$sections->pluck('id'))
+                ->latest()->get();
+        }else{
+            $categories = Category::all();
+            $sections = Section::all();
+            $styles = Style::with(['category','section'])->latest()->get();
+        }
+
         return view('admin.styles.index', compact('page_title', 'styles','categories','sections', 'empty_message'));
     }
 

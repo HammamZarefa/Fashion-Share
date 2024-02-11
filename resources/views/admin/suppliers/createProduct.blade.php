@@ -135,11 +135,9 @@
                                         <label for="validationCustom05">@lang('Status')</label>
 
                                         <select name="status" class="custom-select" required>
-                                            <option value="{{'not_available'}}">@lang('Not available')</option>
                                             <option value="{{'available'}}" selected>@lang('Available')</option>
                                             <option value="{{'sale'}}">@lang('Sale')</option>
                                             <option value="{{'rent'}}">@lang('Rent')</option>
-                                            <option value="{{'rejected'}}">@lang('rejected')</option>
                                         </select>
                                         <div class="invalid-feedback">Please provide a valid select Status</div>
 
@@ -229,10 +227,10 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="col mb-3">
-                                        <label for="validationCustomUsername">@lang('Price')</label>
+                                        <label for="validationCustomUsername">@lang('Cost')</label>
                                         <div class="input-group">
                                             <input type="text" name="price" class="form-control" id="validationCustomUsername"
-                                                   placeholder="@lang('Price')" value="" required>
+                                                   placeholder="@lang('Cost')" value="" required>
                                             <div class="invalid-feedback">
                                                 Please choose a Price.
                                             </div>
@@ -266,7 +264,7 @@
                                     <div class="col mb-3">
 {{--                                        <label for="validationCustom05">@lang('Barcode')</label>--}}
                                         <input type="hidden" name="barcode" id="barcodeInput">
-                                        <button type="button" class="btn btn-primary" id="generateBarcodeBtn" onclick="generateBarcode()">Generate Barcode</button>
+                                        <button type="button" class="btn btn-primary" id="generateBarcodeBtn" onclick="generateBarcode()">@lang('Generate Barcode')</button>
 
                                     </div>
 

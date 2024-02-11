@@ -44,6 +44,7 @@ class RentsController extends Controller
         $page_title = 'Rent Create';
         $branch_id = Auth::guard('admin')->user()->branch_id;
         $products = Product::where('branch_id',$branch_id)
+            ->where('status', 'available')
             ->whereHas('section',function($query){
                     $query->where('is_rent',true);
             })

@@ -6,18 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Section;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Image;
+use mysql_xdevapi\Collection;
 
 class CategoryController extends Controller
 {
     public function index()
     {
+        $auth =Auth::guard('admin')->user();
         $page_title = 'Categories';
         $empty_message = 'No Result Found';
-        $sections = Section::all();
-        $categories = Category::with('section')->latest()->get();
+
+        if ($auth->branch != null){
+            $categories = [];
+            $sections = $auth->branch->sections;
+            foreach ($sections as $section){
+                foreach ($section->category as $category){
+                    array_push($categories, $category);
+                }
+
+            }
+            $categories = collect($categories);
+        }else{
+            $sections = Section::all();
+            $categories = Category::with('section')->latest()->get();
+        }
         return view('admin.categories.index', compact('page_title', 'categories','sections', 'empty_message'));
     }
 

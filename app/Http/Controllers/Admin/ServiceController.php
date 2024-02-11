@@ -103,7 +103,7 @@ class ServiceController extends Controller
             'user_id' => $request->input('user_id'),
         ]);
         $product->update([
-            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+            'sku' => GenerateSkuAction::execute($product->branch->code, $product->section_id, $request->category_id, $product->id)
         ]);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
@@ -180,7 +180,7 @@ class ServiceController extends Controller
         $product->is_for_sale = '0';
         $product->save();
         $product->update([
-            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+            'sku' => GenerateSkuAction::execute($product->branch->code, $product->section_id, $request->category_id, $product->id)
         ]);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
@@ -387,7 +387,7 @@ class ServiceController extends Controller
         $product->is_for_sale = '0';
         $product->save();
         $product->update([
-            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+            'sku' => GenerateSkuAction::execute($product->branch->code, $product->section_id, $request->category_id, $product->id)
         ]);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {
@@ -454,7 +454,7 @@ class ServiceController extends Controller
         $product->is_for_sale = '0';
         $product->save();
         $product->update([
-            'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
+            'sku' => GenerateSkuAction::execute($product->branch->code, $product->section_id, $request->category_id, $product->id)
         ]);
         if (isset($request['images'])) {
             foreach ($request->file('images') as $image) {

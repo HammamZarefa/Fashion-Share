@@ -169,11 +169,9 @@
                                         <label for="validationCustom05">@lang('Status')</label>
 
                                         <select name="status" class="custom-select" required>
-                                            <option value="{{'not_available'}}" {{$services->status == 'not_available' ? 'selected' : ''}}>@lang('Not available')</option>
                                             <option value="{{'available'}}" {{$services->status == 'available' ? 'selected' : ''}} >@lang('Available')</option>
                                             <option value="{{'sale'}}" {{$services->status == 'sale' ? 'selected' : ''}}>@lang('Sale')</option>
                                             <option value="{{'rent'}}" {{$services->status == 'rent' ? 'selected' : ''}}>@lang('Rent')</option>
-                                            <option value="{{'rejected'}}" {{$services->status == 'rejected' ? 'selected' : ''}}>@lang('rejected')</option>
                                         </select>
                                         <div class="invalid-feedback">Please provide a valid select Status</div>
 
@@ -263,10 +261,10 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="col mb-3">
-                                        <label for="validationCustomUsername">@lang('Price')</label>
+                                        <label for="validationCustomUsername">@lang('Cost')</label>
                                         <div class="input-group">
                                             <input type="text" name="price" class="form-control" id="validationCustomUsername"
-                                                   placeholder="@lang('Price')" value="{{$services->price}}" required>
+                                                   placeholder="@lang('Cost')" value="{{$services->price}}" required>
                                             <div class="invalid-feedback">
                                                 Please choose a Price.
                                             </div>

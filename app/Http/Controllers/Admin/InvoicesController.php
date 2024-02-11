@@ -44,6 +44,7 @@ class InvoicesController extends Controller
         $page_title = 'Invoice Create';
         $branch_id = Auth::guard('admin')->user()->branch_id;
         $products = Product::where('branch_id',$branch_id)
+            ->where('status', 'available')
             ->whereHas('section',function($query){
                 $query->where('is_rent',false);
             })
@@ -76,6 +77,9 @@ class InvoicesController extends Controller
         $invoice->save();
         foreach ($request->products as $product){
             $invoice->products()->attach($product);
+            $product = Product::find($product);
+            $product->status = 'sale';
+            $product->save();
         }
 
         return redirect()->route('admin.invoices')->with('success','Invoice Added Successfully');
