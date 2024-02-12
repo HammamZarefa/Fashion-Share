@@ -53,17 +53,17 @@
                         <div class="card-body">
                             <div class="row">
                                 <h1 style="text-align: right;display:block;float: right;margin-left: 25px">
-                                    {{$invoicesStatistics[0]->total_price}} @lang('SP')
+                                    {{@$invoicesStatistics[0]->total_price}} @lang('SP')
                                 </h1>
                             </div>
                             <div class="row">
                                 <h3 style="text-align: right;display:block;float: right;margin-left: 25px">
-                                    @lang('Total Discount :') {{$invoicesStatistics[0]->total_discount}}
+                                    @lang('Total Discount :') {{@$invoicesStatistics[0]->total_discount}}
                                 </h3>
                             </div>
                             <div class="row">
                                 <h3 style="text-align: right;display:block;float: right;margin-left: 25px">
-                                    @lang('Total Profit :') 21000
+                                    @lang('Total Profit :') {{@(int)$invoicesStatistics[0]->total_price - (@(int)$totalBuyPrice + (int)@$totalCoasts)}}
                                 </h3>
                             </div>
                         </div>

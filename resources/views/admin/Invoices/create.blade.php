@@ -187,11 +187,11 @@
             table2.deleteRow(indexRow);
 
             oldPrice = document.getElementById('totalPrice').innerHTML
-            newPrice = parseInt(oldPrice) - parseInt(price)
+            newPrice = parseFloat(oldPrice) - parseFloat(price)
             document.getElementById('totalPrice').innerHTML = newPrice + ' '
 
             oldPriceAfterDiscount = document.getElementById('totalPriceAfterDiscount').innerHTML
-            newPriceAfterDiscount = parseInt(oldPriceAfterDiscount) - parseInt(price)
+            newPriceAfterDiscount = parseFloat(oldPriceAfterDiscount) - parseFloat(price)
             document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
 
             document.getElementById('total_price_input').value = newPrice
@@ -202,7 +202,7 @@
         function discountPrice(){
             val = document.getElementById('discountInput').value;
             oldPriceBeforDiscount = document.getElementById('totalPrice').innerHTML
-            newPriceAfterDiscount = parseInt(oldPriceBeforDiscount) - parseInt(val)
+            newPriceAfterDiscount = parseFloat(oldPriceBeforDiscount) - parseFloat(val)
             document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
             document.getElementById('total_price_input_after_discount').value = newPriceAfterDiscount
 
@@ -245,8 +245,8 @@
                 $('#invoicTableBody').append(newRow2);
                 oldPrice = document.getElementById('totalPrice').innerHTML
                 oldPriceAfterDiscount = document.getElementById('totalPriceAfterDiscount').innerHTML
-                newPrice = parseInt(oldPrice) + parseInt(price)
-                newPriceAfterDiscount = parseInt(oldPriceAfterDiscount) + parseInt(price)
+                newPrice = parseFloat(oldPrice) + parseFloat(price)
+                newPriceAfterDiscount = parseFloat(oldPriceAfterDiscount) + parseFloat(price)
                 document.getElementById('totalPrice').innerHTML = newPrice + ' '
                 document.getElementById('total_price_input').value = newPrice
                 document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
