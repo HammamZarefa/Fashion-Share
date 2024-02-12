@@ -88,7 +88,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6"  style="text-align: right;">
-                                <span>555555555555555555</span>
+                                <span>{{$lastInvoice->id + 1}}</span>
                             </div>
                             <div class="col-md-6">
                                 <span>{{\Carbon\Carbon::today()}}</span>
@@ -152,7 +152,7 @@
             </div>
             <div class="col-md-6" >
                 <div class="bg--gradi-12 b-radius--10 p-2">
-                    <span>555555555555555555</span>
+                    <span>{{$lastInvoice->id + 1}}</span>
                 </div>
                 <br>
                 <div class="bg--gradi-12 b-radius--10 p-2">
@@ -211,7 +211,7 @@
                 newRow.append('<td>' + sku + '</td>');
                 newRow.append('<td>' + name + '</td>');
                 newRow.append('<td>' + price + '</td>');
-                newRow.append('<td><input class="form-control" type="date" name="return_date_'+id+'"></td>');
+                newRow.append('<td><input class="form-control" required type="date" name="return_date_'+id+'"></td>');
                 newRow.append('<td><div class="btn btn--danger" onclick="removeRow(this,'+price+')"><i class="la la-trash"></i> </div></td>');
 
                 // Append the new row to the table body

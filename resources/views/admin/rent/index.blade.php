@@ -110,8 +110,8 @@
                                     <td data-label="@lang('Client Name')">{{__($invoice->username)}}</td>
                                     <td data-label="@lang('Mobile')">{{__($invoice->mobile)}}</td>
                                     <td data-label="@lang('Date Of Return')">
-                                        @foreach($invoice->products as $key=>$product)
-                                            {{__(@$invoice->date_of_return[$key] )}}<br><br>
+                                        @foreach(@json_decode($invoice->details,true) as $key=>$product)
+                                            {{$product['return_date']}}<br><br>
                                         @endforeach
                                     </td>
                                     <td data-label="@lang('Date Of Process')">{{__($invoice->date_of_process)}}</td>

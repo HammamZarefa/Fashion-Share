@@ -269,11 +269,11 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-2">
-                                    <div id="barcodeContainer"></div>
+                                <div class="col-md-2" id="barcodeContainerDiv">
+                                    <img id="barcodeContainer" />
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn btn-outline-primary b-radius--capsule" id="printBarcode" onclick="printBarcoderrrrr()" style="display: none;">
+                                    <button type="button" class="btn btn-outline-primary b-radius--capsule" id="printBarcode" onclick="printBarcodeee()" style="display: none;">
                                        @lang('Print Barcode') <i class="la la-print"></i>
                                     </button>
 
@@ -368,92 +368,6 @@
             });
         }
     </script>
-{{--    <script>--}}
-
-{{--        function addRowCategory(ele) {--}}
-{{--            var ID = ele;--}}
-{{--            Sections = {!! json_encode($Sections) !!};--}}
-{{--            var ref;--}}
-{{--            for (var i = 0; i < Sections.length; i++) {--}}
-{{--                if (Sections[i].id == ele) {--}}
-{{--                    ref = i;--}}
-{{--                    console.log(ref);--}}
-{{--                }--}}
-{{--            }--}}
-{{--            category = Sections[ref].category;--}}
-
-
-{{--            var categoryOptions = document.getElementById("categories");--}}
-{{--            removeOptions(categoryOptions);--}}
-
-{{--            var i = 0;--}}
-{{--            category.forEach(function (item, index) {--}}
-{{--                var option = document.createElement("option");--}}
-{{--                option.value = item.id;--}}
-{{--                option.innerHTML = item.name;--}}
-{{--                if (i == 0) {--}}
-{{--                    option.selected = true--}}
-{{--                }--}}
-{{--                ;--}}
-{{--                i++;--}}
-{{--                categoryOptions.add(option);--}}
-{{--            });--}}
-
-
-{{--            removeOptions(document.getElementById('sizes'));--}}
-
-{{--            addRowSizes(categoryOptions.value);--}}
-
-
-{{--        }--}}
-
-{{--        function removeOptions(selectElement) {--}}
-{{--            var i, L = selectElement.options.length - 1;--}}
-{{--            for (i = L; i >= 0; i--) {--}}
-{{--                selectElement.remove(i);--}}
-{{--            }--}}
-
-
-{{--        }--}}
-
-{{--        function addRowSizes(ele) {--}}
-{{--            removeOptions(document.getElementById('sizes'));--}}
-
-
-{{--            var name = ele;--}}
-{{--            Categories = {!! json_encode($Categories) !!};--}}
-{{--            if (Categories != null) {--}}
-
-{{--                var ref;--}}
-{{--                for (var i = 0; i < Categories.length; i++) {--}}
-{{--                    if (Categories[i].id == ele) {--}}
-{{--                        ref = i;--}}
-{{--                    }--}}
-{{--                }--}}
-{{--                console.log(Categories)--}}
-{{--                size = Categories[ref].sizes;--}}
-{{--            }--}}
-{{--            var x = document.getElementById("sizes");--}}
-
-{{--            console.log(size)--}}
-{{--            size.forEach(function (item, index) {--}}
-{{--                    var option = document.createElement("option");--}}
-{{--                    option.value = item.id;--}}
-{{--                    option.innerHTML = item.name;--}}
-{{--                    x.add(option);--}}
-{{--                }--}}
-{{--            );--}}
-{{--        }--}}
-
-
-{{--        --}}{{--window.onload = selectSection();--}}
-
-{{--        --}}{{--function selectSection() {--}}
-
-{{--        --}}{{--    var firstselectsection = document.getElementById("sections");--}}
-{{--        --}}{{--    addRowCategory(firstselectsection.value);--}}
-{{--        --}}{{--};--}}
-{{--    </script>--}}
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.3/dist/JsBarcode.all.min.js"></script>
     <script>
         function generateBarcode(){
@@ -466,7 +380,7 @@
             var canvas = document.createElement('canvas');
 
             // Generate barcode using JsBarcode
-            JsBarcode(canvas, barcodeValue);
+            JsBarcode('#barcodeContainer', barcodeValue);
 
             // Append the canvas to the barcode container
             var barcodeContainer = document.getElementById('barcodeContainer');
@@ -500,17 +414,13 @@
 
             return barcodeValue;
         }
-        function printBarcoderrrrr() {
-            // var barcodeContainer = document.getElementById('barcodeContainer').cloneNode(true);
-            // var printWindow = window.open('', '_blank');
-            //
-            // printWindow.document.open();
+        function printBarcodeee() {
+            var body =document.body.innerHTML;
+            var data =document.getElementById('barcodeContainerDiv').innerHTML;
+            document.body.innerHTML = data;
+            window.print();
+            document.body.innerHTML = body;
 
-            // printWindow.document.close();
-            //
-            // printWindow.document.body.appendChild(barcodeContainer);
-            // printWindow.print();
-            // printWindow.close();
         }
     </script>
 @endpush

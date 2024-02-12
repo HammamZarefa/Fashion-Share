@@ -135,6 +135,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('Invoices/{id?}',InvoicesController::class)->name('invoices');
         Route::get('Invoice/create/{id?}',[InvoicesController::class,'create'])->name('invoice.create');
         Route::post('Invoice/store/{id?}', [InvoicesController::class,'store'])->name('invoice.store');
+        Route::post('Invoice/search/{id?}', [InvoicesController::class,'search'])->name('invoice.search');
 
         //Rents
         Route::get('rents/{id?}',RentsController::class)->name('rents');

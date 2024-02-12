@@ -49,12 +49,12 @@ class RentsController extends Controller
                     $query->where('is_rent',true);
             })
             ->get();
-        return view('admin.rent.create',compact('page_title','products'));
+        $lastInvoice = InvoicesProdect::get()->last();
+        return view('admin.rent.create',compact('page_title','products','lastInvoice'));
     }
 
     public function store(Request $request)
     {
-//        dd($request);
         $branchAdmin = Auth::guard('admin')->user();
         $invoice = new InvoicesProdect();
         $invoice->status = 'created';
@@ -73,7 +73,7 @@ class RentsController extends Controller
                 'return_date' =>$request['return_date_'.$product]
             ];
         }
-        $invoice->details = json_encode($details);
+        $invoice->details = json_encode($details,true);
         $invoice->save();
         foreach ($request->products as $product){
             $invoice->products()->attach($product);

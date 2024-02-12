@@ -23,6 +23,51 @@
         <div class="col-lg-12">
             <div class="">
                 <div class="card-body p-0">
+                    <div class="card">
+                        <div class="card-title">
+                            <h1 style="text-align: right;display: inline-block;float: right;margin-left: 25px;margin-right: 25px">
+                                @lang('Sells')
+                            </h1>
+                            <form class="form-horizontal" action="{{route('admin.invoice.search',$id)}}" method="post">
+                                @csrf
+
+                                <select class="form-control col-md-3" name="days"
+                                        style="display: inline-block;margin-top: 10px">
+                                    <option value="1">@lang('Today')</option>
+                                    <option value="2">@lang('This Week')</option>
+                                    <option value="3">@lang('This Month')</option>
+                                    <option value="4">@lang('This Year')</option>
+                                    <option value="5">@lang('All Times')</option>
+                                </select>
+                                <h4 style="display: inline-block;margin-left: 25px;margin-right: 25px">
+                                    @lang('Choose Date')
+                                </h4>
+                                <input type="date" class="form-control col-md-3" name="date"
+                                       style="display: inline-block;margin-top: 10px">
+                                <input type="submit"
+                                       class="btn btn-sm btn--primary box--shadow1 text-white text--small col-md-1"
+                                       value="@lang('Submit')">
+                            </form>
+                        </div>
+                        <hr>
+                        <div class="card-body">
+                            <div class="row">
+                                <h1 style="text-align: right;display:block;float: right;margin-left: 25px">
+                                    {{$invoicesStatistics[0]->total_price}} @lang('SP')
+                                </h1>
+                            </div>
+                            <div class="row">
+                                <h3 style="text-align: right;display:block;float: right;margin-left: 25px">
+                                    @lang('Total Discount :') {{$invoicesStatistics[0]->total_discount}}
+                                </h3>
+                            </div>
+                            <div class="row">
+                                <h3 style="text-align: right;display:block;float: right;margin-left: 25px">
+                                    @lang('Total Profit :') 21000
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive--sm table-responsive">
                         <table class="table table--light tabstyle--two custom-data-table">
                             <thead>
@@ -49,10 +94,10 @@
                                     <td data-label="@lang('Image')">
                                         @foreach($invoice->products as $product)
                                             @if(@$product->images[0])
-                                                <img  max-width="40px" width="70px;"
-                                                      src="{{ getImage(imagePath()['service']['path'].'/'. $product->images[0]->path,imagePath()['service']['size'])}}"
+                                                <img max-width="40px" width="70px;"
+                                                     src="{{ getImage(imagePath()['service']['path'].'/'. $product->images[0]->path,imagePath()['service']['size'])}}"
 
-                                                      alt="Waterfall" /><br><br>
+                                                     alt="Waterfall"/><br><br>
                                             @endif
                                         @endforeach
                                     </td>
@@ -97,7 +142,8 @@
                                         @endforeach
                                     </td>
                                     <td data-label="@lang('Status')">
-                                            <span class="text--small badge font-weight-normal badge--primary">{{$invoice->status}}</span>
+                                        <span
+                                            class="text--small badge font-weight-normal badge--primary">{{$invoice->status}}</span>
                                     </td>
                                     <td data-label="@lang('Supplier')">
                                         @foreach($invoice->products as $product)
@@ -128,5 +174,5 @@
 
 @push('breadcrumb-plugins')
     <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{route('admin.invoice.create')}}"><i
-            class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
+            class="fa fa-fw fa-plus"></i>@lang('Sell Product')</a>
 @endpush

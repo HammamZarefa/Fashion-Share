@@ -304,8 +304,8 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-2">
-                                    <div id="barcodeContainer"></div>
+                                <div class="col-md-2" id="barcodeContainerDiv">
+                                    <img id="barcodeContainer" />
                                 </div>
                                 <div class="col-md-2">
                                     <button type="button" class="btn btn-outline-primary b-radius--capsule" id="printBarcode" onclick="printBarcoderrrrr()" style="display: none;">
@@ -415,7 +415,7 @@
             var canvas = document.createElement('canvas');
 
             // Generate barcode using JsBarcode
-            JsBarcode(canvas, barcodeValue);
+            JsBarcode('#barcodeContainer', barcodeValue);
 
             // Append the canvas to the barcode container
             var barcodeContainer = document.getElementById('barcodeContainer');
@@ -441,7 +441,7 @@
             var canvas = document.createElement('canvas');
 
             // Generate barcode using JsBarcode
-            JsBarcode(canvas, barcodeValue);
+            JsBarcode('#barcodeContainer', barcodeValue);
 
             // Append the canvas to the barcode container
             var barcodeContainer = document.getElementById('barcodeContainer');
@@ -457,12 +457,6 @@
             var form = document.querySelector('form');
             form.appendChild(barcodeInput);
         }
-        // document.addEventListener('DOMContentLoaded', function() {
-        //
-        //
-        //     // Submit the form
-        //     // form.submit();
-        // });
 
         function generateRandomBarcode() {
             var characters = '0123456789';
@@ -476,16 +470,11 @@
             return barcodeValue;
         }
         function printBarcoderrrrr() {
-            // var barcodeContainer = document.getElementById('barcodeContainer').cloneNode(true);
-            // var printWindow = window.open('', '_blank');
-            //
-            // printWindow.document.open();
-
-            // printWindow.document.close();
-            //
-            // printWindow.document.body.appendChild(barcodeContainer);
-            // printWindow.print();
-            // printWindow.close();
+            var body =document.body.innerHTML;
+            var data =document.getElementById('barcodeContainerDiv').innerHTML;
+            document.body.innerHTML = data;
+            window.print();
+            document.body.innerHTML = body;
         }
     </script>
 @endpush
