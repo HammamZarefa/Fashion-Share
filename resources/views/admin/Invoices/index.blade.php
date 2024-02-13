@@ -23,12 +23,13 @@
         <div class="col-lg-12">
             <div class="">
                 <div class="card-body p-0">
+                    <form class="form-horizontal" action="{{route('admin.invoice.search',$id)}}" method="post">
                     <div class="card">
                         <div class="card-title">
                             <h1 style="text-align: right;display: inline-block;float: right;margin-left: 25px;margin-right: 25px">
                                 @lang('Sells')
                             </h1>
-                            <form class="form-horizontal" action="{{route('admin.invoice.search',$id)}}" method="post">
+
                                 @csrf
 
                                 <select class="form-control col-md-3" name="days"
@@ -47,7 +48,7 @@
                                 <input type="submit"
                                        class="btn btn-sm btn--primary box--shadow1 text-white text--small col-md-1"
                                        value="@lang('Submit')">
-                            </form>
+
                         </div>
                         <hr>
                         <div class="card-body">
@@ -63,11 +64,48 @@
                             </div>
                             <div class="row">
                                 <h3 style="text-align: right;display:block;float: right;margin-left: 25px">
-                                    @lang('Total Profit :') {{@(int)$invoicesStatistics[0]->total_price - (@(int)$totalBuyPrice + (int)@$totalCoasts)}}
+                                    @lang('Total Profit :') {{@$invoicesStatistics[0]->total_profit}}
                                 </h3>
                             </div>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                        <div class="row form-group">
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" placeholder="@lang('Enter Product Code Or Name')" name="product_code">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control" name="section">
+                                                    <option value="-1" selected>@lang('Section')</option>
+                                                    @foreach($sections as $section)
+                                                        <option value="{{$section->id}}">{{$section->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control" name="category">
+                                                    <option value="-1" selected>@lang('Category')</option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+{{--                                            <div class="col-md-3">--}}
+{{--                                                <input type="submit" class="form-control" placeholder="@lang('Enter Product Code Or Name')" name="product_code">--}}
+{{--                                            </div>--}}
+                                        </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    </form>
                     <div class="table-responsive--sm table-responsive">
                         <table class="table table--light tabstyle--two custom-data-table">
                             <thead>
@@ -128,7 +166,7 @@
                                     </td>
                                     <td data-label="@lang('Profit')">
                                         @foreach($invoice->products as $product)
-                                            {{$product->sell_price - ($product->buy_price + $product->price) }}<br><br>
+                                            {{(int)$product->sell_price - ((int)$product->buy_price + (int)$product->price) }}<br><br>
                                         @endforeach
                                     </td>
                                     <td data-label="@lang('Section')">

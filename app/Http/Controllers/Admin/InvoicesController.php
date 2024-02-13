@@ -21,11 +21,13 @@ class InvoicesController extends Controller
     {
         $page_title = 'Invoices';
         $branch_id = Auth::guard('admin')->user()->branch_id;
-        $branch = Branch::where(function ($query) use ($branch_id) {
+        $branch = Branch::with(['sections','categories'])->where(function ($query) use ($branch_id) {
             if (isset($branch_id)) {
                 $query->where('id', $branch_id);
             }
         })->select('id', 'name')->first();
+        $sections = $branch->sections;
+        $categories = $branch->categories;
 
         $invoices = InvoicesProdect::where('is_rent', false)
             ->whereHas('products', function ($query) use ($branch_id, $id) {
@@ -47,38 +49,14 @@ class InvoicesController extends Controller
                     $query->where('branch_id', $id);
                 }
             })
-            ->selectRaw('SUM(price) as total_price, SUM(discount) as total_discount')
+            ->selectRaw('SUM(price) as total_price, SUM(discount) as total_discount, SUM(profit) as total_profit')
             ->latest()
             ->paginate(getPaginate());
-        $totalBuyPrice = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id) {
-                if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id);
-                } elseif (isset($id)) {
-                    $query->where('branch_id', $id);
-                }
-            })
-            ->with('products')
-            ->get()
-            ->pluck('products.*.buy_price')
-            ->flatten()
-            ->sum();
-        $totalCoasts = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id) {
-                if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id);
-                } elseif (isset($id)) {
-                    $query->where('branch_id', $id);
-                }
-            })
-            ->with('products')
-            ->get()
-            ->pluck('products.*.price')
-            ->flatten()
-            ->sum();
 
 
-        return view('admin.Invoices.index', compact('page_title', 'id', 'branch', 'invoices','invoicesStatistics','totalBuyPrice','totalCoasts'));
+
+
+        return view('admin.Invoices.index', compact('page_title', 'id', 'branch', 'invoices','invoicesStatistics','sections','categories'));
     }
 
     public function search(Request $request,$id = null)
@@ -91,25 +69,78 @@ class InvoicesController extends Controller
             }
         })->select('id', 'name')->first();
 
+
+        $sections = $branch->sections;
+        $categories = $branch->categories;
+
         $invoices = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id) {
+            ->whereHas('products', function ($query) use ($branch_id, $id, $request) {
                 if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id);
+                    $query->where('branch_id', $branch_id)
+                        ->when($request->product_code, function ($query) use ($request) {
+                            $query->where(function ($subquery) use ($request) {
+                                $subquery->where('name', 'LIKE', '%' . $request->product_code . '%')
+                                    ->orWhere('sku', 'LIKE', '%' . $request->product_code . '%');
+                            });
+                        })
+                        ->when($request->section, function ($query) use ($request) {
+                            if ($request->section != '-1') {
+                                $query->where('section_id', $request->section);
+                            }
+                        })
+                        ->when($request->category, function ($query) use ($request) {
+                            if ($request->category != '-1') {
+                                $query->whereHas('category', function ($subquery) use ($request) {
+                                    $subquery->where('id', $request->category);
+                                });
+                            }
+                        });
                 } elseif (isset($id)) {
                     $query->where('branch_id', $id);
                 }
             })
             ->when($request->date, function ($query) use ($request) {
                 $query->where('date_of_process', $request->date);
+            })
+            ->when($request->days, function ($query) use ($request) {
+                if (!isset($request->date)) {
+                    if ($request->days == '1') {
+                        $query->whereDate('date_of_process', Carbon::today());
+                    } elseif ($request->days == '2') {
+                        $query->whereBetween('date_of_process', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+                    } elseif ($request->days == '3') {
+                        $query->whereMonth('date_of_process', Carbon::now()->month);
+                    } elseif ($request->days == '4') {
+                        $query->whereYear('date_of_process', Carbon::now()->year);
+                    }  else {}
+                }
             })
             ->with('products') // Include the related products
             ->latest()
             ->paginate(getPaginate());
 
         $invoicesStatistics = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id) {
+            ->whereHas('products', function ($query) use ($branch_id, $id, $request) {
                 if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id);
+                    $query->where('branch_id', $branch_id)
+                        ->when($request->product_code, function ($query) use ($request) {
+                            $query->where(function ($subquery) use ($request) {
+                                $subquery->where('name', 'LIKE', '%' . $request->product_code . '%')
+                                    ->orWhere('sku', 'LIKE', '%' . $request->product_code . '%');
+                            });
+                        })
+                        ->when($request->section, function ($query) use ($request) {
+                            if ($request->section != '-1') {
+                                $query->where('section_id', $request->section);
+                            }
+                        })
+                        ->when($request->category, function ($query) use ($request) {
+                            if ($request->category != '-1') {
+                                $query->whereHas('category', function ($subquery) use ($request) {
+                                    $subquery->where('id', $request->category);
+                                });
+                            }
+                        });
                 } elseif (isset($id)) {
                     $query->where('branch_id', $id);
                 }
@@ -117,42 +148,24 @@ class InvoicesController extends Controller
             ->when($request->date, function ($query) use ($request) {
                 $query->where('date_of_process', $request->date);
             })
-            ->selectRaw('SUM(price) as total_price, SUM(discount) as total_discount')
+            ->when($request->days, function ($query) use ($request) {
+                if (!isset($request->date)) {
+                    if ($request->days == '1') {
+                        $query->whereDate('date_of_process', Carbon::today());
+                    } elseif ($request->days == '2') {
+                        $query->whereBetween('date_of_process', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+                    } elseif ($request->days == '3') {
+                        $query->whereMonth('date_of_process', Carbon::now()->month);
+                    } elseif ($request->days == '4') {
+                        $query->whereYear('date_of_process', Carbon::now()->year);
+                    }  else {}
+                }
+            })
+            ->selectRaw('SUM(price) as total_price, SUM(discount) as total_discount, SUM(profit) as total_profit')
             ->latest()
             ->paginate(getPaginate());
-        $totalBuyPrice = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id) {
-                if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id);
-                } elseif (isset($id)) {
-                    $query->where('branch_id', $id);
-                }
-            })
-            ->when($request->date, function ($query) use ($request) {
-                $query->where('date_of_process', $request->date);
-            })
-            ->with('products')
-            ->get()
-            ->pluck('products.*.buy_price')
-            ->flatten()
-            ->sum();
-        $totalCoasts = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id) {
-                if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id);
-                } elseif (isset($id)) {
-                    $query->where('branch_id', $id);
-                }
-            })
-            ->when($request->date, function ($query) use ($request) {
-                $query->where('date_of_process', $request->date);
-            })
-            ->with('products')
-            ->get()
-            ->pluck('products.*.price')
-            ->flatten()
-            ->sum();
-        return view('admin.Invoices.index', compact('page_title', 'id', 'branch', 'invoices','invoicesStatistics','totalBuyPrice','totalCoasts'));
+
+        return view('admin.Invoices.index', compact('page_title', 'id', 'branch', 'invoices','invoicesStatistics','sections','categories'));
     }
 
     public function create()
@@ -193,15 +206,19 @@ class InvoicesController extends Controller
         $invoice->username = null;
         $invoice->mobile = null;
         $invoice->save();
+        $totalCost = 0;
+        $totalBuyPrice = 0;
         foreach ($request->products as $product) {
             $invoice->products()->attach($product);
             $product = Product::find($product);
             $product->status = 'sale';
+            $totalCost = $totalCost + $product->price;
+            $totalBuyPrice = $totalBuyPrice + $product->buy_price;
             $product->save();
         }
+        $invoice->profit = (int)$invoice->price - ((int)$totalCost + (int)$totalBuyPrice);
 
+        $invoice->save();
         return redirect()->route('admin.invoices')->with('success', 'Invoice Added Successfully');
-
-        dd($request);
     }
 }

@@ -274,28 +274,37 @@
         })(jQuery);
 
 
-
-
-        var map = new ol.Map({
-            target: 'map',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM()
+        $( "#myModal" ).on('shown.bs.modal', function(){
+            var map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([36.650390625, 33.4314413355753]), // Initial map center coordinates
+                    zoom: 10 // Initial zoom level
+                }),
+                style: new ol.style.Style({
+                    image: new ol.style.Icon({
+                        anchor: [0.5, 1],
+                        src: 'marker.png'
+                    })
                 })
-            ],
-            view: new ol.View({
-                center: ol.proj.fromLonLat([36.650390625, 33.4314413355753]), // Initial map center coordinates
-                zoom: 10 // Initial zoom level
-            })
+            });
+
+            // Event handler for clicking on the map
+            map.on('click', function(event) {
+                var coordinates = ol.proj.toLonLat(event.coordinate);
+                document.getElementById('latitude').value=coordinates[0];
+                document.getElementById('longitude').value=coordinates[1];
+                console.log(coordinates[0]);
+            });
         });
 
-        // Event handler for clicking on the map
-        map.on('click', function(event) {
-            var coordinates = ol.proj.toLonLat(event.coordinate);
-            document.getElementById('latitude').value=coordinates[0];
-            document.getElementById('longitude').value=coordinates[1];
-            console.log(coordinates[0]);
-        });
+
+
 
 
 
