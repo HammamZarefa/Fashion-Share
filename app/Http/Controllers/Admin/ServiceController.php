@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\Types\Null_;
 
@@ -53,9 +54,16 @@ class ServiceController extends Controller
                 ->latest()->paginate(getPaginate());
         } else {
             $branches = $branch;
-            $services = Product::
-            with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
-                ->where('branch_id', $branch->id)->latest()->paginate(getPaginate());
+            $services = Product::with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
+                ->where('branch_id', $branch->id)
+                ->where(function ($query) {
+                    $query->whereHas('supplier', function ($subquery) {
+                        $subquery->where('email', 'NOT LIKE', '%@permenent.com');
+                    })
+                        ->orWhereDoesntHave('supplier');
+                })
+                ->latest()
+                ->paginate(getPaginate());
         }
         return view('admin.products.list',
             compact('page_title', 'sections', 'services', 'branches', 'empty_message', 'categories'));
@@ -294,7 +302,7 @@ class ServiceController extends Controller
             compact('page_title', 'empty_message', 'Colors', 'Categories', 'Users', 'Sizes', 'Conditions', 'Materials', 'Sections', 'branchs'));
     }
 
-    public function createWithSupplier($id)
+    public function createWithSupplier($id,$from = null)
     {
         $supplier = Supplier::find($id);
         $branch = Auth::guard('admin')->user()->branch;
@@ -312,11 +320,11 @@ class ServiceController extends Controller
             compact('page_title', 'empty_message', 'Colors',
                 'Categories', 'Sizes', 'Conditions',
                 'Materials', 'Sections', 'supplier',
-                'seasons', 'styles'
+                'seasons', 'styles','from'
             ));
     }
 
-    public function editWithSupplier($supplier,$service)
+    public function editWithSupplier($supplier,$service,$from = null)
     {
         $supplier = Supplier::find($supplier);
         $services = Product::with('images')->findOrFail($service);
@@ -334,11 +342,11 @@ class ServiceController extends Controller
 
         $services = Product::with('images')->findOrFail($service);
         return view('admin.suppliers.editProduct',
-            compact('page_title', 'services','seasons','styles','supplier', 'Categories', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections'));
+            compact('page_title', 'services','seasons','styles','supplier', 'Categories', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections','from'));
 
     }
 
-    public function storeWithSupplier(Request $request, $id)
+    public function storeWithSupplier(Request $request, $id,$from = null)
     {
         $supplier = Supplier::find($id);
         $branchAdmin = Auth::guard('admin')->user();
@@ -402,10 +410,17 @@ class ServiceController extends Controller
             }
         }
         $notify[] = ['success', 'Product added!'];
+        if ($from == 'create'){
+            return redirect()->route('admin.suppliers.create', $supplier->id)->withNotify($notify);
+        }elseif($from == 'show'){
+            return redirect()->route('admin.suppliers.show', $supplier->id)->withNotify($notify);
+        }else{
+            return redirect()->route('admin.suppliers.edit', $supplier->id)->withNotify($notify);
+        }
 
-        return redirect()->route('admin.suppliers.show', $supplier->id)->withNotify($notify);
+
     }
-    public function updateWithSupplier(Request $request, $sup_id,$product)
+    public function updateWithSupplier(Request $request, $sup_id,$product,$from = null)
     {
         $supplier = Supplier::find($sup_id);
         $branchAdmin = Auth::guard('admin')->user();
@@ -470,7 +485,13 @@ class ServiceController extends Controller
         }
         $notify[] = ['success', 'Product added!'];
 
-        return redirect()->route('admin.suppliers.show', $supplier->id)->withNotify($notify);
+        if ($from == 'create'){
+            return redirect()->route('admin.suppliers.create', $supplier->id)->withNotify($notify);
+        }elseif($from == 'show'){
+            return redirect()->route('admin.suppliers.show', $supplier->id)->withNotify($notify);
+        }else{
+            return redirect()->route('admin.suppliers.edit', $supplier->id)->withNotify($notify);
+        }
     }
 
     public function deleteImage($id)

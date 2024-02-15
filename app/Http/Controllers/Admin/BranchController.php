@@ -48,6 +48,8 @@ class BranchController extends Controller
                 $query->where('id', $branchProduct);
             }
         })->select('id', 'name')->first();
+        $sections = $branchs->sections;
+        $categories = $branchs->categories;
 
         $invoices = InvoicesProdect::whereHas('products', function ($query) use ($branchProduct, $id) {
             if (isset($branchProduct)) {
@@ -66,12 +68,13 @@ class BranchController extends Controller
             $adminBransh->branch_id = $branch_id;
             $adminBransh->save();
             Auth::guard('admin')->loginUsingId($adminBransh->id);
+            return redirect()->route('admin.invoices');
         } else {
             return redirect()->back()->with('error', __('No Admin For This Branch'));
         }
 
 
-        return view('admin.Invoices.index', compact('page_title', 'id', 'branchs', 'invoices',));
+        return view('admin.Invoices.index', compact('page_title', 'id', 'branchs', 'invoices','sections','categories'));
     }
 
     public function loginAccount(Request $request, $id)

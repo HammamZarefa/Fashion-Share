@@ -8,7 +8,7 @@
 
 
                 <form enctype="multipart/form-data" name="add-blog-post-form" id="add-blog-post-form" method="post"
-                      action="{{ route('admin.service.storeWithSupplier',$supplier->id) }}" style="margin: 20px">
+                      action="{{ route('admin.service.storeWithSupplier',[$supplier->id,@$from]) }}" style="margin: 20px">
                     @csrf
                     <div class="card card-group">
                         <div class="card-body">

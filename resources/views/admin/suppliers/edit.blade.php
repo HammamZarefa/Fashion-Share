@@ -7,23 +7,39 @@
                 <h3 class="card-title" style="float: right;">@lang('Supplier Information')</h3>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Name : ') {{$supplier->name ?? ''}}</label>
+                <form class="form-horizontal" method="post" action="{{ route('admin.suppliers.update',$supplier->id)}}"
+                      enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-row form-group">
+                                <label class="font-weight-bold ">@lang('Name') </label>
+                                <input type="text" class="form-control" name="name" value="{{$supplier->name}}"
+                                       placeholder="@lang('Supplier Name')">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-row form-group">
+                                <label class="font-weight-bold ">@lang('Mobile')</label>
+                                <input type="text" class="form-control" name="mobile" value="{{$supplier->mobile}}"
+                                       placeholder="@lang('Supplier Mobile')">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-row form-group">
+                                <label class="font-weight-bold ">@lang('Email')</label>
+                                <input type="email" class="form-control" name="email" value="{{$supplier->email}}"
+                                       placeholder="@lang('Supplier Email')">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-row form-group">
+                                <label class="font-weight-bold ">@lang('Save')</label>
+                                <input type="submit" class="btn  btn--primary text-white form-control" value="@lang('Save')">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Mobile : '){{$supplier->mobile ?? ''}}</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Email : ') {{$supplier->email ?? ''}}</label>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -82,7 +98,7 @@
                                         @endif
                                     </td>
                                     <td data-label="@lang('Action')">
-                                        <a href="{{ route('admin.service.editWithSupplier',[$supplier->id,$item->id,'show']) }}"
+                                        <a href="{{ route('admin.service.editWithSupplier',[$supplier->id,$item->id,'edit']) }}"
                                            class="icon-btn editGatewayBtn ml-1" data-toggle="tooltip"
                                            title="@lang('Edit')"
                                            data-original-title="@lang('Edit')">
@@ -113,7 +129,7 @@
                     </div>
                 </div>
                 <div class="card-footer" style="text-align-last:right">
-                    <a href="{{route('admin.service.createWithSupplier',[$supplier->id,'show'])}}" class="btn btn-outline-primary b-radius--capsule">
+                    <a href="{{route('admin.service.createWithSupplier',[$supplier->id,'edit'])}}" class="btn btn-outline-primary b-radius--capsule">
                         @lang('Add Product')
                     </a>
                 </div>
@@ -169,13 +185,14 @@
                        data-url="{{ route('admin.suppliers.createpayment',$supplier->id)}}" >
                         @lang('Add Payment')
                     </a>
-{{--                    <a href="{{route('admin.suppliers.createpayment',$supplier->id)}}" class="btn btn-outline-primary b-radius--capsule">--}}
-{{--                        @lang('Add Payment')--}}
-{{--                    </a>--}}
+                    {{--                    <a href="{{route('admin.suppliers.createpayment',$supplier->id)}}" class="btn btn-outline-primary b-radius--capsule">--}}
+                    {{--                        @lang('Add Payment')--}}
+                    {{--                    </a>--}}
                 </div>
             </div><!-- card end -->
         </div>
     </div>
+
     {{-- ACTIVATE METHOD MODAL --}}
     <div id="DeleteService" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -202,6 +219,8 @@
             </div>
         </div>
     </div>
+
+
     {{-- ACTIVATE METHOD MODAL --}}
     <div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true" >
@@ -272,45 +291,44 @@
 @push('script')
     <script>
 
-    $(function () {
-        "use strict";
+        $(function () {
+            "use strict";
 
 
-        $('.DeleteService').on('click', function () {
-            var modal = $('#DeleteService');
-            var url = $(this).data('url');
+            $('.DeleteService').on('click', function () {
+                var modal = $('#DeleteService');
+                var url = $(this).data('url');
 
 
-            modal.find('form').attr('action', url);
-            modal.modal('show');
+                modal.find('form').attr('action', url);
+                modal.modal('show');
+            });
+
+            $('.addPaymentBtn').on('click', function () {
+                var modal = $('#addPaymentModal');
+                var url = $(this).data('url');
+
+
+                modal.find('form').attr('action', url);
+                modal.modal('show');
+            });
+
+
+            $('.editPaymentBtn').on('click', function () {
+                var modal = $('#editPaymentModal');
+                var url = $(this).data('url');
+
+
+                var amount = $(this).data('amount');
+                modal.find('input[name=amount]').val(amount);
+                modal.find('form').attr('action', url);
+                modal.modal('show');
+            });
         });
 
 
-        $('.addPaymentBtn').on('click', function () {
-            var modal = $('#addPaymentModal');
-            var url = $(this).data('url');
-
-
-            modal.find('form').attr('action', url);
-            modal.modal('show');
-        });
-
-
-        $('.editPaymentBtn').on('click', function () {
-            var modal = $('#editPaymentModal');
-            var url = $(this).data('url');
-
-
-            var amount = $(this).data('amount');
-            modal.find('input[name=amount]').val(amount);
-            modal.find('form').attr('action', url);
-            modal.modal('show');
-        });
-    });
-
-
-    function myFunction() {
-        document.getElementById("myForm").submit();
-    }
-</script>
+        function myFunction() {
+            document.getElementById("myForm").submit();
+        }
+    </script>
 @endpush

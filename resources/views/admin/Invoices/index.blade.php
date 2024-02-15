@@ -75,10 +75,10 @@
                                 <div class="col-md-1"></div>
                                 <div class="col-md-10">
                                         <div class="row form-group">
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <input type="text" class="form-control" placeholder="@lang('Enter Product Code Or Name')" name="product_code">
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <select class="form-control" name="section">
                                                     <option value="-1" selected>@lang('Section')</option>
                                                     @foreach($sections as $section)
@@ -86,7 +86,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <select class="form-control" name="category">
                                                     <option value="-1" selected>@lang('Category')</option>
                                                     @foreach($categories as $category)

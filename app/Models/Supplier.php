@@ -10,15 +10,25 @@ class Supplier extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'mobile'];
+    protected $fillable = ['name', 'email', 'mobile','branch_id'];
 
     public function user(): BelongsTo
     {
         return  $this->belongsTo(User::class,'user_id');
     }
 
+    public function branch(): BelongsTo
+    {
+        return  $this->belongsTo(Branch::class,'branch_id');
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class,'supplier_id');
+    }
+
+    public function supplierPayments()
+    {
+        return $this->hasMany(SupplierPayment::class,'supplier_id');
     }
 }

@@ -19,7 +19,10 @@ class Branch extends Model
     ];
     public $translatable = ['name','address'];
 
-
+    public function suppliers()
+    {
+        return  $this->hasMany(Supplier::class,'branch_id');
+    }
 
     public function products()
     {
