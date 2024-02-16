@@ -35,7 +35,32 @@ class RentsController extends Controller
                 $query->where('branch_id',$id);
             }
         })->latest()->paginate(getPaginate());
+        $allRentInvoices = InvoicesProdect::where('is_rent',true)->get(['details','username','mobile']);
+        $ids = [];
+        foreach ($allRentInvoices as $rent){
+            foreach (json_decode($rent->details,true) as $product){
+                if (date('d/m/Y', strtotime($product['return_date'])) >= Carbon::today()->format('d/m/Y'))
+                {
+                    $product['username'] = $rent->username;
+                    $product['mobile'] = $rent->mobile;
+                    array_push($ids,$product);
+                }
+            }
 
+        }
+        $productIds = array_column($ids, 'product_id');
+        $rentProducts = Product::whereIn('id', $productIds)->get();
+        foreach ($rentProducts as $product) {
+            $productDataItem = collect($ids)->firstWhere('product_id', $product->id);
+            $returnDate = $productDataItem['return_date'] ?? null;
+            $username = $productDataItem['username'] ?? null;
+            $mobile = $productDataItem['mobile'] ?? null;
+
+            // Add the return_date property to the product
+            $product->return_date = $returnDate;
+            $product->username = $username;
+            $product->mobile = $mobile;
+        }
         $invoicesStatistics = InvoicesProdect::where('is_rent',true)->whereHas('products',function($query)use($branch_id,$id){
             if(isset($branch_id)){
                 $query->where('branch_id',$branch_id);
@@ -49,7 +74,7 @@ class RentsController extends Controller
 
 
 
-        return view('admin.rent.index',compact('page_title','id','branch','invoices','sections','categories','invoicesStatistics'));
+        return view('admin.rent.index',compact('page_title','id','branch','rentProducts','invoices','sections','categories','invoicesStatistics'));
     }
 
     public function search(Request $request,$id = null)
@@ -112,6 +137,33 @@ class RentsController extends Controller
             ->latest()
             ->paginate(getPaginate());
 
+        $allRentInvoices = InvoicesProdect::where('is_rent',true)->get(['details','username','mobile']);
+        $ids = [];
+        foreach ($allRentInvoices as $rent){
+            foreach (json_decode($rent->details,true) as $product){
+                if (date('d/m/Y', strtotime($product['return_date'])) >= Carbon::today()->format('d/m/Y'))
+                {
+                    $product['username'] = $rent->username;
+                    $product['mobile'] = $rent->mobile;
+                    array_push($ids,$product);
+                }
+            }
+
+        }
+        $productIds = array_column($ids, 'product_id');
+        $rentProducts = Product::whereIn('id', $productIds)->get();
+        foreach ($rentProducts as $product) {
+            $productDataItem = collect($ids)->firstWhere('product_id', $product->id);
+            $returnDate = $productDataItem['return_date'] ?? null;
+            $username = $productDataItem['username'] ?? null;
+            $mobile = $productDataItem['mobile'] ?? null;
+
+            // Add the return_date property to the product
+            $product->return_date = $returnDate;
+            $product->username = $username;
+            $product->mobile = $mobile;
+        }
+
         $invoicesStatistics = InvoicesProdect::where('is_rent', true)
             ->whereHas('products', function ($query) use ($branch_id, $id, $request) {
                 if (isset($branch_id)) {
@@ -158,7 +210,7 @@ class RentsController extends Controller
             ->latest()
             ->paginate(getPaginate());
 
-        return view('admin.rent.index', compact('page_title', 'id', 'branch', 'invoices','invoicesStatistics','sections','categories'));
+        return view('admin.rent.index', compact('page_title', 'id','rentProducts', 'branch', 'invoices','invoicesStatistics','sections','categories'));
     }
 
     public function create()

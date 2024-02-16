@@ -236,8 +236,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @forelse ($invoices as $invoice)
-                                    @foreach($invoice->products as $product)
+                                @forelse ($rentProducts as $product)
                                     <tr>
                                         <td data-label="@lang('Image')">
                                                 @if(@$product->images[0])
@@ -254,17 +253,17 @@
                                                 {{__($product->name )}}
                                         </td>
 
-                                        <td data-label="@lang('Client Name')">{{__($invoice->username)}}</td>
-                                        <td data-label="@lang('Mobile')">{{__($invoice->mobile)}}</td>
+                                        <td data-label="@lang('Client Name')">{{__($product->username)}}</td>
+                                        <td data-label="@lang('Mobile')">{{__($product->mobile)}}</td>
                                         <td data-label="@lang('Date Of Return')">
-                                            @foreach(@json_decode($invoice->details,true) as $key=>$product)
-                                                {{$product['return_date']}}<br><br>
-                                            @endforeach
+                                            {{$product->return_date}}
+{{--                                            @foreach(@json_decode($invoice->details,true) as $key=>$product)--}}
+{{--                                                {{$product['return_date']}}<br><br>--}}
+{{--                                            @endforeach--}}
                                         </td>
 
 
                                     </tr>
-                                    @endforeach
                                 @empty
                                     <tr>
                                         <td class="text-muted text-center" colspan="100%"></td>

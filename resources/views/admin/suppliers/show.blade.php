@@ -43,7 +43,9 @@
                                 <th scope="col">@lang('Product Image')</th>
                                 <th scope="col">@lang('Code')</th>
                                 <th scope="col">@lang('Name')</th>
-                                <th scope="col">@lang('Price')</th>
+                                <th scope="col">@lang('Buy Price')</th>
+                                <th scope="col">@lang('Cost')</th>
+                                <th scope="col">@lang('Added Date')</th>
                                 <th scope="col">@lang('Status')</th>
                                 <th scope="col">@lang('Action')</th>
                             </tr>
@@ -61,7 +63,9 @@
                                     </td>
                                     <td>{{$item->sku}}</td>
                                     <td><span class="name">{{__($item->name)}}</span></td>
+                                    <td>{{$item->buy_price}}</td>
                                     <td>{{$item->price}}</td>
+                                    <td>{{date('d/m/Y', strtotime($item->created_at))}}</td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status=='available' )
                                             <span
@@ -136,7 +140,7 @@
                             @forelse ($supplier->supplierPayments as $item)
                                 <tr>
                                     <td>{{$item->amount}}</td>
-                                    <td><span class="name">{{$item->created_at}}</span></td>
+                                    <td><span class="name">{{date('d/m/Y', strtotime($item->created_at))}}</span></td>
 
                                     <td data-label="@lang('Action')">
                                         <a href="javascript:void(0)" class="icon-btn editPaymentBtn ml-1"

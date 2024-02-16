@@ -74,7 +74,7 @@
                                 <span>{{$lastInvoice->id + 1}}</span>
                             </div>
                             <div class="col-md-6">
-                                <span>{{\Carbon\Carbon::today()}}</span>
+                                <span>{{\Carbon\Carbon::today()->format('d/m/Y')}}</span>
                             </div>
                         </div>
                         <div class="row">
@@ -162,7 +162,7 @@
                 </div>
                 <br>
                 <div class="bg--gradi-12 b-radius--10 p-2">
-                    <span>{{\Carbon\Carbon::today()}}</span>
+                    <span>{{\Carbon\Carbon::today()->format('d/m/Y')}}</span>
                 </div>
             </div>
         </div>
