@@ -88,10 +88,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('services/search', 'ServiceController@search')->name('services.search');
         Route::get('services/edit/{id}', 'ServiceController@edit')->name('services.edit');
         Route::get('services/create', 'ServiceController@create')->name('services.create');
-        Route::get('service/create/{id}', 'ServiceController@createWithSupplier')->name('service.createWithSupplier');
-        Route::post('service/store/{id}', 'ServiceController@storeWithSupplier')->name('service.storeWithSupplier');
-        Route::get('service/edit/{supplier_id}/{product_id}', 'ServiceController@editWithSupplier')->name('service.editWithSupplier');
-        Route::post('service/Update/{supplier_id}/{product_id}', 'ServiceController@updateWithSupplier')->name('service.updateWithSupplier');
+        Route::get('service/create/{id}/{from?}', 'ServiceController@createWithSupplier')->name('service.createWithSupplier');
+        Route::post('service/store/{id}/{from?}', 'ServiceController@storeWithSupplier')->name('service.storeWithSupplier');
+        Route::get('service/edit/{supplier_id}/{product_id}/{from?}', 'ServiceController@editWithSupplier')->name('service.editWithSupplier');
+        Route::post('service/Update/{supplier_id}/{product_id}/{from?}', 'ServiceController@updateWithSupplier')->name('service.updateWithSupplier');
         Route::get('services/deleteImage/{id}', 'ServiceController@deleteImage')->name('services.deleteImage');
         Route::get('services/SaleOrRent/{id}', 'ServiceController@SaleOrRent')->name('services.SaleOrRent');
         Route::delete('services/delete/{id}', 'ServiceController@delete')->name('services.delete');
@@ -135,11 +135,13 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('Invoices/{id?}',InvoicesController::class)->name('invoices');
         Route::get('Invoice/create/{id?}',[InvoicesController::class,'create'])->name('invoice.create');
         Route::post('Invoice/store/{id?}', [InvoicesController::class,'store'])->name('invoice.store');
+        Route::post('Invoice/search/{id?}', [InvoicesController::class,'search'])->name('invoice.search');
 
         //Rents
         Route::get('rents/{id?}',RentsController::class)->name('rents');
         Route::get('rent/create/{id?}',[RentsController::class,'create'])->name('rent.create');
         Route::post('rent/store/{id?}', [RentsController::class,'store'])->name('rent.store');
+        Route::post('rent/search/{id?}', [RentsController::class,'search'])->name('rent.search');
 
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');
@@ -164,12 +166,17 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('styles/add/{id}',[StyleController::class,'add'])->name('styles.add');
 
         Route::get('suppliers',[SupplierController::class,'index'])->name('suppliers.index');
-        Route::post('suppliers',[SupplierController::class,'store'])->name('suppliers.store');
+        Route::post('suppliers/{id?}',[SupplierController::class,'store'])->name('suppliers.store');
         Route::post('suppliers/{id}',[SupplierController::class,'update'])->name('suppliers.update');
         Route::get('suppliers/show/{id}',[SupplierController::class,'show'])->name('suppliers.show');
+        Route::get('suppliers/create/{id?}',[SupplierController::class,'create'])->name('suppliers.create');
+        Route::get('suppliers/edit/{id}',[SupplierController::class,'edit'])->name('suppliers.edit');
         Route::get('suppliersSearch/{id}',[SupplierController::class,'search'])->name('suppliers.search');
         Route::delete('suppliers/{id}',[SupplierController::class,'delete'])->name('suppliers.delete');
         Route::post('suppliers/add/{id}',[SupplierController::class,'add'])->name('suppliers.add');
+        Route::post('suppliers/createpayment/{id}/{from?}',[SupplierController::class,'createpayment'])->name('suppliers.createpayment');
+        Route::post('suppliers/editpayment/{id}/{from?}',[SupplierController::class,'editpayment'])->name('suppliers.editPayment');
+        Route::delete('suppliers/deletePayment/{id}',[SupplierController::class,'deletePayment'])->name('suppliers.deletePayment');
 
         Route::get('colors',[ColoresController::class,'index'])->name('color.index');
         Route::post('colors',[ColoresController::class,'store'])->name('color.store');

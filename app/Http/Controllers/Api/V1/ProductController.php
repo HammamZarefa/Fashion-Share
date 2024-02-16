@@ -72,6 +72,12 @@ class ProductController extends Controller
                 }
                 $query->orderBy($request->sortBy, $request->sortOrder);
             })
+            ->where(function ($query) {
+                $query->whereHas('supplier', function ($subquery) {
+                    $subquery->where('email', 'NOT LIKE', '%@permenent.com');
+                })
+                    ->orWhereDoesntHave('supplier');
+            })
             ->orderBy('id', 'desc')
             ->paginate();
         return ProductResource::collection($products);
@@ -235,7 +241,12 @@ class ProductController extends Controller
             $query->where('name','LIKE', "%$NameDescription%")
             ->OrWhere('description','LIKE', "%$NameDescription%");
             })
-
+            ->where(function ($query) {
+                $query->whereHas('supplier', function ($subquery) {
+                    $subquery->where('email', 'NOT LIKE', '%@permenent.com');
+                })
+                    ->orWhereDoesntHave('supplier');
+            })
         ->orderBy('id', 'desc')
         ->paginate();
     return ProductResource::collection($products);

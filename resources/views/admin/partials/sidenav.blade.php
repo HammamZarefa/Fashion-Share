@@ -9,8 +9,11 @@
             <a href="{{route('admin.dashboard')}}" class="sidebar__logo-shape"><img
                     src="{{getImage(imagePath()['logoIcon']['path'] .'/favicon.png')}}" alt="@lang('image')"></a>
             <button type="button" class="navbar__expand"></button>
-        </div>
 
+        </div>
+        @if (Auth::guard('admin')->user()->branch || isset($branch_id))
+        <h3 class="sidebar_title" style="text-align: center;">{{Auth::guard('admin')->user()->branch->name}}</h3>
+        @endif
         <div class="sidebar__menu-wrapper" id="sidebar__menuWrapper">
             <ul class="sidebar__menu">
                 @if(!Auth::guard('admin')->user()->branch && !isset($branch_id))

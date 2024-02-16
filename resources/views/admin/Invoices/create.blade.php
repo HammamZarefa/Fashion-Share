@@ -71,10 +71,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6"  style="text-align: right;">
-                                <span>555555555555555555</span>
+                                <span>{{$lastInvoice->id + 1}}</span>
                             </div>
                             <div class="col-md-6">
-                                <span>{{\Carbon\Carbon::today()}}</span>
+                                <span>{{\Carbon\Carbon::today()->format('d/m/Y')}}</span>
                             </div>
                         </div>
                         <div class="row">
@@ -158,11 +158,11 @@
             </div>
             <div class="col-md-6" >
                 <div class="bg--gradi-12 b-radius--10 p-2">
-                    <span>555555555555555555</span>
+                    <span>{{$lastInvoice->id + 1}}</span>
                 </div>
                 <br>
                 <div class="bg--gradi-12 b-radius--10 p-2">
-                    <span>{{\Carbon\Carbon::today()}}</span>
+                    <span>{{\Carbon\Carbon::today()->format('d/m/Y')}}</span>
                 </div>
             </div>
         </div>
@@ -187,11 +187,11 @@
             table2.deleteRow(indexRow);
 
             oldPrice = document.getElementById('totalPrice').innerHTML
-            newPrice = parseInt(oldPrice) - parseInt(price)
+            newPrice = parseFloat(oldPrice) - parseFloat(price)
             document.getElementById('totalPrice').innerHTML = newPrice + ' '
 
             oldPriceAfterDiscount = document.getElementById('totalPriceAfterDiscount').innerHTML
-            newPriceAfterDiscount = parseInt(oldPriceAfterDiscount) - parseInt(price)
+            newPriceAfterDiscount = parseFloat(oldPriceAfterDiscount) - parseFloat(price)
             document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
 
             document.getElementById('total_price_input').value = newPrice
@@ -202,7 +202,7 @@
         function discountPrice(){
             val = document.getElementById('discountInput').value;
             oldPriceBeforDiscount = document.getElementById('totalPrice').innerHTML
-            newPriceAfterDiscount = parseInt(oldPriceBeforDiscount) - parseInt(val)
+            newPriceAfterDiscount = parseFloat(oldPriceBeforDiscount) - parseFloat(val)
             document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '
             document.getElementById('total_price_input_after_discount').value = newPriceAfterDiscount
 
@@ -245,8 +245,8 @@
                 $('#invoicTableBody').append(newRow2);
                 oldPrice = document.getElementById('totalPrice').innerHTML
                 oldPriceAfterDiscount = document.getElementById('totalPriceAfterDiscount').innerHTML
-                newPrice = parseInt(oldPrice) + parseInt(price)
-                newPriceAfterDiscount = parseInt(oldPriceAfterDiscount) + parseInt(price)
+                newPrice = parseFloat(oldPrice) + parseFloat(price)
+                newPriceAfterDiscount = parseFloat(oldPriceAfterDiscount) + parseFloat(price)
                 document.getElementById('totalPrice').innerHTML = newPrice + ' '
                 document.getElementById('total_price_input').value = newPrice
                 document.getElementById('totalPriceAfterDiscount').innerHTML = newPriceAfterDiscount + ' '

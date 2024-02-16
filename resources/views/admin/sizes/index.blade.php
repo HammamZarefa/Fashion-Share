@@ -55,7 +55,7 @@
                                         @else
                                             <a href="javascript:void(0)"
                                                class="icon-btn {{Auth::guard('admin')->user()->branch->sizes()->where('branchable_id', $item->id)->exists() ? "btn--danger" :"btn--success"}} ml-1 addBtn"
-                                               data-original-title="@lang('Add Or Remove Category From Branch')" data-toggle="tooltip"
+{{--                                               data-original-title="@lang('Add Or Remove Category From Branch')" data-toggle="tooltip"--}}
                                                data-url="{{ route('admin.sizes.add', $item->id ) }}">
                                                 <i class="la {{Auth::guard('admin')->user()->branch->sizes()->where('branchable_id', $item->id)->exists() ? "la-trash" :"la-check"}}"></i>
                                             </a>

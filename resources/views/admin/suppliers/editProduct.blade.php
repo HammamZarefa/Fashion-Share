@@ -8,7 +8,7 @@
 
 
                 <form enctype="multipart/form-data" name="add-blog-post-form" id="add-blog-post-form" method="post"
-                      action="{{ route('admin.service.updateWithSupplier',[$supplier->id,$services->id]) }}" style="margin: 20px">
+                      action="{{ route('admin.service.updateWithSupplier',[$supplier->id,$services->id,$from]) }}" style="margin: 20px">
                     @csrf
                     <div class="card card-group">
                         <div class="card-body">
@@ -169,11 +169,9 @@
                                         <label for="validationCustom05">@lang('Status')</label>
 
                                         <select name="status" class="custom-select" required>
-                                            <option value="{{'not_available'}}" {{$services->status == 'not_available' ? 'selected' : ''}}>@lang('Not available')</option>
                                             <option value="{{'available'}}" {{$services->status == 'available' ? 'selected' : ''}} >@lang('Available')</option>
                                             <option value="{{'sale'}}" {{$services->status == 'sale' ? 'selected' : ''}}>@lang('Sale')</option>
                                             <option value="{{'rent'}}" {{$services->status == 'rent' ? 'selected' : ''}}>@lang('Rent')</option>
-                                            <option value="{{'rejected'}}" {{$services->status == 'rejected' ? 'selected' : ''}}>@lang('rejected')</option>
                                         </select>
                                         <div class="invalid-feedback">Please provide a valid select Status</div>
 
@@ -263,10 +261,10 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="col mb-3">
-                                        <label for="validationCustomUsername">@lang('Price')</label>
+                                        <label for="validationCustomUsername">@lang('Cost')</label>
                                         <div class="input-group">
                                             <input type="text" name="price" class="form-control" id="validationCustomUsername"
-                                                   placeholder="@lang('Price')" value="{{$services->price}}" required>
+                                                   placeholder="@lang('Cost')" value="{{$services->price}}" required>
                                             <div class="invalid-feedback">
                                                 Please choose a Price.
                                             </div>
@@ -306,8 +304,8 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-2">
-                                    <div id="barcodeContainer"></div>
+                                <div class="col-md-2" id="barcodeContainerDiv">
+                                    <img id="barcodeContainer" />
                                 </div>
                                 <div class="col-md-2">
                                     <button type="button" class="btn btn-outline-primary b-radius--capsule" id="printBarcode" onclick="printBarcoderrrrr()" style="display: none;">
@@ -417,7 +415,7 @@
             var canvas = document.createElement('canvas');
 
             // Generate barcode using JsBarcode
-            JsBarcode(canvas, barcodeValue);
+            JsBarcode('#barcodeContainer', barcodeValue);
 
             // Append the canvas to the barcode container
             var barcodeContainer = document.getElementById('barcodeContainer');
@@ -443,7 +441,7 @@
             var canvas = document.createElement('canvas');
 
             // Generate barcode using JsBarcode
-            JsBarcode(canvas, barcodeValue);
+            JsBarcode('#barcodeContainer', barcodeValue);
 
             // Append the canvas to the barcode container
             var barcodeContainer = document.getElementById('barcodeContainer');
@@ -459,12 +457,6 @@
             var form = document.querySelector('form');
             form.appendChild(barcodeInput);
         }
-        // document.addEventListener('DOMContentLoaded', function() {
-        //
-        //
-        //     // Submit the form
-        //     // form.submit();
-        // });
 
         function generateRandomBarcode() {
             var characters = '0123456789';
@@ -478,16 +470,11 @@
             return barcodeValue;
         }
         function printBarcoderrrrr() {
-            // var barcodeContainer = document.getElementById('barcodeContainer').cloneNode(true);
-            // var printWindow = window.open('', '_blank');
-            //
-            // printWindow.document.open();
-
-            // printWindow.document.close();
-            //
-            // printWindow.document.body.appendChild(barcodeContainer);
-            // printWindow.print();
-            // printWindow.close();
+            var body =document.body.innerHTML;
+            var data =document.getElementById('barcodeContainerDiv').innerHTML;
+            document.body.innerHTML = data;
+            window.print();
+            document.body.innerHTML = body;
         }
     </script>
 @endpush

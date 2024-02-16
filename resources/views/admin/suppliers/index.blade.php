@@ -36,10 +36,14 @@
                                     <td data-label="@lang('Product Count')">{{count($item->products)}}</td>
                                     <td data-label="@lang('The amount due for payment')">{{$item->products()->sum('price')}}</td>
                                     <td data-label="@lang('Action')">
-                                        <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
-                                           data-original-title="@lang('Edit')" data-toggle="tooltip"
-                                           data-url="{{ route('admin.suppliers.update', $item->id)}}" data-name="{{ $item->name }}"
-                                           data-field="{{$item->field_name}}" >
+{{--                                        <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"--}}
+{{--                                           data-original-title="@lang('Edit')" data-toggle="tooltip"--}}
+{{--                                           data-url="{{ route('admin.suppliers.update', $item->id)}}" data-name="{{ $item->name }}"--}}
+{{--                                           data-field="{{$item->field_name}}" >--}}
+{{--                                            <i class="la la-edit"></i>--}}
+{{--                                        </a>--}}
+                                        <a href="{{route('admin.suppliers.edit',$item->id)}}" class="icon-btn ml-1"
+                                           data-original-title="@lang('Edit')">
                                             <i class="la la-edit"></i>
                                         </a>
                                         <a href="{{route('admin.suppliers.show',$item->id)}}" class="icon-btn ml-1 btn--success"
@@ -59,6 +63,7 @@
                                 <tr>
                                     <td class="text-muted text-center" colspan="100%">{{ __($empty_message) }}</td>
                                 </tr>
+{{--                                @empty--}}
                             @endforelse
                             </tbody>
                         </table><!-- table end -->
@@ -220,7 +225,7 @@
 @endsection
 
 @push('breadcrumb-plugins')
-    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" data-toggle="modal" data-target="#myModal"><i
+    <a class="btn btn-sm btn--primary box--shadow1 text-white text--small" href="{{route('admin.suppliers.create')}}"><i
                 class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
 @endpush
 

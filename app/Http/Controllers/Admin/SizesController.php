@@ -8,17 +8,28 @@ use App\Models\Color;
 use App\Models\Section;
 use App\Models\Size;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class SizesController extends Controller
 {
     public function index()
     {
         $page_title = 'Size';
+        $auth = Auth::guard('admin')->user();
         $empty_message = 'No Result Found';
-        $categories = Category::all();
-        $sections = Section::all();
-        $sizes = Size::with('category')->latest()->get();
+        if ($auth->branch != null){
+            $sections = $auth->branch->sections;
+            $categories = $auth->branch->categories;
+            $sizes = Size::with('category')
+                ->whereIn('category_id',$categories->pluck('id'))
+                ->whereIn('section_id',$sections->pluck('id'))
+                ->latest()->get();
+        }else{
+            $categories = Category::all();
+            $sections = Section::all();
+            $sizes = Size::with('category')->latest()->get();
+        }
+
         return view('admin.sizes.index', compact('page_title', 'sizes','categories', 'empty_message','sections'));
     }
 
