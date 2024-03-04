@@ -33,6 +33,22 @@ class SizesController extends Controller
         return view('admin.sizes.index', compact('page_title', 'sizes','categories', 'empty_message','sections'));
     }
 
+    public function search($id){
+        $auth = Auth::guard('admin')->user();
+        $page_title = 'Sizes';
+        $empty_message = 'No Result Found';
+        if ($auth->branch != null){
+            $sections = $auth->branch->sections;
+            $categories = $auth->branch->categories;
+        }else{
+            $categories = Category::all();
+            $sections = Section::all();
+        }
+
+        $sizes = Size::where('category_id',$id)->with('category')->latest()->get();
+        return view('admin.sizes.index', compact('page_title', 'id','sizes','categories','sections', 'empty_message'));
+    }
+
     public function store()
     {
 
@@ -80,15 +96,6 @@ class SizesController extends Controller
         $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);
     }
-
-    public function search($id){
-        $page_title = 'Sizes';
-        $empty_message = 'No Result Found';
-        $categories = Category::all();
-
-        $sizes = Size::where('category_id',$id)->with('category')->latest()->get();
-        return view('admin.sizes.index', compact('page_title', 'id','sizes','categories', 'empty_message'));
-      }
 
 
 

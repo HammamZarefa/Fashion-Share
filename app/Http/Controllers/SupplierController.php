@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
 {
@@ -30,22 +31,17 @@ class SupplierController extends Controller
     public function create($id = null)
     {
         $page_title = 'New Supplier';
-        if ($id != null){
-            $supplier = Supplier::find($id);
-        }else{
-            $supplier = new Supplier();
-            $supplier->name = Str::random(10);
-            $supplier->mobile = Str::random(10);
-            $supplier->email = Str::random(10).'@permenent.com';
-            $supplier->save();
-        }
-
-
-
-
-//        dd($lastSupplier->id);
+//        if ($id != null){
+//            $supplier = Supplier::find($id);
+//        }else{
+//            $supplier = new Supplier();
+//            $supplier->name = Str::random(10);
+//            $supplier->mobile = Str::random(10);
+//            $supplier->email = Str::random(10).'@permenent.com';
+//            $supplier->save();
+//        }
         $empty_message = 'No Result Found';
-        return view('admin.suppliers.create', compact('page_title','empty_message','supplier'));
+        return view('admin.suppliers.create', compact('page_title','empty_message'));
     }
     public function edit($id)
     {
@@ -59,8 +55,10 @@ class SupplierController extends Controller
         $supplier = Supplier::with(['user','products'])->where('id',$id)->firstOrFail();
         $supplierPayment = new SupplierPayment();
         $supplierPayment->amount = $request->amount;
+        $supplier->total_amount = $supplier->total_amount - $request->amount;
         $supplierPayment->supplier_id = $id;
         $supplierPayment->save();
+        $supplier->save();
         $notify[] = ['success', 'Supplier Payment added!'];
         if ($from == 'create'){
             return redirect()->route('admin.suppliers.create', $supplier->id)->withNotify($notify);
@@ -72,9 +70,13 @@ class SupplierController extends Controller
     }
     public function editpayment(Request $request,$id,$from=null)
     {
+
         $supplierPayment = SupplierPayment::findOrFail($id);
+        $supplier = $supplierPayment->supplier;
+        $supplier->total_amount = $supplier->total_amount + $supplierPayment->amount - $request->amount;
         $supplierPayment->amount = $request->amount;
         $supplierPayment->save();
+        $supplier->save();
         $notify[] = ['success', 'Supplier Payment Updated!'];
         if ($from == 'create'){
             return redirect()->route('admin.suppliers.create', $supplierPayment->supplier_id)->withNotify($notify);
@@ -94,13 +96,21 @@ class SupplierController extends Controller
 
     public function store($id=null)
     {
-        \request()->validate([
-            'name' => 'required|string|max:70',
-            'email'=>'required|string|max:70',
-            'mobile'=>'required|string|max:70',
-        ]);
         $request = \request();
         $branchAdmin = Auth::guard('admin')->user();
+        $request->validate([
+            'name' => 'required|string|max:70',
+            'mobile' => 'required|string|max:70',
+            'email' => [
+                'required',
+                'string',
+                'max:70',
+                Rule::unique('suppliers')->where(function ($query) use ($request, $branchAdmin) {
+                    return $query->where('branch_id', $branchAdmin->branch_id);
+                }),
+            ],
+        ]);
+
         if ($id != null) {
 
             $supplier= Supplier::find($id);
@@ -130,7 +140,7 @@ class SupplierController extends Controller
 
 
         $notify[] = ['success', 'Supplier added!'];
-        return redirect()->route('admin.suppliers.index')->withNotify($notify);
+        return redirect()->route('admin.suppliers.edit',$supplier->id)->withNotify($notify);
     }
     public function update($id,Request $request)
     {
@@ -196,8 +206,12 @@ class SupplierController extends Controller
     }
 
     public function deletePayment($id){
+
         $supplierPayment = SupplierPayment::findOrFail($id);
+        $supplier = $supplierPayment->supplier;
+        $supplier->total_amount = $supplier->total_amount + $supplierPayment->amount;
         $supplierPayment->delete();
+        $supplier->save();
         $notify[] = ['success', 'Supplier Payment Deleted!'];
         return back()->withNotify($notify);
     }

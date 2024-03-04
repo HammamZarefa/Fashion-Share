@@ -214,6 +214,11 @@ class InvoicesController extends Controller
             $product->status = 'sale';
             $totalCost = $totalCost + $product->price;
             $totalBuyPrice = $totalBuyPrice + $product->buy_price;
+            $supplier = $product->supplier;
+            if ($supplier != null) {
+                $supplier->total_amount = $supplier->total_amount + $product->buy_price;
+                $supplier->save();
+            }
             $product->save();
         }
         $invoice->profit = (int)$invoice->price - ((int)$totalCost + (int)$totalBuyPrice);

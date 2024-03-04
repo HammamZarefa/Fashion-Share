@@ -39,6 +39,22 @@ class StyleController extends Controller
         return view('admin.styles.index', compact('page_title', 'styles','categories','sections', 'empty_message'));
     }
 
+    public function search($id){
+        $auth = Auth::guard('admin')->user();
+        $page_title = 'Styles';
+        $empty_message = 'No Result Found';
+        if ($auth->branch != null){
+            $sections = $auth->branch->sections;
+            $categories = $auth->branch->categories;
+        }else{
+            $categories = Category::all();
+            $sections = Section::all();
+        }
+
+        $styles = Style::where('category_id',$id)->with('category')->latest()->get();
+        return view('admin.styles.index', compact('page_title', 'id','styles','categories','sections', 'empty_message'));
+    }
+
     public function store()
     {
         \request()->validate([
@@ -82,16 +98,6 @@ class StyleController extends Controller
 
         $notify[] = ['success', 'Status updated!'];
         return back()->withNotify($notify);
-    }
-
-    public function search($id){
-        $page_title = 'Styles';
-        $empty_message = 'No Result Found';
-        $categories = Category::all();
-        $sections = Section::all();
-
-        $styles = Style::where('category_id',$id)->with('category')->latest()->get();
-        return view('admin.styles.index', compact('page_title', 'id','styles','categories','sections', 'empty_message'));
     }
 
     public function add($id)

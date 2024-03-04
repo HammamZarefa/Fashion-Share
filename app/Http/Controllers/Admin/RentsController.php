@@ -251,6 +251,14 @@ class RentsController extends Controller
         $invoice->save();
         foreach ($request->products as $product){
             $invoice->products()->attach($product);
+            $product = Product::find($product);
+            $supplier = $product->supplier;
+            if ($supplier != null) {
+                $supplier->total_amount = $supplier->total_amount + $product->buy_price;
+                $supplier->save();
+            }
+            $product->status = 'rent';
+            $product->save();
         }
 
         return redirect()->route('admin.rents')->with('success','Invoice Added Successfully');

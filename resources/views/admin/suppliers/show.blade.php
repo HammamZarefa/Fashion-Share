@@ -2,6 +2,11 @@
 @section('panel')
 
     <div class="container-fluid">
+        <div class="d-flex justify-content-between">
+            <h3 class="card-title" style="float: right;">@lang('The amount to be paid')</h3>
+            <h3 class="card-title" style="color: dodgerblue"> {{$supplier->total_amount}} @lang('SP') </h3>
+        </div>
+
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title" style="float: right;">@lang('Supplier Information')</h3>
@@ -271,6 +276,8 @@
         </div>
     </div>
 @endsection
+
+
 
 
 @push('script')
