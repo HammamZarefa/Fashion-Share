@@ -3,22 +3,46 @@
     <div class="row">
         <div class="col-lg-12">
             <div>
-                <div class="card-body col-4">
+                <div class="row">
+                    <div class="card-body col-4">
 
 
-                    <select class="custom-select" name="branch" onchange="window.location.href=this.options[this.selectedIndex].value;">
-                        <option selected value=" {{ route('admin.style.index') }}">
+                        <label class="card-title float-right">@lang('Section')</label>
+                        <select class="custom-select" name="section"
+                                onmouseup="filterCategoriesBySectionFilter(this.value)" id="sections_filter">
+                            <option selected value="0">
 
-                            All
-                        </option>
-                      @foreach($categories as $category)
-                        <option {{@$id == $category->id ? 'selected' : ''}} value=" {{ route('admin.styles.search',$category->id) }}">
+                                All
+                            </option>
+                            @foreach($sections as $section)
+                                <option
+                                    {{@$id == $section->id ? 'selected' : ''}} value="{{$section->id}}">
 
-                            {{ $category->name }}
-                        </option>
-                     @endforeach
-                    </select>
+                                    {{ $section->name }}
+                                </option>
+                            @endforeach
+                        </select>
 
+                    </div>
+                    <div class="card-body col-4">
+                        <label class="card-title float-right">@lang('Category')</label>
+
+                        <select class="custom-select" name="branch" id="categories_filter"
+                                onchange="window.location.href=this.options[this.selectedIndex].value;">
+                            <option selected value=" {{ route('admin.size.index') }}">
+
+                                All
+                            </option>
+                            @foreach($categories as $category)
+                                <option
+                                    {{@$id == $category->id ? 'selected' : ''}} value="{{ route('admin.sizes.search',$category->id) }}">
+
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive--sm table-responsive">
@@ -98,28 +122,33 @@
                             </div>
                         </div>
 
+
                         <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Categories') <span
-                                        class="text-danger">*</span></label>
+                            <label class="font-weight-bold ">@lang('Section') <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                                    @foreach($categories as $category)
-                                       <option value="{{$category->id}}" >{{ $category->name }}</option>
+                                <select onmouseup="filterCategoriesBySection(this.value)" id="sections" name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                                    @foreach($sections as $section)
+                                        <option value="{{$section->id}}" >{{ $section->name }}</option>
                                     @endforeach
-                                 </select>
+                                </select>
 
                             </div>
                         </div>
 
                         <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Section') <span
-                                        class="text-danger">*</span></label>
+                            <label class="font-weight-bold ">@lang('Categories') <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                                    @foreach($sections as $section)
-                                       <option value="{{$section->id}}" >{{ $section->name }}</option>
+                                <select id="categories"  name="category_id"
+                                        class="form-control selectpicker" data-live-search="true">
+                                    {{--                                            <option disabled selected>@lang('Choose Section First')</option>--}}
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->id}}" data-id="{{$category->section_id}}"
+                                                @if($sections[0]->id != $category->section_id)  disabled @endif>{{ $category->name  }}</option>
                                     @endforeach
-                                 </select>
+
+                                </select>
 
                             </div>
                         </div>
@@ -158,30 +187,30 @@
                         </div>
 
                         <div class="form-row form-group">
+                            <label class="font-weight-bold ">@lang('Section') <span
+                                    class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                                <select name="section_id" onmouseup="filterCategoriesBySectionEdit(this.value)" id="sections_edit" value="" class="form-control selectpicker"  data-live-search="true">
+                                    {{-- <option selected disabled>Select Section</option> --}}
+                                    @if(!$styles->isEmpty())
+
+                                        @foreach($sections as $section)
+                                            <option value="{{$section->id}}" {{ $item->section_id == $section->id ? "selected" :""}}>{{ $section->name }}</option>
+                                        @endforeach
+                                    @endif
+                                </select>                            </div>
+                        </div>
+
+                        <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Category') <span
                                         class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
+                                <select id="categories_edit" name="category_id" value="" class="form-control selectpicker"  data-live-search="true">
                                     {{-- <option selected disabled>Select Section</option> --}}
                                     @if(!$styles->isEmpty())
 
                                     @foreach($categories as $category)
-                                       <option value="{{$category->id}}" {{ $item->category->id == $category->id ? "selected" :""}}>{{ $category->name }}</option>
-                                    @endforeach
-                                    @endif
-                                 </select>                            </div>
-                        </div>
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Section') <span
-                                        class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <select name="section_id" value="" class="form-control selectpicker"  data-live-search="true">
-                                    {{-- <option selected disabled>Select Section</option> --}}
-                                    @if(!$styles->isEmpty())
-
-                                    @foreach($sections as $section)
-                                       <option value="{{$section->id}}" {{ $item->section_id == $section->id ? "selected" :""}}>{{ $section->name }}</option>
+                                       <option @if($sections[0]->id != $category->section_id)  disabled @endif  data-id="{{$category->section_id}}" value="{{$category->id}}" {{ $item->category->id == $category->id ? "selected" :""}}>{{ $category->name }}</option>
                                     @endforeach
                                     @endif
                                  </select>                            </div>
@@ -257,6 +286,104 @@
 
 @push('script')
     <script>
+        document.getElementById("sections").addEventListener("mouseup", function() {
+            filterCategoriesBySection(this.value);
+        });
+
+        function filterCategoriesBySection(sectionId) {
+            var categoriesSelect = document.getElementById("categories");
+            categoriesSelect.disabled = false;
+            categoriesSelect.innerHTML = "";
+
+            var categories = {!! json_encode($categories) !!};
+            var filteredCategories = categories.filter(function(category) {
+                return category.section_id == sectionId;
+            });
+
+            filteredCategories.forEach(function(category,index) {
+                var option = document.createElement("option");
+                option.value = category.id;
+                option.text = category.name;
+                categoriesSelect.appendChild(option);
+
+
+            });
+        }
+
+        document.getElementById("sections_edit").addEventListener("mouseup", function() {
+            filterCategoriesBySectionEdit(this.value);
+        });
+
+        function filterCategoriesBySectionEdit(sectionId) {
+            var categoriesSelect = document.getElementById("categories_edit");
+            categoriesSelect.disabled = false;
+            categoriesSelect.innerHTML = "";
+
+            var categories = {!! json_encode($categories) !!};
+            var filteredCategories = categories.filter(function(category) {
+                return category.section_id == sectionId;
+            });
+
+            filteredCategories.forEach(function(category,index) {
+                var option = document.createElement("option");
+                option.value = category.id;
+                option.text = category.name;
+                categoriesSelect.appendChild(option);
+
+
+            });
+        }
+
+        document.getElementById("sections_filter").addEventListener("mouseup", function () {
+            filterCategoriesBySectionFilter(this.value);
+        });
+
+        function filterCategoriesBySectionFilter(sectionId) {
+            var categoriesSelect = document.getElementById("categories_filter");
+            categoriesSelect.disabled = false;
+            console.log(sectionId)
+            if (sectionId != "0"){
+                categoriesSelect.innerHTML = "";
+
+                var categories = {!! json_encode($categories) !!};
+                var filteredCategories = categories.filter(function (category) {
+                    return category.section_id == sectionId;
+                });
+                var option = document.createElement("option");
+                option.value =  '/admin/sizes' ;
+                option.text = 'All';
+                categoriesSelect.appendChild(option);
+
+                filteredCategories.forEach(function (category, index) {
+                    var option = document.createElement("option");
+                    option.value =  '/admin/sizeSearch/' + category.id;
+                    option.text = category.name;
+                    categoriesSelect.appendChild(option);
+
+
+                });
+            }else {
+                categoriesSelect.innerHTML = "";
+
+                var categories = {!! json_encode($categories) !!};
+                var filteredCategories = categories;
+                var option = document.createElement("option");
+                option.value =  '/admin/sizes' ;
+                option.text = 'All';
+                categoriesSelect.appendChild(option);
+
+                filteredCategories.forEach(function (category, index) {
+                    var option = document.createElement("option");
+                    option.value =  '/admin/sizeSearch/' + category.id;
+                    option.text = category.name;
+                    categoriesSelect.appendChild(option);
+
+
+                });
+            }
+
+        }
+
         (function ($) {
             "use strict";
             $('.editBtn').on('click', function () {

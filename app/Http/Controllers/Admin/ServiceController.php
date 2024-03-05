@@ -306,16 +306,28 @@ class ServiceController extends Controller
     {
         $supplier = Supplier::find($id);
         $branch = Auth::guard('admin')->user()->branch;
+        if ($branch != null){
+            $Colors = $branch->colors;
+            $Sizes = $branch->sizes;
+            $Categories = $branch->categories;
+            $Conditions = $branch->conditions;
+            $Materials = $branch->materials;
+            $Sections = $branch->sections;
+            $seasons = $branch->seasons;
+            $styles = $branch->styles;
+        }else{
+            $Colors = Color::all();
+            $Sizes = Size::all();
+            $Categories = Category::all();
+            $Conditions = Condition::all();
+            $Materials = Material::all();
+            $Sections = Section::all();
+            $seasons = Season::all();
+            $styles = Style::all();
+        }
         $page_title = 'Add Product';
         $empty_message = 'No Result Found';
-        $Colors = $branch->colors;
-        $Sizes = $branch->sizes;
-        $Categories = $branch->categories;
-        $Conditions = $branch->conditions;
-        $Materials = $branch->materials;
-        $Sections = $branch->sections;
-        $seasons = $branch->seasons;
-        $styles = $branch->styles;
+
         return view('admin.suppliers.createProduct',
             compact('page_title', 'empty_message', 'Colors',
                 'Categories', 'Sizes', 'Conditions',
@@ -327,18 +339,26 @@ class ServiceController extends Controller
     public function editWithSupplier($supplier,$service,$from = null)
     {
         $supplier = Supplier::find($supplier);
-        $services = Product::with('images')->findOrFail($service);
         $branch = Auth::guard('admin')->user()->branch;
-        $page_title = 'Services';
-        $empty_message = 'No Result Found';
-        $Colors = $branch->colors;
-        $Sizes = $branch->sizes;
-        $Categories = $branch->categories;
-        $Conditions = $branch->conditions;
-        $Materials = $branch->materials;
-        $Sections = $branch->sections;
-        $seasons = $branch->seasons;
-        $styles = $branch->styles;
+        if ($branch != null){
+            $Colors = $branch->colors;
+            $Sizes = $branch->sizes;
+            $Categories = $branch->categories;
+            $Conditions = $branch->conditions;
+            $Materials = $branch->materials;
+            $Sections = $branch->sections;
+            $seasons = $branch->seasons;
+            $styles = $branch->styles;
+        }else{
+            $Colors = Color::all();
+            $Sizes = Size::all();
+            $Categories = Category::all();
+            $Conditions = Condition::all();
+            $Materials = Material::all();
+            $Sections = Section::all();
+            $seasons = Season::all();
+            $styles = Style::all();
+        }
 
         $services = Product::with('images')->findOrFail($service);
         return view('admin.suppliers.editProduct',

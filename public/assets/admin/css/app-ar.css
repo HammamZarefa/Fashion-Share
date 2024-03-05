@@ -7199,3 +7199,8 @@ a.icon-btn {
     background-color: #00aaff;
     transition: width 0.3s ease-in-out;
 }
+.disabled-link {
+    pointer-events: none!important;
+    opacity: 0.2;
+    cursor: not-allowed!important;
+}

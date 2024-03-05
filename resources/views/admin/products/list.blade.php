@@ -89,18 +89,18 @@
                                     <td><span class="name">{{__($item->name)}}</span></td>
                                     <td>
                                         @if(@$item->images[0])
-                                        <img  max-width="40px"
-                                        src="{{ getImage(imagePath()['service']['path'].'/'. $item->images[0]->path,imagePath()['service']['size'])}}"
+                                            <img max-width="40px"
+                                                 src="{{ getImage(imagePath()['service']['path'].'/'. $item->images[0]->path,imagePath()['service']['size'])}}"
 
-                                        alt="Waterfall" />
+                                                 alt="Waterfall"/>
                                         @endif
-                                     </td>
+                                    </td>
 
                                     <td data-label="@lang('User')">
                                         <span class="name">{{__(@$item->user->email)}}</span>
                                     </td>
                                     <td>
-                                       {{$item->category->name ?? ''}}
+                                        {{$item->category->name ?? ''}}
                                     </td>
                                     <td>{{$item->price}}</td>
                                     <td>{{@$item->branch->name}}</td>
@@ -118,6 +118,9 @@
                                         @elseif($item->status=='rejected')
                                             <span
                                                 class="text--small badge font-weight-normal badge--danger">{{$item->status}}</span>
+                                        @elseif($item->status=='rent')
+                                            <span
+                                                class="text--small badge font-weight-normal badge--danger">{{$item->status}}</span>
 
                                         @else
                                             <span
@@ -132,28 +135,29 @@
                                             <i class="la la-pencil"></i>
                                         </a>
 
-{{--                                        <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"--}}
-{{--                                           data-original-title="@lang('Change Status')" data-toggle="tooltip"--}}
-{{--                                           data-url="{{ route('admin.services.update',$item->id)}}"--}}
-{{--                                           data-name="{{ $item->name }}"--}}
-{{--                                           data-field="{{$item->field_name}}">--}}
-{{--                                            <i class="la la-edit"></i>--}}
-{{--                                        </a>--}}
+                                        {{--                                        <a href="javascript:void(0)" class="icon-btn bg--dark ml-1 editBtn"--}}
+                                        {{--                                           data-original-title="@lang('Change Status')" data-toggle="tooltip"--}}
+                                        {{--                                           data-url="{{ route('admin.services.update',$item->id)}}"--}}
+                                        {{--                                           data-name="{{ $item->name }}"--}}
+                                        {{--                                           data-field="{{$item->field_name}}">--}}
+                                        {{--                                            <i class="la la-edit"></i>--}}
+                                        {{--                                        </a>--}}
 
                                         <a href="{{ route('admin.services.ditails', $item->id) }}"
-                                            class="icon-btn bg--info ml-1" data-toggle="tooltip" title="@lang('Show Details')"
-                                            data-original-title="@lang('Show')">
+                                           class="icon-btn bg--info ml-1" data-toggle="tooltip"
+                                           title="@lang('Show Details')"
+                                           data-original-title="@lang('Show')">
                                             <i class="la la-eye"></i>
-                                         </a>
+                                        </a>
 
-{{--                                        @if($item->status == "available")--}}
-{{--                                            <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"--}}
-{{--                                               data-original-title="$" data-toggle="tooltip"--}}
-{{--                                               data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"--}}
-{{--                                               data-is_for_sale="{{ $item->is_for_sale }}">--}}
-{{--                                                <i class="la la-usd"></i>--}}
-{{--                                            </a>--}}
-{{--                                        @endif--}}
+                                        {{--                                        @if($item->status == "available")--}}
+                                        {{--                                            <a href="javascript:void(0)" class="icon-btn bg--warning ml-1 SaleOrRentBtn"--}}
+                                        {{--                                               data-original-title="$" data-toggle="tooltip"--}}
+                                        {{--                                               data-url="{{ route('admin.services.SaleOrRent',$item->id)}}"--}}
+                                        {{--                                               data-is_for_sale="{{ $item->is_for_sale }}">--}}
+                                        {{--                                                <i class="la la-usd"></i>--}}
+                                        {{--                                            </a>--}}
+                                        {{--                                        @endif--}}
                                         <a href="javascript:void(0)" class="icon-btn bg--danger ml-1 DeleteService"
                                            data-toggle="tooltip" title="@lang('Delete')"
                                            data-url="{{ route('admin.services.delete', $item->id)}}"
@@ -180,12 +184,12 @@
 
             </div><!-- card end -->
             {{-- QR Sections --}}
-                {{-- <div class="container">  --}}
-                    <div class="section" >
-                        <div id="my-qr-reader" style="left: 3000px">
-                        </div>
-                    </div>
-                {{-- </div>  --}}
+            {{-- <div class="container">  --}}
+            <div class="section">
+                <div id="my-qr-reader" style="left: 3000px">
+                </div>
+            </div>
+            {{-- </div>  --}}
         </div>
     </div>
 
@@ -634,60 +638,59 @@
 
 
 
-<form   id="myForm"   method="GET"  onsubmit="submitFormFromJavascriptFunction()">
+    <form id="myForm" method="GET" onsubmit="submitFormFromJavascriptFunction()">
 
 
-<script
-    src="https://unpkg.com/html5-qrcode">
-</script>
+        <script
+            src="https://unpkg.com/html5-qrcode">
+        </script>
 
-<script>
+        <script>
 
-        function domReady(fn) {
-        if (
-            document.readyState === "complete" ||
-            document.readyState === "interactive"
-        ) {
-            setTimeout(fn, 10000);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
-        }
+            function domReady(fn) {
+                if (
+                    document.readyState === "complete" ||
+                    document.readyState === "interactive"
+                ) {
+                    setTimeout(fn, 10000);
+                } else {
+                    document.addEventListener("DOMContentLoaded", fn);
+                }
+            }
 
-        domReady(function () {
+            domReady(function () {
 
-            console.log("QR");
+                console.log("QR");
 
-        // If found you qr code
-        function onScanSuccess(decodeText, decodeResult) {
-            console.log(decodeText);
-            document.getElementById("myForm").action = window.location.origin+"/admin/services/SaleOrRentQR/"+decodeText;
-            document.getElementById("myForm").submit();
-        }
+                // If found you qr code
+                function onScanSuccess(decodeText, decodeResult) {
+                    console.log(decodeText);
+                    document.getElementById("myForm").action = window.location.origin + "/admin/services/SaleOrRentQR/" + decodeText;
+                    document.getElementById("myForm").submit();
+                }
 
-        let htmlscanner = new Html5QrcodeScanner(
-            "my-qr-reader",
-            { fps: 10, qrbos: 250 }
-        );
-        htmlscanner.render(onScanSuccess);
-        });
+                let htmlscanner = new Html5QrcodeScanner(
+                    "my-qr-reader",
+                    {fps: 10, qrbos: 250}
+                );
+                htmlscanner.render(onScanSuccess);
+            });
 
-</script>
-
-
+        </script>
 
 
-<style>
-    video {
-        height: 350px;
-    width: 50% !important;
-    border: 1px solid #b2b2b2 !important;
-    border-radius: 0.25em;
-}
-#my-qr-reader__dashboard_section{
-    display: none;
-}
+        <style>
+            video {
+                height: 350px;
+                width: 50% !important;
+                border: 1px solid #b2b2b2 !important;
+                border-radius: 0.25em;
+            }
 
-</style>
+            #my-qr-reader__dashboard_section {
+                display: none;
+            }
+
+        </style>
 
 @endpush

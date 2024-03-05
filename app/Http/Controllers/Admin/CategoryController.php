@@ -125,9 +125,15 @@ class CategoryController extends Controller
     }
 
     public function search($id){
+        $auth =Auth::guard('admin')->user();
         $page_title = 'Categories';
         $empty_message = 'No Result Found';
-        $sections = Section::all();
+        if ($auth->branch != null){
+            $categories = [];
+            $sections = $auth->branch->sections;
+        }else{
+            $sections = Section::all();
+        }
         $categories = Category::with('section')->where('section_id',$id)->latest()->get();
 
         return view('admin.categories.index', compact('page_title','id', 'categories','sections', 'empty_message'));

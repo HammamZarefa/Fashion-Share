@@ -48,16 +48,17 @@ class BranchController extends Controller
                 $query->where('id', $branchProduct);
             }
         })->select('id', 'name')->first();
-        $sections = $branchs->sections;
-        $categories = $branchs->categories;
-
-        $invoices = InvoicesProdect::whereHas('products', function ($query) use ($branchProduct, $id) {
-            if (isset($branchProduct)) {
-                $query->where('branch_id', $branchProduct);
-            } elseif (isset($id)) {
-                $query->where('branch_id', $id);
-            }
-        })->latest()->paginate(getPaginate());
+//        dd($branchs);
+//        $sections = $branchs->sections ? $branchs->sections : null;
+//        $categories = $branchs->categories;
+//
+//        $invoices = InvoicesProdect::whereHas('products', function ($query) use ($branchProduct, $id) {
+//            if (isset($branchProduct)) {
+//                $query->where('branch_id', $branchProduct);
+//            } elseif (isset($id)) {
+//                $query->where('branch_id', $id);
+//            }
+//        })->latest()->paginate(getPaginate());
 
         $branch_id = $id;
         $adminBransh = Admin::where('is_from_admin', 1)->first();
