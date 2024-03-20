@@ -63,7 +63,7 @@ class ProductController extends Controller
                 $query->where('is_for_sale', $request->sale);
             })
             ->when($request->category, function ($query) use ($request) {
-                    $query->where('category_id', $request->category);
+                $query->where('category_id', $request->category);
             })
             ->when($request->sortBy, function ($query) use ($request) {
                 if (!in_array($request->sortBy, ['sell_price', 'created_at'])
@@ -94,17 +94,17 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'string',
-            'price' => 'required',
+            'price' => 'nullable',
             'buy_price' => 'nullable',
             'sell_price' => 'nullable',
-            'category_id' => 'required|exists:categories,id',
-            'color_id' => 'required|exists:colors,id',
-            'material_id' => 'required|exists:materials,id',
-            'section_id' => 'required|exists:sections,id',
-            'size_id' => 'required|exists:sizes,id',
-            'condition_id' => 'required|exists:conditions,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'color_id' => 'nullable|exists:colors,id',
+            'material_id' => 'nullable|exists:materials,id',
+            'section_id' => 'nullable|exists:sections,id',
+            'size_id' => 'nullable|exists:sizes,id',
+            'condition_id' => 'nullable|exists:conditions,id',
             'branch_id' => 'required|exists:branches,id',
-            'is_for_sale' => 'required',
+            'is_for_sale' => 'nullable',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location' => 'nullable|string',
             'season_id' => 'nullable|exists:seasons,id',
@@ -236,10 +236,10 @@ class ProductController extends Controller
 
     public function FilterNameDescription($NameDescription = null){
         $products = Product::where('status', 'available')
-        ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
-        ->when($NameDescription, function ($query) use ($NameDescription) {
-            $query->where('name','LIKE', "%$NameDescription%")
-            ->OrWhere('description','LIKE', "%$NameDescription%");
+            ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
+            ->when($NameDescription, function ($query) use ($NameDescription) {
+                $query->where('name','LIKE', "%$NameDescription%")
+                    ->OrWhere('description','LIKE', "%$NameDescription%");
             })
             ->where(function ($query) {
                 $query->whereHas('supplier', function ($subquery) {
@@ -247,8 +247,8 @@ class ProductController extends Controller
                 })
                     ->orWhereDoesntHave('supplier');
             })
-        ->orderBy('id', 'desc')
-        ->paginate();
-    return ProductResource::collection($products);
+            ->orderBy('id', 'desc')
+            ->paginate();
+        return ProductResource::collection($products);
     }
 }
