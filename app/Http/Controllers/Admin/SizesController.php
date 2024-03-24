@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Color;
 use App\Models\Section;
 use App\Models\Size;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -118,9 +119,13 @@ class SizesController extends Controller
     }
 
       public function delete($id){
-        $size = Size::findOrFail($id);
-        $size->delete();
-        $notify[] = ['success', 'Color Deleted!'];
+        try {
+            $size = Size::findOrFail($id);
+            $size->delete();
+            $notify[] = ['success', 'Size Deleted!'];
+        } catch (QueryException $e) {
+                $notify[] = ['error', 'Cannot delete the size. It is related to other products.'];
+        }
         return back()->withNotify($notify);
       }
 }
