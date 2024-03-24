@@ -9,6 +9,7 @@ use App\Models\Section;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class SizesController extends Controller
 {
@@ -29,7 +30,6 @@ class SizesController extends Controller
             $sections = Section::all();
             $sizes = Size::with('category')->latest()->get();
         }
-
         return view('admin.sizes.index', compact('page_title', 'sizes','categories', 'empty_message','sections'));
     }
 
@@ -72,10 +72,14 @@ class SizesController extends Controller
     public function update($id,Request $request)
     {
         \request()->validate([
-            'name' => 'required|string|max:70|unique:sizes,name,' . $id,
+            'name' => ['required','string','max:70',
+            Rule::unique('sizes')->where(function ($query) use ($request) {
+                return $query->where('name', $request->name)
+                    ->where('category_id', $request->category_id)
+                    ->where('section_id', $request->section_id);
+            })->ignore($id)],
             'category_id'=>'nullable|exists:categories,id',
             'section_id'=>'required|exists:sections,id',
-
         ]);
         $Size = Size::findOrFail($id);
         $Size->name = \request()->name;
