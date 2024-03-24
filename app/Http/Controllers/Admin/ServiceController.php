@@ -361,7 +361,7 @@ class ServiceController extends Controller
         }
 
         $services = Product::with('images')->findOrFail($service);
-        // $empty_message = 'No Result Found';
+        $empty_message = 'No Result Found';
         return view('admin.suppliers.editProduct',
             compact('page_title', 'services','seasons','styles','supplier', 'Categories', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections','from'));
 
