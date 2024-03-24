@@ -119,13 +119,9 @@ class SizesController extends Controller
     }
 
       public function delete($id){
-        try {
             $size = Size::findOrFail($id);
             $size->delete();
             $notify[] = ['success', 'Size Deleted!'];
-        } catch (QueryException $e) {
-                $notify[] = ['error', 'Cannot delete the size. It is related to other products.'];
-        }
         return back()->withNotify($notify);
       }
 }
