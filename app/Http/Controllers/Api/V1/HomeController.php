@@ -45,7 +45,9 @@ class HomeController extends Controller
             $data = [];
             if ($branchId != null) {
                 $branch = Branch::find($branchId);
-
+                if (empty($branch)) {
+                    return response()->json(['message' => 'Branch does not exist or has been deleted'], 404);
+                }
                 foreach ($request->models as $model) {
                     if ($model == 'category'){
                         $models = 'categories';
