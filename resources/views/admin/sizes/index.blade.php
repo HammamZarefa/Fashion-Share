@@ -68,6 +68,8 @@
                                                data-original-title="@lang('Edit')" data-toggle="tooltip"
                                                data-url="{{ route('admin.sizes.update', $item->id)}}"
                                                data-name="{{ $item->name }}"
+                                               data-category="{{ $item->category_id }}"
+                                               data-section="{{ $item->section_id }}"
                                                data-field="{{$item->field_name}}">
                                                 <i class="la la-edit"></i>
                                             </a>
@@ -221,7 +223,7 @@
                                         @foreach($categories as $category)
                                             <option @if($sections[0]->id != $category->section_id)  disabled
                                                     @endif  data-id="{{$category->section_id}}"
-                                                    value="{{$category->id}}" {{ $item->category->id == $category->id ? "selected" :""}}>{{ $category->name }}</option>
+                                                    value="{{$category->id}}" {{ isset($item->category) && $item->category->id == $category->id ? "selected" :""}}>{{ $category->name }}</option>
                                         @endforeach
                                     @endif
                                 </select></div>
@@ -411,8 +413,8 @@
 
                 modal.find('form').attr('action', url);
                 modal.find('input[name=name]').val(name)
-                // modal.find('select[name=category_id]').val(category);
-                // modal.find('select[name=section_id]').val(section);
+                modal.find('select[name=category_id]').val(category);
+                modal.find('select[name=section_id]').val(section);
 
                 modal.modal('show');
             });

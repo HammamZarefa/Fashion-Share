@@ -264,21 +264,21 @@ class ServiceController extends Controller
     public function edit($service)
     {
         $services = Product::with('images')->findOrFail($service);
-        $branch = Auth::guard('admin')->user()->branch;
+        $branch = Auth::guard('admin')->user()->branch()->with([
+            'colors',
+            'sizes',
+            'categories',
+            'conditions',
+            'materials',
+            'sections',
+            'seasons',
+            'styles',
+        ])->first();
         $page_title = 'Services';
         $empty_message = 'No Result Found';
-        $Colors = $branch->colors;
-        $Sizes = $branch->sizes;
-        $Categories = $branch->categories;
-        $Conditions = $branch->conditions;
-        $Materials = $branch->materials;
-        $Sections = $branch->sections;
-        $seasons = $branch->seasons;
-        $styles = $branch->styles;
-
         $services = Product::with('images')->findOrFail($service);
         return view('admin.products.edit',
-            compact('page_title', 'services', 'Categories','seasons','styles', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections'));
+            compact('page_title', 'services','branch', 'empty_message'));
 
     }
 
@@ -361,6 +361,7 @@ class ServiceController extends Controller
         }
 
         $services = Product::with('images')->findOrFail($service);
+        $empty_message = 'No Result Found';
         return view('admin.suppliers.editProduct',
             compact('page_title', 'services','seasons','styles','supplier', 'Categories', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections','from'));
 

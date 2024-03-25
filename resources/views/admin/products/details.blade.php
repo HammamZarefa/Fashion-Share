@@ -22,24 +22,24 @@
 
                                 <tr>
                                     <td data-label="@lang('Color')"><b>@lang('Color'): </b></td>
-                                    <td data-label="@lang('Color')">{{ $item->color->name }}</td>
+                                    <td data-label="@lang('Color')">{{ optional($item->color)->name }}</td>
 
                                     <td data-label="@lang('Size')"><b>@lang('Size') :</b></td>
-                                    <td data-label="@lang('Size')">{{ $item->size->name }}</td>
+                                    <td data-label="@lang('Size')">{{ optional($item->size)->name }}</td>
 
                                     <td data-label="@lang('Condition')"><b>@lang('Condition') : </b></td>
-                                    <td data-label="@lang('Condition')">{{ $item->condition->name }}</td>
+                                    <td data-label="@lang('Condition')">{{ optional($item->condition)->name }}</td>
                                 </tr>
 
                                 <tr>
                                     <td data-label="@lang('Material')"><b>@lang('Material') : </b></td>
-                                    <td data-label="@lang('Material')">{{ $item->material->name }}</td>
+                                    <td data-label="@lang('Material')">{{ optional($item->material)->name }}</td>
 
                                     <td data-label="@lang('Section')"><b>@lang('Section') : </b></td>
-                                    <td data-label="@lang('Section')">{{ $item->section->name }}</td>
+                                    <td data-label="@lang('Section')">{{optional($item->section)->name  }}</td>
 
                                     <td data-label="@lang('Branch')"><b>@lang('Branch') : </b></td>
-                                    <td data-label="@lang('Branch')">{{ $item->branch->name }}</td>
+                                    <td data-label="@lang('Branch')">{{ optional($item->branch)->name  }}</td>
 
                                     <td></td>
                                 </tr>
