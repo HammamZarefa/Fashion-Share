@@ -72,7 +72,6 @@ class ManageUsersController extends Controller
     {
         \request()->validate([
             'name' => 'required|string|max:70',
-            'password' => 'required|string|max:70',
             'username' => 'required|string|max:70',
             'email' => 'required|string|max:70',
             'mobile' => 'required|string|max:70',
@@ -83,7 +82,6 @@ class ManageUsersController extends Controller
         $admin->name = $request->name;
         $admin->username = str_replace(' ', '_', $request->username);
         $admin->email = $request->email;
-        $admin->password = bcrypt($request->password);
         $admin->mobile = $request->mobile;
         $admin->branch_id = $request->branch_id;
         $image = $request->file('image');
