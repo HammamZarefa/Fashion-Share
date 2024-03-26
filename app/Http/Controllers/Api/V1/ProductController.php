@@ -33,7 +33,7 @@ class ProductController extends Controller
      */
     public function index(ProductsListRequest $request)
     {
-        $products = Product::where('status', 'available')
+        $products = Product::available()
             ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->when($request->size, function ($query) use ($request) {
                 $query->where('size_id', $request->size);
@@ -93,7 +93,7 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'string',
+            'description' => 'nullable|string',
             'price' => 'nullable',
             'buy_price' => 'nullable',
             'sell_price' => 'nullable',
@@ -169,7 +169,7 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'string|max:255',
-            'description' => 'string',
+            'description' => 'nullable|string',
             'price' => 'numeric',
             'buy_price' => 'nullable',
             'sell_price' => 'nullable',
@@ -235,7 +235,7 @@ class ProductController extends Controller
     }
 
     public function FilterNameDescription($NameDescription = null){
-        $products = Product::where('status', 'available')
+        $products = Product::available()
             ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->when($NameDescription, function ($query) use ($NameDescription) {
                 $query->where('name','LIKE', "%$NameDescription%")

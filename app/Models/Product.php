@@ -77,4 +77,9 @@ class Product extends Model
     public function invoicesProducts(){
         return $this->belongsToMany(InvoicesProdect::class,'product_invoices_product');
     }
+
+    public function scopeAvailable($query)
+    {
+        $query->where('status', 'available');
+    }
 }
