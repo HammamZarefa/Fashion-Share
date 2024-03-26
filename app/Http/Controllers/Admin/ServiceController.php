@@ -157,13 +157,13 @@ class ServiceController extends Controller
             'description' => 'nullable|string',
             'color_id' => 'required|exists:colors,id',
             'condition_id' => 'required|exists:conditions,id',
-            'style_id' => 'required|exists:styles,id',
+            'style_id' => 'nullable|exists:styles,id',
             'buy_price' => 'required',
             'price' => 'required',
             'sell_price' => 'required',
         ]);
         if ($validator->fails()) {
-            $notify[] = ['error', 'validation'];
+            $notify[] = ['error', 'validation error'];
             return back()->withNotify($notify);
         }
         $product = Product::find($product);
@@ -362,6 +362,7 @@ class ServiceController extends Controller
 
         $services = Product::with('images')->findOrFail($service);
         $empty_message = 'No Result Found';
+        $page_title = 'Edit product';
         return view('admin.suppliers.editProduct',
             compact('page_title', 'services','seasons','styles','supplier', 'Categories', 'empty_message', 'Colors', 'Sizes', 'Conditions', 'Materials', 'Sections','from'));
 
@@ -458,7 +459,7 @@ class ServiceController extends Controller
             'description' => 'nullable|string',
             'color_id' => 'required|exists:colors,id',
             'condition_id' => 'required|exists:conditions,id',
-            'style_id' => 'required|exists:styles,id',
+            'style_id' => 'nullable|exists:styles,id',
             'buy_price' => 'required',
             'price' => 'required',
             'sell_price' => 'required',
