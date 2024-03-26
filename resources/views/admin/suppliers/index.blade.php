@@ -34,7 +34,7 @@
                                     <td data-label="@lang('Email')">{{$item->email}}</td>
                                     <td data-label="@lang('Mobile')">{{$item->mobile}}</td>
                                     <td data-label="@lang('Product Count')">{{count($item->products)}}</td>
-                                    <td data-label="@lang('The amount due for payment')">{{$item->products()->sum('price')}}</td>
+                                    <td data-label="@lang('The amount due for payment')">{{$item->products()->sum('buy_price')}}</td>
                                     <td data-label="@lang('Action')">
 {{--                                        <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"--}}
 {{--                                           data-original-title="@lang('Edit')" data-toggle="tooltip"--}}

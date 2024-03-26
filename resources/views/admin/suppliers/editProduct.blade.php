@@ -225,7 +225,8 @@
                                         <label for="validationCustom05">@lang('Style')</label>
 
                                         <select name="style_id" value="" class="form-control selectpicker" id="styles"
-                                                data-live-search="true" required>
+                                                data-live-search="true">
+                                                <option value>Select Option</option>
                                             @foreach($styles as $style)
                                                 <option value="{{$style->id}}"
                                                         @if ($services->style_id == $style->id) selected @endif >{{ $style->name }}</option>
