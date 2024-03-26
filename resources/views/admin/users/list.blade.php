@@ -204,13 +204,6 @@
                             </div>
                         </div>
                         <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Password') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="password" class="form-control has-error bold " id="password" name="password"  value="{{$item->password ?? ''}}" required placeholder="@lang('Enter User Password')">
-                            </div>
-                        </div>
-                        <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Mobile') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
