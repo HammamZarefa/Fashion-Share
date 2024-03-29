@@ -159,7 +159,7 @@ class ProductController extends Controller
 
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = auth()->id();
-        $adminNotification->title = 'New product request ';
+        $adminNotification->title = 'New product request from :'. (auth()->user()->phone) ?? '';
         $adminNotification->click_url = url('admin/services/details', $product->id);
         $adminNotification->save();
         return response()->json(['message' => 'Product created successfully', 'data' => $product, 'status' => 201]);

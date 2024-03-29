@@ -90,7 +90,10 @@ class ServiceController extends Controller
             'user_id' => 'nullabel|exists:users,id',
         ]);
         if ($validator->fails()) {
-            $notify[] = ['error', 'validation'];
+            $notify[] = ['error', 'Validation failed. Please correct the following errors:'];
+            foreach ($validator->errors()->all() as $error) {
+                $notify[] = ['error', $error];
+            }
             return back()->withNotify($notify);
         }
         $product = Product::create([
@@ -379,19 +382,22 @@ class ServiceController extends Controller
             'section_id' => 'required|exists:sections,id',
             'category_id' => 'required|exists:categories,id',
             'size_id' => 'required|exists:sizes,id',
-            'material_id' => 'required|exists:materials,id',
+            'material_id' => 'nullable|exists:materials,id',
             'season_id' => 'required|exists:seasons,id',
             'status' => 'required',
             'description' => 'nullable|string',
             'color_id' => 'required|exists:colors,id',
             'condition_id' => 'required|exists:conditions,id',
-            'style_id' => 'required|exists:styles,id',
+            'style_id' => 'nullable|exists:styles,id',
             'buy_price' => 'required',
             'price' => 'required',
             'sell_price' => 'required',
         ]);
         if ($validator->fails()) {
-            $notify[] = ['error', 'validation'];
+            $notify[] = ['error', 'Validation failed. Please correct the following errors:'];
+            foreach ($validator->errors()->all() as $error) {
+                $notify[] = ['error', $error];
+            }
             return back()->withNotify($notify);
         }
         $product = new Product();
@@ -411,7 +417,6 @@ class ServiceController extends Controller
         $product->sell_price = $request->input('sell_price');
         $product->barcode = $request->input('barcode');
         $product->location = '';
-        $product->user_id = $branchAdmin->id;
         $product->supplier_id = $supplier->id;
         $product->branch_id = $branchAdmin->branch_id;
         $product->is_for_sale = '0';
@@ -453,19 +458,22 @@ class ServiceController extends Controller
             'section_id' => 'required|exists:sections,id',
             'category_id' => 'required|exists:categories,id',
             'size_id' => 'required|exists:sizes,id',
-            'material_id' => 'required|exists:materials,id',
+            'material_id' => 'nullable|exists:materials,id',
             'season_id' => 'required|exists:seasons,id',
             'status' => 'required',
             'description' => 'nullable|string',
             'color_id' => 'required|exists:colors,id',
-            'condition_id' => 'required|exists:conditions,id',
+            'condition_id' => 'nullable|exists:conditions,id',
             'style_id' => 'nullable|exists:styles,id',
             'buy_price' => 'required',
             'price' => 'required',
             'sell_price' => 'required',
         ]);
         if ($validator->fails()) {
-            $notify[] = ['error', 'validation'];
+            $notify[] = ['error', 'Validation failed. Please correct the following errors:'];
+            foreach ($validator->errors()->all() as $error) {
+                $notify[] = ['error', $error];
+            }
             return back()->withNotify($notify);
         }
         $product = Product::find($product);
@@ -485,7 +493,6 @@ class ServiceController extends Controller
         $product->sell_price = $request->input('sell_price');
         $product->barcode = $request->input('barcode');
         $product->location = '';
-        $product->user_id = $branchAdmin->id;
         $product->supplier_id = $supplier->id;
         $product->branch_id = $branchAdmin->branch_id;
         $product->is_for_sale = '0';

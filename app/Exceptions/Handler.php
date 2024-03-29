@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Notifications\ExceptionNotification;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -42,6 +43,7 @@ class Handler extends ExceptionHandler
     }
     public function render($request, Throwable $e)
     {
+        Log::info($e->getMessage(). ' '.$e->getLine());
         if ($e instanceof QueryException) {
             if ($e->errorInfo[1] == 1451) {
                 $notify[] = ['error', 'Cannot delete the item. It is related to other tables.'];

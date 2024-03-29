@@ -138,7 +138,7 @@
                                     <div class="col mb-3">
                                         <label for="validationCustom05">@lang('Material')</label>
                                         <select name="material_id" value="" class="form-control selectpicker"
-                                                data-live-search="true" required>
+                                                data-live-search="true">
                                             @foreach($Materials as $Material)
                                                 <option value="{{$Material->id}}"
                                                         @if ($services->material_id == $Material->id) selected @endif>{{ $Material->name }}</option>

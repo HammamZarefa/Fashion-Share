@@ -104,7 +104,7 @@
                                     <div class="col mb-3">
                                         <label for="validationCustom05">@lang('Material')</label>
                                         <select name="material_id" value="" class="form-control selectpicker"
-                                                data-live-search="true" required>
+                                                data-live-search="true">
                                             @foreach($Materials as $Material)
                                                 <option value="{{$Material->id}}"
                                                         @if ($loop->first) selected @endif>{{ $Material->name }}</option>
@@ -191,7 +191,7 @@
                                         <label for="validationCustom05">@lang('Style')</label>
 
                                         <select name="style_id" value="" class="form-control selectpicker" id="styles"
-                                                data-live-search="true" required>
+                                                data-live-search="true">
                                             @foreach($styles as $style)
                                                 <option value="{{$style->id}}"
                                                         @if ($style->category_id == $Categories->where('section_id',$Sections[0]->id)->first()->id) selected @else disabled @endif >{{ $style->name }}</option>

@@ -71,7 +71,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6"  style="text-align: right;">
-                                <span>{{$lastInvoice->id + 1}}</span>
+                                <span>{{@$lastInvoice->id + 1}}</span>
                             </div>
                             <div class="col-md-6">
                                 <span>{{\Carbon\Carbon::today()->format('d/m/Y')}}</span>
@@ -158,7 +158,7 @@
             </div>
             <div class="col-md-6" >
                 <div class="bg--gradi-12 b-radius--10 p-2">
-                    <span>{{$lastInvoice->id + 1}}</span>
+                    <span>{{@$lastInvoice->id + 1}}</span>
                 </div>
                 <br>
                 <div class="bg--gradi-12 b-radius--10 p-2">
