@@ -75,7 +75,7 @@ class BranchController extends Controller
         }
 
 
-        return view('admin.Invoices.index', compact('page_title', 'id', 'branchs', 'invoices','sections','categories'));
+        return view('admin.Invoices.index', compact('page_title', 'id', 'branchs', 'invoices', 'sections', 'categories'));
     }
 
     public function loginAccount(Request $request, $id)
@@ -185,7 +185,7 @@ class BranchController extends Controller
     public function statistics()
     {
         $page_title = 'Statistics';
-        $branch= Auth::guard('admin')->user()->branch;
+        $branch = Auth::guard('admin')->user()->branch;
         $branchId = $branch->id;
         $sections = $branch->sections()->leftJoin('products', function ($join) use ($branchId) {
             $join->on('sections.id', '=', 'products.section_id')
@@ -202,14 +202,15 @@ class BranchController extends Controller
         $bestSellerCategory = [];
         foreach ($bestSellers as $bestSeller) {
             $category = Category::find($bestSeller->category_id);
-            if (!isset($bestSellerCategory[$category->id])) {
+            if (isset($category->id) && !isset($bestSellerCategory[$category->id])) {
                 $bestSellerCategory[$category->id] = [
                     'category_name' => $category->name,
                     'invoicesProducts_count' => 0,
                 ];
             }
-            $bestSellerCategory[$category->id]['invoicesProducts_count'] += $bestSeller->invoices_products_count;
+            if (isset($category->id))
+                $bestSellerCategory[$category->id]['invoicesProducts_count'] += $bestSeller->invoices_products_count;
         }
-        return view('admin.branch.statistics',compact('page_title','sections','bestSellerCategory'));
+        return view('admin.branch.statistics', compact('page_title', 'sections', 'bestSellerCategory'));
     }
 }

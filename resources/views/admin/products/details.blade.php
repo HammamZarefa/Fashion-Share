@@ -50,7 +50,7 @@
 
                                     <td data-label="@lang('User')"><b>@lang('User') : </b>
                                     </td>
-                                    <td data-label="@lang('User')">{{ @$item->user->email }}</td>
+                                    <td data-label="@lang('User')"><a href="https://wa.me/{{@$item->user->phone}}" target="_blank">{{@$item->user->phone}}</a></td>
 
                                     <td data-label="@lang('status')"><b>@lang('status') : </b></td>
                                     <td data-label="@lang('status')">{{$item->status}} </td>
@@ -67,7 +67,7 @@
 
                                     <td  data-label="@lang('Category')"><b>@lang('Category') : </b>
                                     </td>
-                                    <td data-label="@lang('Category')">{{$item->category->name}}</td>
+                                    <td data-label="@lang('Category')">{{@$item->category->name}}</td>
 
                                 </tr>
                                 </tbody>

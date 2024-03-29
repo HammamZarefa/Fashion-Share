@@ -21,7 +21,8 @@ class ProductResource extends JsonResource
             'price' => number_format($this->sell_price, 2),
             'color' => [
                 'id' => $this->color->id,
-                'name' => $this->color->name
+                'name' => $this->color->name,
+                'hex_color' => @$this->color->Hexcolor
             ],
             'size' => [
                 'id' => $this->size->id,

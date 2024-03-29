@@ -97,7 +97,7 @@
                                     </td>
 
                                     <td data-label="@lang('User')">
-                                        <span class="name">{{__(@$item->user->email)}}</span>
+                                        <span class="name"><a href="https://wa.me/{{@$item->user->phone}}" target="_blank">{{__(@$item->user->phone)}}</a></span>
                                     </td>
                                     <td>
                                         {{$item->category->name ?? ''}}
