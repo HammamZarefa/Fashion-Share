@@ -50,7 +50,7 @@
                                 data-sku="{{$product->sku}}"
                                 data-id="{{$product->id}}"
                                 data-price="{{$product->sell_price}}"
-                        >{{$product->name}}</option>
+                        >{{$product->sku}}</option>
                         @endforeach
                     </select>
                 </div>

@@ -16,8 +16,8 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
+            'name' => @$this->name,
+            'description' => @$this->description,
             'price' => number_format($this->sell_price, 2),
             'color' => [
                 'id' => $this->color->id,
@@ -25,16 +25,16 @@ class ProductResource extends JsonResource
                 'hex_color' => @$this->color->Hexcolor
             ],
             'size' => [
-                'id' => $this->size->id,
-                'name' => $this->size->name
+                'id' => @$this->size->id,
+                'name' => @$this->size->name
             ],
             'condition' => [
-                'id' => $this->condition->id,
-                'name' => $this->condition->name
+                'id' => @$this->condition->id,
+                'name' => @$this->condition->name
             ],
             'material' => [
-                'id' => $this->material->id,
-                'name' => $this->material->name
+                'id' => @$this->material->id,
+                'name' => @$this->material->name
             ],
             'section' => [
                 'id' => $this->section->id,

@@ -62,21 +62,13 @@ class InvoicesController extends Controller
     public function search(Request $request,$id = null)
     {
         $page_title = 'Invoices';
-        $branch_id = Auth::guard('admin')->user()->branch_id;
-        $branch = Branch::where(function ($query) use ($branch_id) {
-            if (isset($branch_id)) {
-                $query->where('id', $branch_id);
-            }
-        })->select('id', 'name')->first();
-
-
+        $branch = Auth::guard('admin')->user()->branch;
         $sections = $branch->sections;
         $categories = $branch->categories;
-
         $invoices = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id, $request) {
-                if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id)
+            ->whereHas('products', function ($query) use ($branch, $id, $request) {
+                if (isset($branch)) {
+                    $query->where('branch_id', $branch->id)
                         ->when($request->product_code, function ($query) use ($request) {
                             $query->where(function ($subquery) use ($request) {
                                 $subquery->where('name', 'LIKE', '%' . $request->product_code . '%')
@@ -120,9 +112,9 @@ class InvoicesController extends Controller
             ->paginate(getPaginate());
 
         $invoicesStatistics = InvoicesProdect::where('is_rent', false)
-            ->whereHas('products', function ($query) use ($branch_id, $id, $request) {
+            ->whereHas('products', function ($query) use ($branch, $id, $request) {
                 if (isset($branch_id)) {
-                    $query->where('branch_id', $branch_id)
+                    $query->where('branch_id', $branch->id)
                         ->when($request->product_code, function ($query) use ($request) {
                             $query->where(function ($subquery) use ($request) {
                                 $subquery->where('name', 'LIKE', '%' . $request->product_code . '%')

@@ -23,11 +23,11 @@ class LoginController extends Controller
     public function __invoke(LoginRequest $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'phone' => ['required'],
             'password' => ['required'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('phone', $request->phone)->orWhere('email', $request->phone)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json([
