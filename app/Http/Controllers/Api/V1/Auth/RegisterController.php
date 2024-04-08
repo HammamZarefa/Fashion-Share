@@ -19,7 +19,7 @@ class RegisterController extends Controller
     {
         try {
             $request->validate([
-                'email' => [ 'email','unique:users,email'],
+                'email' => [ 'ر unique:users,email'],
                 'password' => ['required'],
                 'phone' => ['required','unique:users,phone']
             ]);

@@ -84,13 +84,13 @@ function uploadImage($file, $location, $size = null, $old = null, $thumb = null)
     }
     $filename = uniqid() . time() . '.' . $file->getClientOriginalExtension();
     $image = Image::make($file);
-    if (!empty($size)) {
-        $size = explode('x', strtolower($size));
-        $image->resize($size[0], $size[1], function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
-    }
+//    if (!empty($size)) {
+//        $size = explode('x', strtolower($size));
+//        $image->resize($size[0], $size[1], function ($constraint) {
+//            $constraint->aspectRatio();
+//            $constraint->upsize();
+//        });
+//    }
     $image->save($location . '/' . $filename);
 
     if (!empty($thumb)) {

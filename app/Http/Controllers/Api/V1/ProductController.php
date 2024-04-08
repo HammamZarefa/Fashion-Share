@@ -79,7 +79,7 @@ class ProductController extends Controller
                     ->orWhereDoesntHave('supplier');
             })
             ->orderBy('id', 'desc')
-            ->paginate();
+            ->get();
         return ProductResource::collection($products);
     }
 
