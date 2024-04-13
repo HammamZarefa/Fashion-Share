@@ -96,4 +96,18 @@ class HomeController extends Controller
         $size= Size::where('category_id',$request['category_id'])->get();
         return response()->json($size);
     }
+
+    public function getSocialInfo()
+    {
+        $data = [
+            "facebook" => "https://www.facebook.com/profile.php?id=61553725833776&mibextid=ZbWKwL",
+            "instagram" => "https://www.instagram.com/fashionshare90?igsh=MXFwM3U1YXl6bTduOQ==",
+            "whatsapp" => "0986996097",
+            "mobile" => "",
+            "company_name" => "badaeldevelopment.com",
+            "email" => "fashionshare90@gmail.com",
+            "company_by" => "Badael Development"
+        ];
+        return response()->json($data);
+    }
 }

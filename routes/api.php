@@ -23,8 +23,8 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-Route::get('products', [ProductController::class,'index']);
-Route::get('products/{product}', [ProductController::class,'show']);
+Route::get('products', [ProductController::class, 'index']);
+Route::get('products/{product}', [ProductController::class, 'show']);
 Route::get('data/{model_name}/{branchId?}', [HomeController::class, 'getDataByModelName']);
 Route::get('language/{lang}', function ($lang) {
     app()->setLocale($lang);
@@ -38,7 +38,7 @@ Route::prefix('admin')->middleware(['auth:sanctum'])->group(function () {
 //        Route::post('products/{Category}/Products', [Admin\ProductController::class, 'store']);
 //    });
 });
-
+Route::get('social', [HomeController::class, 'getSocialInfo']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('user-products', [UserController::class, 'products']);
@@ -46,14 +46,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('user/info', [UserController::class, 'updateInfo']);
     Route::post('user/reset', [AuthController::class, 'resetPassword']);
     Route::post('user/forget', [AuthController::class, 'sendResetLinkEmail']);
-    Route::post('products', [ProductController::class,'create']);
-    Route::put('products/{product}', [ProductController::class,'update']);
-    Route::get('FilterNameDescriptions/{NameDescription?}', [ProductController::class,'FilterNameDescription']);
+    Route::post('products', [ProductController::class, 'create']);
+    Route::put('products/{product}', [ProductController::class, 'update']);
+    Route::get('FilterNameDescriptions/{NameDescription?}', [ProductController::class, 'FilterNameDescription']);
 
-    Route::post('store_FcmToken',[FcmTokenController::class,'store_FcmToken']);
+    Route::post('store_FcmToken', [FcmTokenController::class, 'store_FcmToken']);
 
-    Route::post('getCategoryBySection',[HomeController::class,'getCategoryBySection']);
-    Route::post('getSizeByCategory',[HomeController::class,'getSizeByCategory']);
+    Route::post('getCategoryBySection', [HomeController::class, 'getCategoryBySection']);
+    Route::post('getSizeByCategory', [HomeController::class, 'getSizeByCategory']);
 
 });
 
