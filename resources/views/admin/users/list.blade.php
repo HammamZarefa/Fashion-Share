@@ -21,7 +21,7 @@
                                 <td data-label="@lang('Image')">
                                     <div class="user">
                                         <div class="thumb">
-                                            <img src="{{ getImage(imagePath()['profile']['admin']['path'].'/'.$user->image,imagePath()['profile']['admin']['size'])}}" alt="@lang('image')">
+                                            <img src="{{ getImage(imagePath()['profile']['user']['path'].'/'.$user->image,imagePath()['profile']['user']['size'])}}" alt="@lang('image')">
                                         </div>
                                         <span class="name">{{$user->fullname}}</span>
                                     </div>

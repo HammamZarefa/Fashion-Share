@@ -18,10 +18,10 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => @$this->name,
             'description' => @$this->description,
-            'price' => number_format($this->sell_price, 2),
+            'price' => number_format(@$this->sell_price, 2),
             'color' => [
-                'id' => $this->color->id,
-                'name' => $this->color->name,
+                'id' => @$this->color->id,
+                'name' => @$this->color->name,
                 'hex_color' => @$this->color->Hexcolor
             ],
             'size' => [
@@ -43,16 +43,16 @@ class ProductResource extends JsonResource
             'branch' => [
                 'id' => $this->branch->id,
                 'name' => $this->branch->name,
-                'address' => $this->branch->address,
-                'working_hours' => $this->branch->working_hours,
-                'phone' => $this->branch->phone,
-                'whatsapp' => $this->branch->whatsapp
+                'address' => @$this->branch->address,
+                'working_hours' => @$this->branch->working_hours,
+                'phone' => @$this->branch->phone,
+                'whatsapp' => @$this->branch->whatsapp
             ],
-            'location' => $this->location,
-            'is_for_sale' => $this->is_for_sale,
+            'location' => @$this->location,
+            'is_for_sale' => @$this->is_for_sale,
             'user' => isset($this->user->email)? $this->user->email :null,
             // 'user' => $this->user->email ,
-            'categories' => ['id' => $this->category->id, 'name' => $this->category->name],
+            'categories' => ['id' => @$this->category->id, 'name' => @$this->category->name],
             'images' => $this->images->map(function ($image) {
                 return [
                     'is_default' => $image->is_default,

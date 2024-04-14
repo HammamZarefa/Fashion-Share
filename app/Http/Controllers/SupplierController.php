@@ -24,7 +24,6 @@ class SupplierController extends Controller
         $empty_message = 'No Result Found';
         $branchAdmin = Auth::guard('admin')->user();
         $suppliers = $branchAdmin->branch->suppliers;
-//        dd($suppliers);
         $users = User::all();
         return view('admin.suppliers.index', compact('page_title', 'suppliers', 'empty_message','users'));
     }
@@ -41,7 +40,8 @@ class SupplierController extends Controller
 //            $supplier->save();
 //        }
         $empty_message = 'No Result Found';
-        return view('admin.suppliers.create', compact('page_title','empty_message'));
+        $users = User::all();
+        return view('admin.suppliers.create', compact('page_title','empty_message','users'));
     }
     public function edit($id)
     {
@@ -99,10 +99,10 @@ class SupplierController extends Controller
         $request = \request();
         $branchAdmin = Auth::guard('admin')->user();
         $request->validate([
-            'name' => 'required|string|max:70',
-            'mobile' => 'required|string|max:70',
+            'name' => 'nullable|string|max:70',
+            'mobile' => 'nullable|string|max:70',
             'email' => [
-                'required',
+                'nullable',
                 'string',
                 'max:70',
                 Rule::unique('suppliers')->where(function ($query) use ($request, $branchAdmin) {

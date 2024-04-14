@@ -11,6 +11,18 @@
                       enctype="multipart/form-data">
                     @csrf
                     <div class="row">
+                        <div class="form-row form-group">
+                            <label class="font-weight-bold ">@lang('User') </label>
+                            <div class="col-sm-12">
+                                <select name="user_id" value="" class="form-control selectpicker"  data-live-search="true" required>
+                                    <option value="-1" selected>@lang('Choose One!')</option>
+                                    @foreach($users as $user)
+                                        <option value="{{$user->id}}" >{{ $user->email }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div class="form-row form-group">
                                 <label class="font-weight-bold ">@lang('Name') </label>

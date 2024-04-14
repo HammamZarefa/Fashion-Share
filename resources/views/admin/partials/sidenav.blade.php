@@ -35,29 +35,11 @@
                             <span class="menu-title">@lang('Manage Admins')</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item sidebar-dropdown">
-                        <a href="javascript:void(0)" class="{{menuActive('admin.users*',3)}}">
+                    <li class="sidebar-menu-item">
+                        <a href="{{route('admin.users.all')}}" class="{{menuActive('admin.users*',3)}}">
                             <i class="menu-icon las la-users"></i>
                             <span class="menu-title">@lang('Manage Users')</span>
                         </a>
-                        <div class="sidebar-submenu {{menuActive('admin.users*',2)}} ">
-                            <ul>
-                                <li class="sidebar-menu-item {{menuActive('admin.users.all')}} ">
-                                    <a href="{{route('admin.users.all')}}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('All Users')</span>
-                                    </a>
-                                </li>
-
-                                <li class="sidebar-menu-item {{menuActive('admin.users.email.all')}}">
-                                    <a href="{{route('admin.users.email.all')}}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Send Email')</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
                     </li>
                 @endif
                 @if (Auth::guard('admin')->user()->branch || isset($branch_id))

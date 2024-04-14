@@ -10,7 +10,7 @@ class Supplier extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'mobile','branch_id','total_amount'];
+    protected $fillable = ['name', 'email', 'mobile','branch_id','total_amount','user_id'];
 
     public function user(): BelongsTo
     {

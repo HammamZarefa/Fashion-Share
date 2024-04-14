@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\UserResource;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +16,10 @@ class UserController extends Controller
     public function products()
     {
         $user = auth()->user();
+        $supplier = Supplier::where('user_id',$user->id)->first();
+       if($supplier)
+           $products = $supplier->products;
+       else
         $products = $user->products;
         return ProductResource::collection($products);
     }

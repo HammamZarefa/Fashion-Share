@@ -104,7 +104,7 @@
                                     </td>
                                     <td>{{$item->price}}</td>
                                     <td>{{@$item->branch->name}}</td>
-                                    <td>{{$item->is_for_sale ? 'Sale' : 'Rent'}}</td>
+                                    <td>{{@$item->section->is_rent ? 'Rent' : 'Sale'}}</td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status=='available' )
                                             <span

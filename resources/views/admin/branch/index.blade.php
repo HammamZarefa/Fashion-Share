@@ -47,6 +47,10 @@
                                            data-url="{{ route('admin.branch.delete', $item->id ) }}">
                                             <i class="la la-eye-slash"></i>
                                         </a>
+                                        <a href="{{ route('admin.branch.dashboard',$item->id)}}" class="icon-btn ml-1"
+                                           data-original-title="@lang('Login As Branch Admin')" data-toggle="tooltip">
+                                            <i class="la la-store"></i>
+                                        </a>
                                     </td>
 
                                 </tr>
