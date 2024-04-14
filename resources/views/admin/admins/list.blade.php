@@ -40,7 +40,7 @@
                                 <td data-label="@lang('Action')">
                                     <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                        data-original-title="@lang('Edit')" data-toggle="tooltip"
-                                       data-url="{{ route('admin.users.update', $user->id)}}"
+                                       data-url="{{ route('admin.admins.update', $user->id)}}"
                                        data-name="{{ $user->name }}"
                                        data-branch="{{$user->branch->id ?? ''}}"
                                        data-username="{{$user->username}}"
@@ -54,17 +54,10 @@
                                     <a href="javascript:void(0)"
                                        class="icon-btn btn--danger ml-1 statusBtn"
                                        data-original-title="@lang('Status')" data-toggle="tooltip"
-                                       data-url="{{ route('admin.users.delete', $user->id ) }}">
+                                       data-url="{{ route('admin.admins.delete', $user->id ) }}">
                                         <i class="la la-eye-slash"></i>
                                     </a>
                                 </td>
-
-                                {{-- <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td> --}}
-{{--                                 <td data-label="@lang('Action')">--}}
-{{--                                     <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">--}}
-{{--                                         <i class="las la-desktop text--shadow"></i>--}}
-{{--                                     </a>--}}
-{{--                                 </td>--}}
                             </tr>
                             @empty
                                 <tr>
@@ -95,7 +88,7 @@
                     <button type="button" class="close" data-dismiss="modal" style="margin: -1rem -1rem -1rem 0rem"1 aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>
-                <form class="form-horizontal" method="post" action="{{ route('admin.users.store')}}" enctype="multipart/form-data">
+                <form class="form-horizontal" method="post" action="{{ route('admin.admins.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="avatar-edit">

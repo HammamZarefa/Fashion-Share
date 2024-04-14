@@ -66,11 +66,11 @@ class ProductController extends Controller
                 $query->where('category_id', $request->category);
             })
             ->when($request->sortBy, function ($query) use ($request) {
-                if (!in_array($request->sortBy, ['sell_price', 'created_at'])
+                if (!in_array($request->sortBy, ['price', 'created_at'])
                     || (!in_array($request->sortOrder, ['asc', 'desc']))) {
                     return;
                 }
-                $query->orderBy($request->sortBy, $request->sortOrder);
+                $query->orderBy($request->sortBy == 'price' ? 'sell_price' : $request->sortBy, $request->sortOrder);
             })
             ->where(function ($query) {
                 $query->whereHas('supplier', function ($subquery) {
@@ -138,9 +138,9 @@ class ProductController extends Controller
             'supplier_id' => $request->input('supplier_id'),
             'barcode' => $request->input('barcode'),
         ]);
-        $product->update ([
+        $product->update([
             'sku' => GenerateSkuAction::execute($product->branch_id, $product->section_id, $request->category_id, $product->id)
-        ]) ;
+        ]);
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = imagePath()['service']['path'];
@@ -159,7 +159,7 @@ class ProductController extends Controller
 
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = auth()->id();
-        $adminNotification->title = 'New product request from :'.auth()->user()->phone ?? '';
+        $adminNotification->title = 'New product request from :' . auth()->user()->phone ?? '';
         $adminNotification->click_url = url('admin/services/details', $product->id);
         $adminNotification->save();
         return response()->json(['message' => 'Product created successfully', 'data' => $product, 'status' => 201]);
@@ -234,12 +234,13 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product updated successfully', 'data' => $product, 'status' => 200]);
     }
 
-    public function FilterNameDescription($NameDescription = null){
+    public function FilterNameDescription($NameDescription = null)
+    {
         $products = Product::available()
             ->with(['color', 'size', 'material', 'condition', 'section', 'branch', 'user', 'category', 'images'])
             ->when($NameDescription, function ($query) use ($NameDescription) {
-                $query->where('name','LIKE', "%$NameDescription%")
-                    ->OrWhere('description','LIKE', "%$NameDescription%");
+                $query->where('name', 'LIKE', "%$NameDescription%")
+                    ->OrWhere('description', 'LIKE', "%$NameDescription%");
             })
             ->where(function ($query) {
                 $query->whereHas('supplier', function ($subquery) {

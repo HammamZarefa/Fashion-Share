@@ -12,7 +12,7 @@
 
         </div>
         @if (Auth::guard('admin')->user()->branch || isset($branch_id))
-        <h3 class="sidebar_title" style="text-align: center;">{{Auth::guard('admin')->user()->branch->name}}</h3>
+            <h3 class="sidebar_title" style="text-align: center;">{{Auth::guard('admin')->user()->branch->name}}</h3>
         @endif
         <div class="sidebar__menu-wrapper" id="sidebar__menuWrapper">
             <ul class="sidebar__menu">
@@ -27,6 +27,12 @@
                         <a href="{{route('admin.branch')}}" class="nav-link ">
                             <i class="menu-icon las la-store-alt"></i>
                             <span class="menu-title">@lang('Branchs')</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="{{route('admin.admins.all')}}" class="{{menuActive('admin.users*',3)}}">
+                            <i class="menu-icon las la-users"></i>
+                            <span class="menu-title">@lang('Manage Admins')</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item sidebar-dropdown">

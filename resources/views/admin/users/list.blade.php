@@ -9,22 +9,15 @@
                             <thead>
                             <tr>
                                 <th scope="col">@lang('Image')</th>
-                                <th scope="col">@lang('Name')</th>
-                                <th scope="col">@lang('User Name')</th>
+                                <th scope="col">@lang('Phone')</th>
                                 <th scope="col">@lang('Email')</th>
-                                <th scope="col">@lang('Branch')</th>
-                                <th scope="col">@lang('Action')</th>
-
-                                {{-- <th scope="col">@lang('Phone')</th>
                                 <th scope="col">@lang('Joined At')</th>
-                                <th scope="col">@lang('Action')</th> --}}
+                                <th scope="col">@lang('Action')</th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($users as $user)
                             <tr>
-
-                                {{-- <td data-label="@lang('Username')"><a href="{{ route('admin.users.detail', $user->id) }}">{{ $user->username }}</a></td> --}}
                                 <td data-label="@lang('Image')">
                                     <div class="user">
                                         <div class="thumb">
@@ -33,20 +26,15 @@
                                         <span class="name">{{$user->fullname}}</span>
                                     </div>
                                 </td>
-                                <td data-label="@lang('Name')">{{ $user->name }}</td>
-                                <td data-label="@lang('User Name')">{{ $user->username }}</td>
+                                <td data-label="@lang('Phone')">{{ $user->phone }}</td>
                                 <td data-label="@lang('Email')">{{ $user->email }}</td>
-                                <td data-label="@lang('Branch')">{{ @$user->branch->name }}</td>
+                                 <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td>
                                 <td data-label="@lang('Action')">
                                     <a href="javascript:void(0)" class="icon-btn ml-1 editBtn"
                                        data-original-title="@lang('Edit')" data-toggle="tooltip"
                                        data-url="{{ route('admin.users.update', $user->id)}}"
-                                       data-name="{{ $user->name }}"
-                                       data-branch="{{$user->branch->id ?? ''}}"
-                                       data-username="{{$user->username}}"
                                        data-email="{{$user->email}}"
-                                       data-password="{{$user->password}}"
-                                       data-mobile="{{$user->mobile}}"
+                                       data-phone="{{$user->phone}}"
                                     >
                                         <i class="la la-edit"></i>
                                     </a>
@@ -57,14 +45,7 @@
                                        data-url="{{ route('admin.users.delete', $user->id ) }}">
                                         <i class="la la-eye-slash"></i>
                                     </a>
-                                </td>
-
-                                {{-- <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td> --}}
-{{--                                 <td data-label="@lang('Action')">--}}
-{{--                                     <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn" data-toggle="tooltip" title="" data-original-title="@lang('Details')">--}}
-{{--                                         <i class="las la-desktop text--shadow"></i>--}}
-{{--                                     </a>--}}
-{{--                                 </td>--}}
+                                 </td>
                             </tr>
                             @empty
                                 <tr>
@@ -104,24 +85,10 @@
                             <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
                         </div>
                         <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Name') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="name" required placeholder="@lang('Enter User Name')">
-                            </div>
-                        </div>
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('User name') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="username" name="username" required placeholder="@lang('Enter User Username')">
-                            </div>
-                        </div>
-                        <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Email') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="email" class="form-control has-error bold " id="email" name="email" required placeholder="@lang('Enter Supplier Email')">
+                                <input type="email" class="form-control has-error bold " id="email" name="email"  placeholder="@lang('Enter Supplier Email')">
                             </div>
                         </div>
                         <div class="form-row form-group">
@@ -135,25 +102,9 @@
                             <label class="font-weight-bold ">@lang('Mobile') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="mobile" name="mobile" required placeholder="@lang('Enter Supplier Mobile')">
+                                <input type="text" class="form-control has-error bold " id="phone" name="phone" required placeholder="@lang('Enter Supplier Mobile')">
                             </div>
                         </div>
-
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Branch') </label>
-                            <div class="col-sm-12">
-                                <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                                    <option value="-1" selected>@lang('Choose One!')</option>
-                                    @foreach($branches as $branche)
-                                        <option value="{{$branche->id}}" >{{ $branche->name }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
-
-
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -183,47 +134,26 @@
                             <label for="profilePicUpload1" class="bg--success">@lang('Upload Image')</label>
                         </div>
                         <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Name') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="code" name="name" value="{{$item->name ?? ''}}" required>
-                            </div>
-                        </div>
-                        <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('User name') <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="username" value="{{$item->username ?? ''}}" name="username" required placeholder="@lang('Enter User Username')">
-                            </div>
-                        </div>
-                        <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Email') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="email" class="form-control has-error bold " id="email" name="email" required value="{{$item->email ?? ''}}">
+                                <input type="email" class="form-control has-error bold " id="email" name="email" value="{{$item->email ?? ''}}">
                             </div>
                         </div>
                         <div class="form-row form-group">
                             <label class="font-weight-bold ">@lang('Mobile') <span
                                     class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control has-error bold " id="mobile" name="mobile" required value="{{$item->mobile ?? ''}}">
+                                <input type="text" class="form-control has-error bold " id="phone" name="phone" required value="{{$item->phone ?? ''}}">
                             </div>
                         </div>
                         <div class="form-row form-group">
-                            <label class="font-weight-bold ">@lang('Branch') </label>
+                            <label class="font-weight-bold ">@lang('Password') <span
+                                    class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <select name="branch_id" value="" class="form-control selectpicker"  data-live-search="true" required>
-                                    <option value="-1" selected>@lang('Choose One!')</option>
-                                    @foreach($branches as $branche)
-                                        <option value="{{$branche->id}}" >{{ $branche->name }}</option>
-                                    @endforeach
-                                </select>
-
+                                <input type="password" class="form-control has-error bold " id="password" name="password" placeholder="@lang('Enter User Password')">
                             </div>
                         </div>
-
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
                             <button type="submit" class="btn btn--primary" id="btn-save"
@@ -277,7 +207,7 @@
                 var name = $(this).data('name');
                 var username = $(this).data('username');
                 var email = $(this).data('email');
-                var mobile = $(this).data('mobile');
+                var phone = $(this).data('phone');
                 var branch = $(this).data('branch');
                 var password = $(this).data('password');
 console.log(username);
@@ -286,7 +216,7 @@ console.log(username);
                 modal.find('input[name=username]').val(username);
                 modal.find('input[name=email]').val(email);
                 modal.find('input[name=password]').val(password);
-                modal.find('input[name=mobile]').val(mobile);
+                modal.find('input[name=phone]').val(phone);
                 modal.find('select[name=branch_id]').val(branch);
                 modal.modal('show');
             });

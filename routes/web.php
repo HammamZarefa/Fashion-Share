@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ColoresController;
 use App\Http\Controllers\Admin\InvoicesController;
+use App\Http\Controllers\Admin\ManageAdminsController;
 use App\Http\Controllers\Admin\ManageUsersController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\RentsController;
@@ -65,13 +66,15 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         // Users Manager
         Route::get('users', 'ManageUsersController@allUsers')->name('users.all');
         Route::post('users',[ManageUsersController::class,'store'])->name('users.store');
-        Route::post('users/{id}',[ManageUsersController::class,'updateAdmin'])->name('users.update');
+        Route::post('users/{id}',[ManageUsersController::class,'update'])->name('users.update');
         Route::delete('users/delete/{id}','ManageUsersController@delete')->name('users.delete');
-
         Route::get('users/send-email', 'ManageUsersController@showEmailAllForm')->name('users.email.all');
         Route::post('users/send-email', 'ManageUsersController@sendEmailAll')->name('users.email.send');
 
-
+        Route::get('admins', 'ManageAdminsController@allUsers')->name('admins.all');
+        Route::post('admins',[ManageAdminsController::class,'store'])->name('admins.store');
+        Route::post('admins/{id}',[ManageAdminsController::class,'updateAdmin'])->name('admins.update');
+        Route::delete('admins/delete/{id}','ManageAdminsController@delete')->name('admins.delete');
         //Categories
         Route::get('categories', 'CategoryController@index')->name('categories.index');
         Route::post('categories/store', 'CategoryController@store')->name('categories.store');
